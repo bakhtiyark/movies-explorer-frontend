@@ -3,13 +3,10 @@ import { useEffect, useState } from "react";
 import { Switch, Route, Redirect, useHistory } from "react-router-dom";
 
 //Родные компоненты
-import Header from "../Header/Header.js";
+import Header from "../Header/Header";
 import Main from "../Main/Main.js";
 import Footer from "../Footer/Footer.js";
 import ImagePopup from "../ImagePopup.js";
-import EditProfilePopup from "../EditProfilePopup.js";
-import EditAvatarPopup from "../EditAvatarPopup.js";
-import AddPlacePopup from "../AddPlacePopup.js";
 
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.js";
 import Register from "../Login/Register.js";
@@ -40,16 +37,6 @@ function App() {
   //Карты
   const [cards, setCards] = useState([]);
 
-  //Раскрытая карта
-  const [selectedCard, setSelectedCard] = useState({});
-
-  //Стейты попапов
-  const [isAvatarPopupOpen, setAvatarPopupOpen] = useState(false);
-  const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
-  const [isProfilePopupOpen, setProfilePopupOpen] = useState(false);
-  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
   // Сообщение статуса
   const [message, setMessage] = useState({});
 
@@ -71,114 +58,6 @@ function App() {
       history.push("/");
     }
   }, [loggedIn, history]);
-
-  // Открытие соответствующих попапов
-  function replaceAvatar() {
-    setAvatarPopupOpen(true);
-  }
-
-  function addPlace() {
-    setAddPlacePopupOpen(true);
-  }
-
-  function openProfilePopup() {
-    setProfilePopupOpen(true);
-  }
-
-  //Закрытие Попапов
-
-  function closePopups() {
-    setAvatarPopupOpen(false);
-    setAddPlacePopupOpen(false);
-    setProfilePopupOpen(false);
-    setSelectedCard({});
-    setIsInfoTooltipPopupOpen(false);
-    //console.log("lala")
-  }
-  function openCardPopup(card) {
-    setSelectedCard({ src: card.link, alt: card.name, opened: true });
-  }
-
-  //Установка данных пользователей
-  function handleUpdateUser({ name, about }) {
-    setIsSubmitting(true);
-    api
-      .setUserInfo({ name, about })
-      .then((user) => {
-        setCurrentUser(user);
-      })
-      .then(() => closePopups())
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        setIsSubmitting(false);
-      });
-  }
-
-  // Добавление места
-  function handleAddPlaceSubmit({ name, link }) {
-    setIsSubmitting(true);
-    api
-      .createCard({ name, link })
-      .then((newCard) => {
-        setCards([newCard, ...cards]);
-      })
-      .then(() => closePopups())
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        setIsSubmitting(false);
-      });
-  }
-
-  //Аптейт аватара
-  function handleAvatarUpdate({ avatar }) {
-    setIsSubmitting(true);
-    api
-      .setUserAvatar(avatar)
-      .then((user) => {
-        setCurrentUser(user);
-      })
-      .then(() => closePopups())
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        setIsSubmitting(false);
-      });
-  }
-  // Лайканье
-
-  function handleCardLike(card) {
-    // Снова проверяем, есть ли уже лайк на этой карточке
-    const isLiked = card.likes.some((i) => i === currentUser._id);
-
-    // Отправляем запрос в API и получаем обновлённые данные карточки
-    api
-      .changeLikeCardStatus(card._id, isLiked)
-      .then((newCard) => {
-        setCards((state) =>
-          state.map((c) => (c._id === card._id ? newCard : c))
-        );
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
-  // Удаление карты
-  function handleCardDelete(card) {
-    api
-      .deleteCard(card._id)
-      .then(() => {
-        setCards((state) => state.filter((c) => c._id !== card._id));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
 
   //Токен
   function handleTokenValidation() {
@@ -217,7 +96,6 @@ function App() {
           text: "Что-то пошло не так! Попробуйте ещё раз.",
         })
       )
-      .finally(() => setIsInfoTooltipPopupOpen(true));
   }
 
   //Вход по логину
@@ -236,7 +114,6 @@ function App() {
           imgInfo: failureIcon,
           text: "Что-то пошло не так! Попробуйте ещё раз.",
         });
-        setIsInfoTooltipPopupOpen(true);
       });
   }
 
@@ -264,14 +141,6 @@ function App() {
             path="/"
             loggedIn={loggedIn}
             component={Main}
-            replaceAvatar={replaceAvatar}
-            addPlace={addPlace}
-            openProfilePopup={openProfilePopup}
-            closePopups={closePopups}
-            onCardClick={openCardPopup}
-            cards={cards}
-            onCardLike={handleCardLike}
-            onCardDelete={handleCardDelete}
           />
 
           <Route path="/sign-up">
@@ -284,35 +153,6 @@ function App() {
             {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
           </Route>
         </Switch>
-
-        <EditProfilePopup
-          isOpen={isProfilePopupOpen}
-          isSubmitting={isSubmitting}
-          onClose={closePopups}
-          onUpdateUser={handleUpdateUser}
-        />
-        <EditAvatarPopup
-          isOpen={isAvatarPopupOpen}
-          isSubmitting={isSubmitting}
-          onClose={closePopups}
-          onUpdateAvatar={handleAvatarUpdate}
-        />
-
-        <AddPlacePopup
-          isOpen={isAddPlacePopupOpen}
-          isSubmitting={isSubmitting}
-          onClose={closePopups}
-          onSubmitPlace={handleAddPlaceSubmit}
-        />
-
-        <InfoTooltip
-          isOpen={isInfoTooltipPopupOpen}
-          onClose={closePopups}
-          imgInfo={message.imgInfo}
-          textInfo={message.text}
-        />
-
-        <ImagePopup card={selectedCard} onClose={closePopups}></ImagePopup>
 
         <Footer />
 

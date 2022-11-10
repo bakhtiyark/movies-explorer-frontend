@@ -1,4 +1,4 @@
-import logo from "../images/header-logo.svg";
+import logo from "../../images/nul";
 import { Switch, Route, Link } from "react-router-dom";
 import toggleList from "../../utils/toggleList";
 import { translations } from "../../contexts/TranslationContext";

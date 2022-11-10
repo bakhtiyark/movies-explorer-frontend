@@ -21,12 +21,12 @@ export class Api {
   
   //Получение всех данных
   getAllData() {
-    return Promise.all([this.getInitialCards(), this.getUserInfo()]);
+    return Promise.all([this.getInitialMovies(), this.getUserInfo()]);
   }
 
   //Получение карт с сервера
-  getInitialCards() {
-    return fetch(`${this._url}/cards`, {
+  getInitialMovies() {
+    return fetch(`${this._url}/movies`, {
       headers: this._getHeaders(),
     })
       .then((res) => {
@@ -38,13 +38,13 @@ export class Api {
   }
 
   //Добавление карт
-  createCard(card) {
-    return fetch(`${this._url}/cards`, {
+  createMovie(movie) {
+    return fetch(`${this._url}/movies`, {
       method: "POST",
       headers: this._getHeaders(),
       body: JSON.stringify({
-        name: card.name,
-        link: card.link,
+        name: movie.name,
+        link: movie.link,
       }),
     })
       .then((res) => {
@@ -102,8 +102,8 @@ export class Api {
   }
 
   //Комбинированный метод для лайканья/снятия лайка
-  changeLikeCardStatus(id, state) {
-    return fetch(`${this._url}/cards/${id}/likes`, {
+  changeLikeMovieStatus(id, state) {
+    return fetch(`${this._url}/movies/${id}/likes`, {
       method: state ? "DELETE" : "PUT",
       headers: this._getHeaders(),
     })
@@ -115,8 +115,8 @@ export class Api {
       .catch((err) => console.log(err));
   }
   //Удаление карточки
-  deleteCard(id) {
-    return fetch(`${this._url}/cards/${id}`, {
+  deleteMovie(id) {
+    return fetch(`${this._url}/movies/${id}`, {
       method: "DELETE",
       headers: this._getHeaders(),
     })
@@ -126,7 +126,7 @@ export class Api {
 }
 
 export const api = new Api({
-  baseUrl: "https://api.bakhtiyarkpr.nomoredomains.icu",
+  baseUrl: "https://api.moviesexplorerbk.nomoredomains.icu/",
   headers: {
     "Content-Type": "application/json",
   },

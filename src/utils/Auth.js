@@ -78,7 +78,7 @@ class Auth {
   }
   
   const auth = new Auth({
-    baseUrl: 'https://api.bakhtiyarkpr.nomoredomains.icu'
+    baseUrl: "https://api.moviesexplorerbk.nomoredomains.icu/",
   })
   
   export default auth

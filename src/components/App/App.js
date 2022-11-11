@@ -2,16 +2,17 @@
 import { useEffect, useState } from "react";
 import { Switch, Route, Redirect, useHistory } from "react-router-dom";
 
+// CSS file
+import "./App.css"
+
 //Родные компоненты
 import Header from "../Header/Header";
 import Main from "../Main/Main.js";
 import Footer from "../Footer/Footer.js";
-import ImagePopup from "../ImagePopup.js";
 
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.js";
 import Register from "../Login/Register.js";
-import Login from "../Login.js";
-import InfoTooltip from "../InfoTooltip.js";
+import Login from "../Login/Login";
 
 //Контексты
 import { CurrentUserContext } from "../../contexts/CurrentUserContext.js";
@@ -20,9 +21,6 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext.js";
 import { api } from "../../utils/Api.js";
 import auth from "../../utils/Auth.js";
 
-// Иконки статуса
-import successIcon from "../images/success-icon.svg";
-import failureIcon from "../images/failure-icon.svg";
 import { TranslationContext } from "../../contexts/TranslationContext.js";
 
 function App() {
@@ -84,7 +82,6 @@ function App() {
       .then((res) => {
         if (res) {
           setMessage({
-            imgInfo: successIcon,
             text: "Вы успешно зарегистрировались!",
           });
           history.push("/sign-in");
@@ -92,7 +89,6 @@ function App() {
       })
       .catch(
         setMessage({
-          imgInfo: failureIcon,
           text: "Что-то пошло не так! Попробуйте ещё раз.",
         })
       )
@@ -111,7 +107,6 @@ function App() {
       })
       .catch(() => {
         setMessage({
-          imgInfo: failureIcon,
           text: "Что-то пошло не так! Попробуйте ещё раз.",
         });
       });

@@ -1,4 +1,5 @@
-import logo from "../../images/nul";
+import "./Header.css";
+import logo from "../../images/logo.svg";
 import { Switch, Route, Link } from "react-router-dom";
 import toggleList from "../../utils/toggleList";
 import { translations } from "../../contexts/TranslationContext";
@@ -9,38 +10,24 @@ function Header({ onSignOut, userEmail }) {
   const translation = useContext(TranslationContext);
   return (
     <header className="header">
-      <button
-        type="button"
-        className="header__bar_mobile-button"
-        id="navbar-toggle"
-        onClick={toggleList}
-      ></button>
-      <img src={logo} alt="Логотип Место" className="header__logo" />
+      <img src={logo} alt="Логотип Movies-Explorer" className="header__logo" />
       <Switch>
-        <Route path="/sign-in">
-          <Link className="auth__link auth__link_location-header" to="/sign-up">
-            Зарегистрироваться
-          </Link>
-        </Route>
-        <Route path="/sign-up">
-          <Link className="auth__link auth__link_location-header" to="/sign-in">
-            Войти
-          </Link>
-        </Route>
-        <Route path="/">
-          <div className="header__bar" id="header__bar">
-            <span className="auth__email header__bar-item">
-              {userEmail || ""}
-            </span>
+        <div className="auth">
+          <Route path="/">
             <Link
-              onClick={onSignOut}
-              className="auth__link auth__link_location-header header__bar-item"
+              className="header__link header__link_location-header"
+              to="/sign-up"
+            >
+              Регистрация
+            </Link>
+            <Link
+              className="header__button header__link_location-header"
               to="/sign-in"
             >
-              Выйти
+              Войти
             </Link>
-          </div>
-        </Route>
+          </Route>
+        </div>
       </Switch>
     </header>
   );

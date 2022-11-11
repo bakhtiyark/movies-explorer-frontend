@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import Card from "../Card.js";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext.js";
 
 export default function Main(props) {
@@ -37,22 +36,6 @@ export default function Main(props) {
           className="profile__button profile__button_add"
           onClick={props.addPlace}
         ></button>
-      </section>
-      <section className="elements">
-        {props.cards.map((card) => {
-          return (
-            <Card
-              key={card._id}
-              link={card.link}
-              name={card.name}
-              likes={card.likes}
-              card={card}
-              onCardClick={props.onCardClick}
-              onCardLike={props.onCardLike}
-              onCardDelete={props.onCardDelete}
-            />
-          );
-        })}
       </section>
     </main>
   );

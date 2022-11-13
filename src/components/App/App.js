@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Switch, Route, Redirect, useHistory } from "react-router-dom";
 
 // CSS file
-import "./App.css"
+import "./App.css";
 
 //Родные компоненты
 import Header from "../Header/Header";
@@ -30,7 +30,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState("");
-  const [lang, setLang] = useState({});
+  // const [lang, setLang] = useState({});
 
   //Карты
   const [cards, setCards] = useState([]);
@@ -91,7 +91,7 @@ function App() {
         setMessage({
           text: "Что-то пошло не так! Попробуйте ещё раз.",
         })
-      )
+      );
   }
 
   //Вход по логину
@@ -131,12 +131,7 @@ function App() {
         <Header onSignOut={handleSignOut} userEmail={userEmail} />
 
         <Switch>
-          <ProtectedRoute
-            exact
-            path="/"
-            loggedIn={loggedIn}
-            component={Main}
-          />
+          <ProtectedRoute exact path="/" loggedIn={loggedIn} component={Main} />
 
           <Route path="/sign-up">
             <Register onRegistration={handleRegistration} />

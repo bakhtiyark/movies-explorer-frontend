@@ -62,10 +62,8 @@ export const translations = {
         saveButton: 'Saqtau',
         saveButtoninProcess: 'Saqtalyp jatyr...',
         imagePlaceholder: "Suret siltimesi",
-
         addCardTitle: "Jer saly",
         addCardPlaceholder: "Jerdin atauy",
-
         messageTextSuccess: 'Siz oydagydai tirkeldiniz!',
         messageTextFailure: 'Bir zat durys emes! Qaytalaniz.'
 

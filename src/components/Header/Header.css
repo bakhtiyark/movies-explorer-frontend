@@ -22,12 +22,16 @@
 
 .header__button {
   box-sizing: border-box;
+  padding: 8px 20px;
   max-width: 76px;
   max-height: 32px;
-
   text-decoration: none;
   text-align: center;
-  background: #2be080;
+  font-weight: 500;
+  font-size: 12px;
+  color: #000000;
+  line-height: 16px;
+  background-color: #2be080;
   border: 1px solid #000000;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 3px;

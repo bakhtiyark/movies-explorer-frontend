@@ -1,5 +1,16 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# temp
+
+src/components/SavedMovies/SavedMovies.js
+src/components/SearchForm/SearchForm.js
+src/components/MoviesCard/MoviesCard.js
+src/components/MoviesCardList/MoviesCardList.js
+src/components/Navigation/Navigation.js
+src/components/Navtab/Navtab.js
+src/components/Portfolio/Portfolio.js
+src/components/AboutMe/AboutMe.js
+
 # dependencies
 /node_modules
 /.pnp

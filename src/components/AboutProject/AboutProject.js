@@ -1,6 +1,6 @@
-import "./ProjectDescription.css";
+import "./AboutProject.css";
 
-function ProjectDescription() {
+function AboutProject() {
   return (
     <section className="project">
       <h1 className="project__title">О проекте</h1>
@@ -28,4 +28,4 @@ function ProjectDescription() {
   );
 }
 
-export default ProjectDescription;
+export default AboutProject;

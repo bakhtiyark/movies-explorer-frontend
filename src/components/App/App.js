@@ -1,6 +1,13 @@
 //React компоненты
 import { useEffect, useState } from "react";
-import { Switch, Route, Redirect, useHistory } from "react-router-dom";
+import {
+  Switch,
+  Route,
+  Redirect,
+  useHistory,
+  useLocation,
+  withRouter,
+} from "react-router-dom";
 
 // CSS file
 import "./App.css";
@@ -9,16 +16,18 @@ import "./App.css";
 import Header from "../Header/Header";
 import Main from "../Main/Main.js";
 import Footer from "../Footer/Footer.js";
-
+import Profile from "../Profile/Profile.js";
+import SavedMovies from "../SavedMovies/SavedMovies.js";
+import Movies from "../Movies/Movies.js";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.js";
 import Register from "../Login/Register.js";
-import Login from "../Login/Login";
+import Login from "../Login/Login.js";
 
 //Контексты
 import { CurrentUserContext } from "../../contexts/CurrentUserContext.js";
 
 //Api
-import { api } from "../../utils/Api.js";
+// import { api } from "../../utils/Api.js";
 import auth from "../../utils/Auth.js";
 
 import { TranslationContext } from "../../contexts/TranslationContext.js";
@@ -28,28 +37,15 @@ function App() {
   history = useHistory();
   //Данные о пользователе
   const [currentUser, setCurrentUser] = useState({});
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [userEmail, setUserEmail] = useState("");
+  const [loggedIn, setLoggedIn] = useState(localStorage.getItem("token"));
   // const [lang, setLang] = useState({});
-
-  //Карты
-  const [cards, setCards] = useState([]);
-
+  const { pathname } = useLocation();
   // Сообщение статуса
-  const [message, setMessage] = useState({});
+  const [message, setMessage] = useState(false);
 
   useEffect(() => {
     handleTokenValidation();
-    if (loggedIn) {
-      api
-        .getAllData()
-        .then(([data, user]) => {
-          setCards(data);
-          setCurrentUser(user);
-        })
-        .catch((err) => console.log(err));
-    }
-  }, [loggedIn]);
+  }, []);
 
   useEffect(() => {
     if (loggedIn) {
@@ -66,32 +62,29 @@ function App() {
         .then((res) => {
           if (res) {
             setLoggedIn(true);
-            setUserEmail(res.email);
+            setCurrentUser(res);
           }
         })
         .catch((err) => {
           console.log(err);
+          localStorage.removeItem("token");
+          setLoggedIn(false);
         });
     }
   }
 
   // Регистрация
-  function handleRegistration(password, email) {
+  function handleRegistration(password, email, name) {
     auth
-      .register(password, email)
+      .register(password, email, name)
       .then((res) => {
         if (res) {
-          setMessage({
-            text: "Вы успешно зарегистрировались!",
-          });
-          history.push("/sign-in");
+          if (res) {
+            handleLogin(res.email, password);
+          }
         }
       })
-      .catch(
-        setMessage({
-          text: "Что-то пошло не так! Попробуйте ещё раз.",
-        })
-      );
+      .catch(setMessage(true));
   }
 
   //Вход по логину
@@ -101,14 +94,13 @@ function App() {
       .then((res) => {
         if (res.token) {
           localStorage.setItem("token", res.token);
-          setUserEmail(email);
+          auth.updateToken();
           setLoggedIn(true);
+          handleTokenValidation();
         }
       })
-      .catch(() => {
-        setMessage({
-          text: "Что-то пошло не так! Попробуйте ещё раз.",
-        });
+      .catch((err) => {
+        setMessage(err);
       });
   }
 
@@ -128,28 +120,66 @@ function App() {
   return (
     <TranslationContext.Provider value={""}>
       <CurrentUserContext.Provider value={currentUser}>
-        <Header onSignOut={handleSignOut} userEmail={userEmail} />
+        <div className="root">
+          {pathname === "/" ||
+          pathname === "/profile" ||
+          pathname === "/movies" ||
+          pathname === "/saved-movies" ? (
+            <Header loggedIn={!loggedIn} />
+          ) : (
+            ""
+          )}
+          <Switch>
+            <Route exact path="/">
+              <Main />
+            </Route>
 
-        <Switch>
-          <ProtectedRoute exact path="/" loggedIn={loggedIn} component={Main} />
+            <ProtectedRoute
+              path="/movies"
+              loggedIn={!loggedIn}
+              component={Movies}
+            />
 
-          <Route path="/sign-up">
-            <Register onRegistration={handleRegistration} />
-          </Route>
-          <Route path="/sign-in">
-            <Login onLogin={handleLogin} />
-          </Route>
-          <Route path="*">
-            {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
-          </Route>
-        </Switch>
+            <ProtectedRoute
+              path="/saved-movies"
+              loggedIn={!loggedIn}
+              component={SavedMovies}
+            />
 
-        <Footer />
+            <ProtectedRoute
+              path="/profile"
+              loggedIn={!loggedIn}
+              component={Profile}
+              onSignOut={handleSignOut}
+            />
 
-        <script type="module" src="./pages/index.js"></script>
+            <Route path="/signup">
+              {!loggedIn ? (
+                <Register onRegister={handleRegistration} textError={message} />
+              ) : (
+                <Redirect to="/movies" />
+              )}
+            </Route>
+
+            <Route path="/signin">
+              {!loggedIn ? (
+                <Login onLogin={handleLogin} />
+              ) : (
+                <Redirect to="/movies" />
+              )}
+            </Route>
+          </Switch>
+          {pathname === "/" ||
+          pathname === "/movies" ||
+          pathname === "/saved-movies" ? (
+            <Footer />
+          ) : (
+            ""
+          )}
+        </div>
       </CurrentUserContext.Provider>
     </TranslationContext.Provider>
   );
 }
 
-export default App;
+export default withRouter(App);

@@ -1,21 +1,18 @@
 // Импорт компонентов
 import Promo from "../Promo/Promo";
-import Navtab from "../Navtab/Navtab";
 import AboutProject from "../AboutProject/AboutProject";
 import Techs from "../Techs/Techs";
 import AboutMe from "../AboutMe/AboutMe";
 import Portfolio from "../Portfolio/Portfolio";
 
-export default function Main(props) {
-
+function Main() {
   return (
-    <main>
+    <main className="main">
       <Promo />
-      <Navtab />
-      <AboutProject/>
+      <AboutProject />
       <Techs />
-      <AboutMe />
-      <Portfolio />
-    </main>
+      </main>
   );
 }
+
+export default Main;

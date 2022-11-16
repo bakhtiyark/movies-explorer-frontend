@@ -9,7 +9,6 @@ src/components/MoviesCardList/MoviesCardList.js
 src/components/Navigation/Navigation.js
 src/components/Navtab/Navtab.js
 src/components/Portfolio/Portfolio.js
-src/components/AboutMe/AboutMe.js
 
 # dependencies
 /node_modules

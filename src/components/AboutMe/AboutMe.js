@@ -1,5 +1,5 @@
 import "./AboutMe.css";
-import photo from '../../images/about-me-photo.jpg'
+import photo from "../../images/about-me-photo.jpg";
 
 function AboutMe() {
   return (
@@ -13,13 +13,15 @@ function AboutMe() {
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Urna
             molestie at elementum eu facilisis sed odio. Pulvinar mattis nunc
-            sed blandit. Viverra adipiscing at in tellus integer feugiat. 
+            sed blandit. Viverra adipiscing at in tellus integer feugiat.
           </p>
-          <a href="https://www.github.com/bakhtiyark">Github</a>
         </div>
 
-        <img alt="Фото" src={photo} className="about-me__image"/>
+        <img alt="Фото" src={photo} className="about-me__image" />
       </div>
+      <a className="about-me__link" href="https://www.github.com/bakhtiyark">
+        Github
+      </a>
     </section>
   );
 }

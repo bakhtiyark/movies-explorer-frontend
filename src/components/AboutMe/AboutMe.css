@@ -55,3 +55,15 @@
   max-width: 270px;
   max-height: 327px;
 }
+
+.about-me__link {
+  text-decoration: none;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  margin-top: 99px;
+  /* identical to box height */
+
+  color: #000000;
+}

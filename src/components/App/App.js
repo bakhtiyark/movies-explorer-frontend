@@ -20,7 +20,7 @@ import Profile from "../Profile/Profile.js";
 import SavedMovies from "../SavedMovies/SavedMovies.js";
 import Movies from "../Movies/Movies.js";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.js";
-import Register from "../Login/Register.js";
+import Register from "../Register/Register.js";
 import Login from "../Login/Login.js";
 
 //Контексты

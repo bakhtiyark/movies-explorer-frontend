@@ -1,10 +1,18 @@
+// CSS
 import "./Header.css";
+
+// Logo
 import logo from "../../images/logo.svg";
+
+// Imports
 import { Switch, Route, Link } from "react-router-dom";
+import { useContext } from "react";
+
 import toggleList from "../../utils/toggleList";
+
+// Context
 import { translations } from "../../contexts/TranslationContext";
 import { TranslationContext } from "../../contexts/TranslationContext";
-import { useContext } from "react";
 
 function Header({ onSignOut, userEmail }) {
   const translation = useContext(TranslationContext);
@@ -16,13 +24,13 @@ function Header({ onSignOut, userEmail }) {
           <Route path="/">
             <Link
               className="header__link header__link_location-header"
-              to="/sign-up"
+              to="/signup"
             >
               Регистрация
             </Link>
             <Link
               className="header__button header__link_location-header"
-              to="/sign-in"
+              to="/signin"
             >
               Войти
             </Link>

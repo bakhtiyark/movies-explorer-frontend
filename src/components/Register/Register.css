@@ -80,3 +80,15 @@
 
   color: #3456f3;
 }
+
+.auth__form_error {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  color: #ff3055;
+  visibility: hidden;
+}
+.auth__form_error_active {
+  visibility: visible;
+}

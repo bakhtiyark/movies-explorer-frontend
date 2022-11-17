@@ -20,7 +20,7 @@ function Header({ onSignOut, userEmail }) {
     <header className="header">
       <img src={logo} alt="Логотип Movies-Explorer" className="header__logo" />
       <Switch>
-        <div className="auth">
+        <div className="header__auth">
           <Route path="/">
             <Link
               className="header__link header__link_location-header"

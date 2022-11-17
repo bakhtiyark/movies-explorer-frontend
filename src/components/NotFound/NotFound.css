@@ -1,0 +1,39 @@
+.not-found {
+  text-align: center;
+}
+.not-found__title {
+  margin: 0;
+  padding: 0;
+  margin-top: 246px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 140px;
+  line-height: 169px;
+
+  color: #000000;
+}
+
+.not-found__subtitle {
+  margin: 0;
+  padding: 0;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  margin-bottom: 184px;
+
+  color: #000000;
+}
+
+.not-found__link {
+  margin: 0;
+  padding: 0;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  text-decoration: none;
+  /* identical to box height */
+
+  color: #3456f3;
+}

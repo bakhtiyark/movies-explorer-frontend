@@ -8,7 +8,7 @@ src/components/MoviesCard/MoviesCard.js
 src/components/MoviesCardList/MoviesCardList.js
 src/components/Navigation/Navigation.js
 src/components/Navtab/Navtab.js
-src/components/Portfolio/Portfolio.js
+trash.js
 
 # dependencies
 /node_modules

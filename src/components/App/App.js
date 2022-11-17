@@ -31,6 +31,7 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext.js";
 import auth from "../../utils/Auth.js";
 
 import { TranslationContext } from "../../contexts/TranslationContext.js";
+import NotFound from "../NotFound/NotFound";
 
 function App() {
   let history;
@@ -109,7 +110,7 @@ function App() {
   function handleSignOut() {
     setLoggedIn(false);
     localStorage.removeItem("token");
-    history.push("/sign-in");
+    history.push("/signin");
   }
 
   /*
@@ -167,6 +168,10 @@ function App() {
               ) : (
                 <Redirect to="/movies" />
               )}
+            </Route>
+
+            <Route path="/*">
+              <NotFound />
             </Route>
           </Switch>
           {pathname === "/" ||

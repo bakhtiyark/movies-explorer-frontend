@@ -41,7 +41,7 @@
   margin: 0;
 }
 
-.auth {
+.header__auth {
   align-items: center;
   color: #686868;
   display: flex;

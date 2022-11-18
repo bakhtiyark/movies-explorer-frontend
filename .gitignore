@@ -2,12 +2,6 @@
 
 # temp
 
-src/components/SavedMovies/SavedMovies.js
-src/components/SearchForm/SearchForm.js
-src/components/MoviesCard/MoviesCard.js
-src/components/MoviesCardList/MoviesCardList.js
-src/components/Navigation/Navigation.js
-src/components/Navtab/Navtab.js
 trash.js
 
 # dependencies

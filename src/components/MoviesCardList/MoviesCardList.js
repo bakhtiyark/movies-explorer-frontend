@@ -1,24 +1,23 @@
 import MoviesCard from "../MoviesCard/MoviesCard";
 
-import "./MoviesCardList.css"
+import "./MoviesCardList.css";
 
-function MoviesCardList(props) {
+function MoviesCardList({ moviesArray, saveMovies, savedMoviesToggle }) {
   return (
-    <section className="elements">
-      {props.cards.map((card) => {
-        return (
+    <section className="movies-list">
+      <div className="movies-list__items">
+        {moviesArray.map((movie) => (
           <MoviesCard
-            key={card._id}
-            link={card.link}
-            name={card.name}
-            likes={card.likes}
-            card={card}
-            onCardClick={props.onCardClick}
-            onCardLike={props.onCardLike}
-            onCardDelete={props.onCardDelete}
+            key={movie.id || movie.movieId}
+            movie={movie}
+            saveMovies={saveMovies}
+            savedMoviesToggle={savedMoviesToggle}
           />
-        );
-      })}
+        ))}
+      </div>
+      <button className="movies-list__button" type="button" id="more">
+        Ещё
+      </button>
     </section>
   );
 }

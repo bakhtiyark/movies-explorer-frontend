@@ -1,53 +1,43 @@
-import { useContext } from 'react';
-import { CurrentUserContext } from "../../contexts/CurrentUserContext.js"
+import { useContext } from "react";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext.js";
+import { useLocation } from "react-router-dom";
 
-function MoviesCard(props) {
-    const currentUser = useContext(CurrentUserContext)
+function MoviesCard(movie) {
+  const { pathname } = useLocation();
 
-    // Определяем, являемся ли мы владельцем текущей карточки
-    const isOwn = props.movie.owner === currentUser._id;
+  const currentUser = useContext(CurrentUserContext);
+  /*
 
-    // Создаём переменную, которую после зададим в `className` для кнопки удаления
-    const movieDeleteButtonClassName = (
-        `element__delete-button ${isOwn ? 'element__delete-button_visible' : 'element__delete-button_hidden'}`
-    );
+  // Определяем, являемся ли мы владельцем текущей карточки
+  const isOwn = props.movie.owner === currentUser._id;
 
-    // Определяем, есть ли у карточки лайк, поставленный текущим пользователем
-    const isLiked = props.likes.some(i => i === currentUser._id);
 
-    // Создаём переменную, которую после зададим в `className` для кнопки лайка
-    const movieLikeButtonClassName = (
-        `element__like-button ${isLiked ? 'element__like-button_active' : ''}`
-    );
+  // Определяем, есть ли у карточки лайк, поставленный текущим пользователем
+  const isLiked = props.likes.some((i) => i === currentUser._id);
 
-    //Обработчик клика
-    function handlemoviesCardClick() {
-        return props.onmoviesCardClick(props.movie)
-    }
+  // Создаём переменную, которую после зададим в `className` для кнопки лайка
+  const movieLikeButtonClassName = `movie-card__like-button ${
+    isLiked ? "movie-card__like-button_active" : ""
+  }`;
+*/
 
-    //Обработчик удаления
-    function handleDelete() {
-        return props.onmoviesCardDelete(props.movie)
-    }
-    //Обработчик лайков
-    function handleLike() {
-        return props.onmoviesCardLike(props.movie)
-    }
+  // Создаём переменную, которую после зададим в `className` для кнопки удаления
+  const movieDeleteButtonClassName = `movie-card__delete-button ${
+    pathname === "/saved-movies"
+      ? "movie-card__delete-button_visible"
+      : "movie-card__delete-button_hidden"
+  }`;
 
-    return (
-        <article className="element">
-            <img className="element__image" src={props.link} alt={props.name} onClick={handlemoviesCardClick} />
-            <div className="element__movie">
-                <h2 className="element__title">{props.name}</h2>
-                <div className="like-compartment">
-                    <button className={movieLikeButtonClassName} onClick={handleLike} id="like-button" type="button"></button>
-                    <p className="element__like-counter">{props.likes.length}</p>
-                </div>
-
-            </div>
-            <button className={movieDeleteButtonClassName} onClick={handleDelete} type="button"></button>
-        </article>
-
-    )
+  return (
+    <article className="movie-card">
+      <a className="movie-card__link" href={movie.trailerLink}>
+        <img alt="Кадр из трейлера" src={movie.image} />
+      </a>
+      <div className="movie-card__info">
+        <h2 className="movie-card__title">{movie.nameRU}</h2>
+        <p className="movie-card__duration">{movie.duration}</p>
+      </div>
+    </article>
+  );
 }
 export default MoviesCard;

@@ -2,7 +2,7 @@ import MoviesCard from "../MoviesCard/MoviesCard";
 
 import "./MoviesCardList.css";
 
-function MoviesCardList({ moviesArray, saveMovies, savedMoviesToggle }) {
+function MoviesCardList({ moviesArray }) {
   return (
     <section className="movies-list">
       <div className="movies-list__items">
@@ -10,8 +10,6 @@ function MoviesCardList({ moviesArray, saveMovies, savedMoviesToggle }) {
           <MoviesCard
             key={movie.id || movie.movieId}
             movie={movie}
-            saveMovies={saveMovies}
-            savedMoviesToggle={savedMoviesToggle}
           />
         ))}
       </div>

@@ -24,3 +24,29 @@
   height: 244px;
   align-self: flex-end;
 }
+
+@media screen and (max-width: 1023px) {
+  .promo {
+    padding: 300px 70px 75px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .promo__title {
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 1.3;
+    
+    text-align: center;
+    letter-spacing: -0.04em;
+    
+    color: #FFFFFF;
+  }
+
+  .promo__image{
+    margin-top: 140px;
+    width: 680px;
+    height: 230px;
+  }
+}

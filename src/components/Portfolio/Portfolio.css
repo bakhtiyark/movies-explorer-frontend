@@ -22,7 +22,7 @@
 .portfolio__list-item {
   font-weight: 400;
   font-size: 30px;
-  line-height: 50px;
+  line-height: 167%;
   /* identical to box height, or 167% */
 
   letter-spacing: -0.04em;
@@ -30,6 +30,12 @@
   color: #000000;
   border-bottom: 1px solid #e8e8e8;
   padding: 20px 0;
+
+}
+.portfolio__list-item_link{
+  display: flex;
+  justify-content: space-between;
+  text-decoration: none;
 }
 .portfolio__list-item:last-of-type {
     border-bottom: none;

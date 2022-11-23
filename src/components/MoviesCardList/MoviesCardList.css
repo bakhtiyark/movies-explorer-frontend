@@ -1,0 +1,20 @@
+.movies-list {
+  display: flex;
+  flex-direction: column;
+  margin: 78px 70px 0;
+}
+
+.movies-list__items {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 60px 30px;
+  justify-items: center;
+}
+
+.movies-list__button {
+  background: #f9f9f9;
+  height: 34px;
+  border-radius: 6px;
+  border: none;
+}

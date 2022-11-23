@@ -1,17 +1,24 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 import SearchForm from "../SearchForm/SearchForm";
 import Preloader from "../Preloader/Preloader";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import MoviesCard from "../MoviesCard/MoviesCard";
+import {placeholderMovies} from '../../utils/constants'
+import "./Movies.css";
+import { api } from "../../utils/Api";
 
-import "./Movies.css"
-
-export default function Movies(props) {
+export default function Movies() {
+  const [movies, setMovies] = useState();
+  const [saveMovies, setSaveMovies] = useState([]);
+  const [searchFormInput, setSearchFormInput] = useState("");
+  const [searchFormOption, setSearchFormOption] = useState(false);
 
   return (
-    <main>
+    <section className="movies">
       <SearchForm />
-    </main>
+      <MoviesCardList 
+      moviesArray={placeholderMovies}/>
+    </section>
   );
 }

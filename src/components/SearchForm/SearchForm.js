@@ -43,19 +43,24 @@ function SearchForm({
           placeholder="Фильм"
           required
         />
-        <button className="search__button" type="submit">Поиск</button>
+        <button className="search__button" type="submit">
+          Поиск
+        </button>
       </form>
       <div className="search__toggler">
-        <input
-          className="search__checkbox"
-          onChange={handleCheckboxChange}
-          value={checkbox}
-          checked={!checkbox}
-          type="checkbox"
-          required
-        />
-        <p className="search__text">Короткометражки</p>
+        <label class="switch">
+          <input
+            type="checkbox"
+            onChange={handleCheckboxChange}
+            value={checkbox}
+            checked={!checkbox}
+            required
+          />
+          <span class="slider round"></span>
+        </label>
+        <p className="search__toggler_text">Короткометражки</p>
       </div>
+      
     </section>
   );
 }

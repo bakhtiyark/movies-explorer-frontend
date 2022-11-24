@@ -11,7 +11,7 @@
 
 .header__link {
   display: flex;
-  color: antiquewhite;
+  color: #ffffff;
   text-decoration: none;
   transition: opacity 0.2s linear;
 }
@@ -49,4 +49,34 @@
   justify-content: space-between;
   margin: auto 0;
   min-width: 183px;
+}
+
+@media screen and (max-width: 1025px) {
+  .header {
+    padding: 21px 30px;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .header {
+    padding: 24px 14px;
+  }
+  .header__auth {
+    justify-content: flex-end;
+  }
+  .header__link {
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 160%;
+    display: flex;
+    padding-right: 14px;
+
+    color: #ffffff;
+  }
+  .header__button {
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 160%;
+    align-items: center;
+  }
 }

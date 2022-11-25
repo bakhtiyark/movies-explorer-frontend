@@ -8,6 +8,11 @@
   display: none;
 }
 
+.navigation__button {
+  display: none;
+  background-image: url("../../images/nav-icon.svg");
+}
+
 .navigation__container {
   display: flex;
   justify-content: space-between;
@@ -27,13 +32,16 @@
 }
 .navigation__item {
   margin: 0;
-  padding: 0;
+  padding: 10px 16px 0;
   display: block;
   text-align: center;
   font-weight: 500;
   font-size: 13px;
   line-height: 18px;
   text-decoration: none;
+}
+.navigation__item_account{
+  padding: 0;
 }
 
 .navigation__item_main {
@@ -52,4 +60,100 @@
 
 .navigation__link:hover {
   opacity: 0.7;
+}
+
+@media screen and (max-width: 1025px) {
+  #toggle {
+    display: block;
+    height: 44px;
+    width: 44px;
+    z-index: 2;
+  }
+
+  #toggle:checked ~ .navigation__item_main {
+    display: flex;
+  }
+  .navigation__container {
+    position: absolute;
+    width: 66%;
+    height: 100%;
+    top: 0;
+    background-color: #ffffff;
+    box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.5);
+    right: -66%;
+    flex-direction: column;
+    justify-content: center;
+    /* for sidebar to stay on top */
+    z-index: 1;
+    transition: right 0.5s ease-in-out;
+  }
+  .navigation__item_main {
+    display: block;
+  }
+
+  .navigation__link {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 22px;
+    /* identical to box height */
+
+    text-align: center;
+
+    color: #000000;
+  }
+  .navigation__link_active {
+    border-bottom: 2px solid #000000;
+  }
+
+  .navigation__item {
+    margin-bottom: 28px;
+  }
+  .navigation__items {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    height: 100%;
+    width: 100%;
+  }
+  .exit {
+    cursor: pointer;
+    font-weight: 800;
+    color: white;
+    float: right;
+    padding: 1.1rem;
+  }
+
+  .content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: background-color 0.5s ease-in-out;
+  }
+
+  .button {
+    position: absolute;
+    cursor: pointer;
+    font-weight: 800;
+    color: black;
+    font-size: 40px;
+    padding: 20px 50px;
+  }
+
+  .content p {
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 20%;
+    font-size: 50px;
+  }
+
+  #toggle:checked ~ .navigation__container {
+    right: 0;
+  }
+
+  #toggle:checked ~ .content {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
 }

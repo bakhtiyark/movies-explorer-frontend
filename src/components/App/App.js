@@ -80,7 +80,7 @@ function App() {
       .register(password, email, name)
       .then((res) => {
         if (res) {
-          if (res) {
+          if (res) {  
             handleLogin(res.email, password);
           }
         }
@@ -98,6 +98,7 @@ function App() {
           auth.updateToken();
           setLoggedIn(true);
           handleTokenValidation();
+          history.push('/movies')
         }
       })
       .catch((err) => {
@@ -137,27 +138,27 @@ function App() {
 
             <ProtectedRoute
               path="/movies"
-              loggedIn={!loggedIn}
+              loggedIn={loggedIn}
               component={Movies}
             />
 
             <ProtectedRoute
               path="/saved-movies"
-              loggedIn={!loggedIn}
+              loggedIn={loggedIn}
               component={SavedMovies}
             />
 
             <ProtectedRoute
               path="/profile"
-              loggedIn={!loggedIn}
+              loggedIn={loggedIn}
               component={Profile}
               onSignOut={handleSignOut}
             />
 
             <Route path="/signup">
               {!loggedIn ? (
-                <Register onRegister={handleRegistration} textError={message} />
-              ) : (
+                <Register onRegistration={handleRegistration} />
+              ) : ( 
                 <Redirect to="/movies" />
               )}
             </Route>

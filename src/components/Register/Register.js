@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Register.css";
 
@@ -11,7 +11,7 @@ function Register({ onRegistration }) {
     email: "",
     password: "",
   });
-  const [isValid, setIsValid] = useState();
+  const [isValid, setIsValid] = useState(false);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -31,13 +31,21 @@ function Register({ onRegistration }) {
     <div className="auth">
       <img src={logo} alt="Логотип Movies-Explorer" className="auth__logo" />
       <h3 className="auth__title">Добро пожаловать!</h3>
-      <form onSubmit={handleSubmit} className="auth__form">
+      <form
+        onSubmit={handleSubmit}
+        className="auth__form"
+        method="post"
+        noValidate
+      >
         <label className="auth__form__label">Имя</label>
         <input
           onChange={handleChange}
+          minLength="2"
+          maxLength="30"
           value={formValues.name || ""}
           className="auth__input"
           name="name"
+          type="text"
           required
         />
 

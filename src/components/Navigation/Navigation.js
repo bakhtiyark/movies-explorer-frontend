@@ -7,7 +7,10 @@ import "./Navigation.css";
 function Navigation() {
   return (
     <nav className="navigation">
-      <input className="navigation__toggle" type="checkbox" />
+      <input className="navigation__toggle" id="toggle" type="checkbox" />
+      <label for="toggle" className="navigation__button">
+        <button>+</button>
+      </label>
       <div className="navigation__container">
         <ul className="navigation__items">
           <li className="navigation__item navigation__item_main">

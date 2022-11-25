@@ -126,7 +126,7 @@ export class Api {
 }
 
 export const api = new Api({
-  baseUrl: "https://api.moviesexplorerbk.nomoredomains.icu/",
+  baseUrl: "https://api.moviesexplorerbk.nomoredomains.icu",
   headers: {
     "Content-Type": "application/json",
   },

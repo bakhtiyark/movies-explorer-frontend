@@ -1,95 +1,178 @@
 .profile {
+  display: flex;
+  flex-direction: column;
+  max-width: 392px;
+  margin: 70px auto;
+}
+.profile-form__title {
+  text-align: center;
+  margin-bottom: 123px;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 29px;
+  /* identical to box height */
+
+  color: #000000;
+}
+
+.profile__form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.profile__form__label {
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  padding-bottom: 10px;
+
+  color: #a0a0a0;
+}
+
+.profile__input {
+  background: #f9f9f9;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  height: 46px;
+  border: none;
+}
+
+.profile__button {
+  margin: 70px 0 16px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  height: 45px;
+  line-height: 17px;
+  /* identical to box height */
+
+  text-align: center;
+
+  color: #ffffff;
+
+  background: #3456f3;
+  border-radius: 3px;
+}
+.profile__logo {
+  align-self: flex-start;
+}
+.profile__text {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  /* identical to box height */
+
+  text-align: center;
+
+  color: #a0a0a0;
+}
+
+.profile__link {
+  margin-left: 6px;
+  text-decoration: none;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  /* identical to box height */
+
+  text-align: center;
+
+  color: #3456f3;
+}
+
+.profile__form_error {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  color: #ff3055;
+  visibility: hidden;
+}
+.profile__form_error_active {
+  visibility: visible;
+}
+
+.profile-form__item {
+  display: flex;
+}
+
+.profile-form__link {
+  border: none;
+  background-color: transparent;
+
+  font-size: 13px;
+  line-height: 16px;
+  text-align: center;
+}
+.profile-form__link_submit {
+  color: #000000;
+  padding-bottom: 16px;
+}
+.profile-form__link_logout {
+  color: #ff3055;
+}
+@media screen and (max-width: 1025px) {
+  .profile-form__title{
+    margin-bottom: 96px;
+  }
+
+  .profile-form__item {
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 13px;
+    /* identical to box height */
+    justify-content: space-between;
+
+    color: #000000;
+  }
+  .profile-form__item:first-of-type {
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e8e8e8;
+  }
+
+  .profile-form__item-value {
+    text-align: right;
+    border: none;
+  }
+  .profile-form__links {
+    margin-top: 379px;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+
+@media screen and (max-width: 640px) {
+  .profile {
     display: flex;
     flex-direction: column;
     max-width: 392px;
-    margin: 70px auto;
+    margin: 70px 30px 0;
   }
-  .profile__title {
-    align-self: flex-start;
+
+  .profile-form__item {
     font-weight: 500;
-    font-size: 24px;
-    line-height: 29px;
+    font-size: 11px;
+    line-height: 13px;
     /* identical to box height */
-  
+    justify-content: space-between;
+
     color: #000000;
   }
-  
-  .profile__form {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+  .profile-form__item:first-of-type {
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e8e8e8;
   }
-  .profile__form__label {
-    font-weight: 400;
-    font-size: 10px;
-    line-height: 12px;
-    padding-bottom: 10px;
-  
-    color: #a0a0a0;
-  }
-  
-  .profile__input {
-    background: #f9f9f9;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    height: 46px;
+
+  .profile-form__item-value {
+    text-align: right;
     border: none;
   }
-  
-  .profile__button {
-    margin: 70px 0 16px;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-    height: 45px;
-    line-height: 17px;
-    /* identical to box height */
-  
-    text-align: center;
-  
-    color: #ffffff;
-  
-    background: #3456f3;
-    border-radius: 3px;
+  .profile-form__links {
+    margin-top: 379px;
+    display: flex;
+    flex-direction: column;
   }
-  .profile__logo {
-    align-self: flex-start;
-  }
-  .profile__text {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 17px;
-    /* identical to box height */
-  
-    text-align: center;
-  
-    color: #a0a0a0;
-  }
-  
-  .profile__link {
-    margin-left: 6px;
-    text-decoration: none;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 17px;
-    /* identical to box height */
-  
-    text-align: center;
-  
-    color: #3456f3;
-  }
-  
-  .profile__form_error {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 10px;
-    line-height: 12px;
-    color: #ff3055;
-    visibility: hidden;
-  }
-  .profile__form_error_active {
-    visibility: visible;
-  }
-  
+}

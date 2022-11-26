@@ -69,7 +69,7 @@ export class Api {
   }
 
   //Обновление пользователя
-  setUserInfo({ name, email }) {
+  setUserInfo(name, email) {
     return fetch(`${this._url}/users/me`, {
       method: "PATCH",
       headers: this._getHeaders(),

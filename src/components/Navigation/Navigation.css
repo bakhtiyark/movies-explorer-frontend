@@ -68,10 +68,13 @@
     height: 44px;
     width: 44px;
     z-index: 2;
+    background: url("../../images/nav-icon.svg") no-repeat;
   }
 
   #toggle:checked ~ .navigation__item_main {
     display: flex;
+    
+    background: url("../../images/nav-icon.svg") no-repeat;
   }
   .navigation__container {
     position: absolute;
@@ -83,7 +86,7 @@
     right: -66%;
     flex-direction: column;
     justify-content: center;
-    /* for sidebar to stay on top */
+    overflow: hidden;
     z-index: 1;
     transition: right 0.5s ease-in-out;
   }
@@ -140,6 +143,7 @@
     color: black;
     font-size: 40px;
     padding: 20px 50px;
+    
   }
 
   .content p {
@@ -155,5 +159,13 @@
 
   #toggle:checked ~ .content {
     background-color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+
+@media screen and (max-width:640px) {
+  .navigation__container {
+    width: 100%;
+    right: -100%;
   }
 }

@@ -51,6 +51,7 @@
 
   background: #3456f3;
   border-radius: 3px;
+  border: none;
 }
 .auth__logo {
   align-self: flex-start;
@@ -79,4 +80,29 @@
   text-align: center;
 
   color: #3456f3;
+}
+
+@media screen and (max-width: 640px) {
+  .auth {
+    margin: 56px 37px 0;
+  }
+  .auth__logo {
+    align-self: center;
+  }
+  .auth__title {
+    align-self: center;
+  }
+  .auth__input {
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 16px;
+  }
+  .auth__text {
+    font-size: 12px;
+    line-height: 15px;
+  }
+  .auth__link {
+    font-size: 12px;
+    line-height: 15px;
+  }
 }

@@ -33,6 +33,7 @@
   border-radius: 8px;
   margin-bottom: 20px;
   height: 46px;
+  padding-left: 15px;
   border: none;
 }
 
@@ -84,7 +85,7 @@
 
 @media screen and (max-width: 640px) {
   .auth {
-    margin: 56px 37px 0;
+    margin: 56px 30px 0;
   }
   .auth__logo {
     align-self: center;
@@ -104,5 +105,8 @@
   .auth__link {
     font-size: 12px;
     line-height: 15px;
+  }
+  .auth__button {
+    margin: 282px 0 16px;
   }
 }

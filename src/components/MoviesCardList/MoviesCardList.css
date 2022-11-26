@@ -40,7 +40,7 @@
   .movies-list {
     display: flex;
     flex-direction: column;
-    margin: 0 10px;
+    margin: 40px 10px;
   }
   
   .movies-list__items {

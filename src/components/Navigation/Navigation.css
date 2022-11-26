@@ -10,6 +10,8 @@
 
 .navigation__button {
   display: none;
+}
+.navigation__icon {
   background-image: url("../../images/nav-icon.svg");
 }
 
@@ -40,7 +42,7 @@
   line-height: 18px;
   text-decoration: none;
 }
-.navigation__item_account{
+.navigation__item_account {
   padding: 0;
 }
 
@@ -63,18 +65,56 @@
 }
 
 @media screen and (max-width: 1025px) {
-  #toggle {
-    display: block;
-    height: 44px;
-    width: 44px;
+
+  .navigation__button {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 27px;
+    height: 22px;
+    cursor: pointer;
     z-index: 2;
-    background: url("../../images/nav-icon.svg") no-repeat;
+  }
+
+  .navigation__toggle:checked ~ .navigation__button > .navigation__icon {
+    width: 22px;
+    transform: rotate(45deg);
+  }
+  .navigation__toggle:checked
+    ~ .navigation__button
+    > .navigation__icon::before {
+    top: 0;
+    width: 22px;
+    transform: rotate(0);
+    background-color: #000000;
+  }
+  .navigation__toggle:checked ~ .navigation__button > .navigation__icon::after {
+    top: 0;
+    width: 22px;
+    transform: rotate(90deg);
+    background-color: #000000;
+  }
+  .navigation__icon,
+  .navigation__icon::before,
+  .navigation__icon::after {
+    display: inline-block;
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    background-color: #fff;
+    transition-duration: 0.25s;
+  }
+  .navigation__icon::before {
+    content: "";
+    top: -9px;
+  }
+  .navigation__icon::after {
+    content: "";
+    top: 9px;
   }
 
   #toggle:checked ~ .navigation__item_main {
     display: flex;
-    
-    background: url("../../images/nav-icon.svg") no-repeat;
   }
   .navigation__container {
     position: absolute;
@@ -143,7 +183,6 @@
     color: black;
     font-size: 40px;
     padding: 20px 50px;
-    
   }
 
   .content p {
@@ -162,8 +201,7 @@
   }
 }
 
-
-@media screen and (max-width:640px) {
+@media screen and (max-width: 640px) {
   .navigation__container {
     width: 100%;
     right: -100%;

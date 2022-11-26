@@ -8,6 +8,9 @@ function Navigation() {
   return (
     <nav className="navigation">
       <input className="navigation__toggle" id="toggle" type="checkbox" />
+      <label className="navigation__button" htmlFor="toggle">
+        <span className="navigation__icon"/>
+      </label>
       <div className="navigation__container">
         <ul className="navigation__items">
           <li className="navigation__item navigation__item_main">

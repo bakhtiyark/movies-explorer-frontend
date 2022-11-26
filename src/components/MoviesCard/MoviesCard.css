@@ -100,7 +100,17 @@
     height: 21px;
     background-image: url("../../images/saved-icon.svg");
   }
-
+  .movie-card__button_delete {
+    color: transparent;
+    width: 21px;
+    height: 21px;
+    background-image: url("../../images/delete-icon.svg");
+    border-radius: 10px;
+    border: none;
+    position: absolute;
+    top: 14px;
+    right: 14px;
+  }
   .movie-card__title {
     font-size: 13px;
     line-height: 16px;

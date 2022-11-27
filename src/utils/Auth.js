@@ -14,7 +14,6 @@ class Auth {
     return fetch(`${this._baseUrl}/signup`, {
       method: "POST",
       headers: {
-        Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -31,16 +30,15 @@ class Auth {
       .catch((err) => console.log(err));
   }
 
-  login(password, email) {
+  login(email, password) {
     return fetch(`${this._baseUrl}/signin`, {
       method: "POST",
       headers: {
-        Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        password,
         email,
+        password
       }),
     })
       .then((res) => {

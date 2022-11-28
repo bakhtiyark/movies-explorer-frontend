@@ -33,6 +33,8 @@ import auth from "../../utils/Auth.js";
 import { TranslationContext } from "../../contexts/TranslationContext.js";
 import NotFound from "../NotFound/NotFound";
 
+const deblocking = true;
+
 function App() {
   let history;
   history = useHistory();
@@ -138,19 +140,19 @@ function App() {
 
             <ProtectedRoute
               path="/movies"
-              loggedIn={loggedIn}
+              loggedIn={deblocking}
               component={Movies}
             />
 
             <ProtectedRoute
               path="/saved-movies"
-              loggedIn={loggedIn}
+              loggedIn={deblocking}
               component={SavedMovies}
             />
 
             <ProtectedRoute
               path="/profile"
-              loggedIn={loggedIn}
+              loggedIn={deblocking}
               component={Profile}
               onSignOut={handleSignOut}
             />

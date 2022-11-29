@@ -18,7 +18,7 @@ function MoviesCard({ movie }) {
   }
 
   const movieSavedClassName = `movie-card__save-button ${
-    saved ? "movie-card__save-button-active" : ""
+    saved ? "movie-card__save-button_active" : ""
   }`;
 
   return (

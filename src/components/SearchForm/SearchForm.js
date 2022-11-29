@@ -33,7 +33,7 @@ function SearchForm({
 
   return (
     <section className="search">
-      <form className="search__form" onSubmit={handleSubmit} noValidate>
+      <form className="search__form" onSubmit={handleSubmit}>
         <input
           className="search__input"
           value={searchText || ""}
@@ -58,7 +58,7 @@ function SearchForm({
           />
           <span className="slider round"></span>
         </label>
-        <p className="search__toggler_text">Короткометражки</p>
+        <p className="search__toggler-text">Короткометражки</p>
       </div>
       
     </section>

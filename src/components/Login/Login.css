@@ -1,9 +1,11 @@
-.auth {
+.auth__content {
   display: flex;
   flex-direction: column;
   max-width: 392px;
-  margin: 70px auto;
+  margin: 232px auto;
 }
+
+
 .auth__title {
   align-self: flex-start;
   font-weight: 500;
@@ -84,7 +86,7 @@
 }
 
 @media screen and (max-width: 640px) {
-  .auth {
+  .auth__content {
     margin: 56px 30px 0;
   }
   .auth__logo {

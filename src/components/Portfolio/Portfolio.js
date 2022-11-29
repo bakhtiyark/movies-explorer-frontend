@@ -9,6 +9,8 @@ function Portfolio() {
         <li className="portfolio__list-item">
           <a
             className="portfolio__list-item_link"
+            target="_blank"
+            rel="noreferrer"
             href="https://github.com/bakhtiyark/how-to-learn"
           >
             <p>Статичный сайт</p>
@@ -18,6 +20,8 @@ function Portfolio() {
         <li className="portfolio__list-item">
           <a
             className="portfolio__list-item_link"
+            target="_blank"
+            rel="noreferrer"
             href="https://github.com/bakhtiyark/russian-travel"
           >
             <p>Адаптивный сайт</p>
@@ -27,6 +31,8 @@ function Portfolio() {
         <li className="portfolio__list-item">
           <a
             className="portfolio__list-item_link"
+            target="_blank"
+            rel="noreferrer"
             href="https://github.com/bakhtiyark/react-mesto-api-full"
           >
             <p>Одностраничное приложение</p>

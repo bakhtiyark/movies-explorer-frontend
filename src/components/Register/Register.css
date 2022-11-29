@@ -1,4 +1,4 @@
-.auth {
+.auth__content {
   display: flex;
   flex-direction: column;
   max-width: 392px;

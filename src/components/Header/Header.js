@@ -17,15 +17,27 @@ import { translations } from "../../contexts/TranslationContext";
 import { TranslationContext } from "../../contexts/TranslationContext";
 
 function Header({ loggedIn }) {
-  
   const { pathname } = useLocation();
   const translation = useContext(TranslationContext);
+  const headerClassName = `header ${
+    pathname === "/"
+      ? "header__main"
+      : ""
+  }`;
+
   return (
-    <header className="header">
-      <Link to="/"><img src={logo} alt="Логотип Movies-Explorer" className="header__logo" /></Link>
+    <header className={headerClassName}>
+      <Link to="/">
+        <img
+          src={logo}
+          alt="Логотип Movies-Explorer"
+          className="header__logo"
+        />
+      </Link>
       <Switch>
-        {pathname === "/movies" || pathname === "/saved-movies"  || pathname === "/profile" ? (
-          
+        {pathname === "/movies" ||
+        pathname === "/saved-movies" ||
+        pathname === "/profile" ? (
           <Navigation />
         ) : (
           <NavTab />

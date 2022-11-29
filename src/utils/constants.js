@@ -150,5 +150,21 @@ export const placeholderSavedMovies = [
     updated_at: "2020-11-23T14:15:19.238Z",
     image:
       "https://upload.wikimedia.org/wikipedia/commons/7/70/Kustodiev_The_Bolshevik.jpg",
-  }
+  },
+  {
+    id: 7,
+    nameRU: "Постеры, сошедшие со стен",
+    nameEN: "The Posters Came from the Walls",
+    director: "Джереми Деллер, Николас Абрахамс",
+    country: "Великобритания",
+    year: "2008",
+    duration: 72,
+    description:
+      "**Depeche Mode как смысл жизни**\nКругосветная панорама, показывающая обычаи и традиции поклонников Depeche Mode по всему миру: от России до Ирана. Отправившись снимать парадную картину, рассказывающую о том, как любят группу Depeche Mode за пределами Британии, авторы фильма столкнулись с тем, что любовь эта подчас носит очень личный — и в то же время общенациональный — характер.\n",
+    trailerLink: "https://www.youtube.com/watch?v=VFMU3crg0sM",
+    created_at: "2020-12-02T20:40:08.342Z",
+    updated_at: "2020-12-02T20:40:08.342Z",
+    image:
+      "https://upload.wikimedia.org/wikipedia/commons/7/70/Kustodiev_The_Bolshevik.jpg",
+  },
 ];

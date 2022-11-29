@@ -14,6 +14,8 @@
 
 .movies-list__button {
   background: #f9f9f9;
+  padding: 0;
+  margin: 50px 30px;
   height: 34px;
   border-radius: 6px;
   border: none;
@@ -36,7 +38,7 @@
 }
 
 
-@media screen and (max-width:640px) {
+@media screen and (max-width:767px) {
   .movies-list {
     display: flex;
     flex-direction: column;
@@ -47,5 +49,8 @@
     display: flex;
     flex-direction: column;
     justify-items: center;
+  }
+  .movies-list__button {
+    margin: 50px 10px;
   }
 }

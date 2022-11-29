@@ -1,5 +1,5 @@
 .saved-movies {
-  margin: 70px auto;
+  margin: 70px auto 0;
 }
 .saved-movies__line {
     padding: 45px 70px 10px;
@@ -13,7 +13,7 @@
     
   }
 }
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 768px) {
     .saved-movies__line {
         padding: 64px 14px 10px;
     }

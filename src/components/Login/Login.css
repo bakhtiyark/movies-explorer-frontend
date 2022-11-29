@@ -1,12 +1,11 @@
-.auth__content {
+.login__content {
   display: flex;
   flex-direction: column;
   max-width: 392px;
   margin: 232px auto;
 }
 
-
-.auth__title {
+.login__title {
   align-self: flex-start;
   font-weight: 500;
   font-size: 24px;
@@ -16,12 +15,11 @@
   color: #000000;
 }
 
-.auth__form {
+.login__form {
   display: flex;
   flex-direction: column;
-  width: 100%;
 }
-.auth__form__label {
+.login__form__label {
   font-weight: 400;
   font-size: 10px;
   line-height: 12px;
@@ -30,7 +28,7 @@
   color: #a0a0a0;
 }
 
-.auth__input {
+.login__input {
   background: #f9f9f9;
   border-radius: 8px;
   margin-bottom: 20px;
@@ -39,7 +37,7 @@
   border: none;
 }
 
-.auth__button {
+.login__button {
   margin: 70px 0 16px;
   font-style: normal;
   font-weight: 500;
@@ -56,10 +54,10 @@
   border-radius: 3px;
   border: none;
 }
-.auth__logo {
+.login__logo {
   align-self: flex-start;
 }
-.auth__text {
+.login__text {
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -71,7 +69,7 @@
   color: #a0a0a0;
 }
 
-.auth__link {
+.login__link {
   margin-left: 6px;
   text-decoration: none;
   font-style: normal;
@@ -86,29 +84,29 @@
 }
 
 @media screen and (max-width: 640px) {
-  .auth__content {
-    margin: 56px 30px 0;
+  .login__content {
+    margin: 56px auto 0;
   }
-  .auth__logo {
+  .login__logo {
     align-self: center;
   }
-  .auth__title {
+  .login__title {
     align-self: center;
   }
-  .auth__input {
+  .login__form {
+    margin: 70px 20px;
+  }
+  .login__input {
     font-size: 13px;
     font-weight: 500;
     line-height: 16px;
   }
-  .auth__text {
+  .login__text {
     font-size: 12px;
     line-height: 15px;
   }
-  .auth__link {
+  .login__link {
     font-size: 12px;
     line-height: 15px;
-  }
-  .auth__button {
-    margin: 282px 0 16px;
   }
 }

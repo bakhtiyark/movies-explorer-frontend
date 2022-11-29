@@ -31,7 +31,7 @@
   border-bottom: 1px solid #e8e8e8;
   padding: 20px 0;
 }
-.portfolio__list-item_link {
+.portfolio__list-item-link {
   display: flex;
   justify-content: space-between;
   text-decoration: none;
@@ -73,7 +73,7 @@
     border-bottom: 1px solid #e8e8e8;
     padding: 20px 0 19px;
   }
-  .portfolio__list-item_link {
+  .portfolio__list-item-link {
     display: flex;
     justify-content: space-between;
     text-decoration: none;
@@ -114,7 +114,7 @@
     border-bottom: 1px solid #e8e8e8;
     padding: 20px 0 19px;
   }
-  .portfolio__list-item_link {
+  .portfolio__list-item-link {
     display: flex;
     justify-content: space-between;
     text-decoration: none;

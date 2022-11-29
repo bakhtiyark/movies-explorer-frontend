@@ -20,8 +20,8 @@
 }
 .promo__image {
   padding: 60px 0 0;
-  max-width: 680px;
-  max-height: 230px;
+  max-width: 722px;
+  max-height: 244px;
   opacity: 0.7;
   align-self: flex-end;
 }
@@ -45,18 +45,19 @@
 
     color: #ffffff;
   }
-
   .promo__image {
     padding: 140px 0 0;
+    max-width: 680px;
+    max-height: 230px;
+    align-self: center;
   }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767.5px) {
   .promo {
     padding: 0;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: center;
   }
 
   .promo__title {
@@ -75,6 +76,6 @@
   .promo__image {
     padding: 60px 0 40px;
     max-width: 320px;
-    max-height: 230px;
+    align-self: center;
   }
 }

@@ -40,17 +40,17 @@
   max-width: 550px;
 }
 
-.project__timeline {
+.project-timeline {
   max-width: 1140px;
   display: flex;
 }
-.project__timeline__backend {
+.project-timeline__backend {
   flex-basis: 20%;
 }
-.project__timeline__frontend {
+.project-timeline__frontend {
   flex-basis: 80%;
 }
-.project__timeline__backend_duration {
+.project-timeline__backend-duration {
   margin: 0;
   padding: 9px 0;
   max-height: 36px;
@@ -61,7 +61,7 @@
   line-height: 17px;
   text-align: center;
 }
-.project__timeline__frontend_duration {
+.project-timeline__frontend-duration {
   margin: 0;
   padding: 9px 0;
   max-height: 36px;
@@ -73,7 +73,7 @@
   text-align: center;
 }
 
-.project__timeline__backend_text {
+.project-timeline__backend-text {
   margin: 0;
   max-height: 36px;
   font-style: normal;
@@ -85,7 +85,7 @@
   padding: 14px;
 }
 
-.project__timeline__frontend_text {
+.project-timeline__frontend-text {
   margin: 0;
   font-style: normal;
   font-weight: 500;
@@ -112,12 +112,12 @@
     color: #000000;
   }
 
-  .project__timeline__backend_duration {
+  .project-timeline__backend-duration {
     padding: 9px 0;
     font-size: 14px;
     line-height: 17px;
   }
-  .project__timeline__frontend_duration {
+  .project-timeline__frontend-duration {
     padding: 9px 0;
     font-size: 14px;
     line-height: 17px;
@@ -126,7 +126,7 @@
   .project__list {
     margin: 70px 50px;
   }
-  .project__timeline {
+  .project-timeline {
     margin: 70px 50px;
   }
 }
@@ -163,22 +163,22 @@
     font-size: 11px;
     line-height: 16px;
   }
-  .project__timeline {
+  .project-timeline {
     margin: 0 18px;
   }
 
-  .project__timeline__backend_duration {
+  .project-timeline__backend-duration {
     padding: 11px 0;
     font-size: 11px;
     line-height: 14px;
   }
-  .project__timeline__frontend_duration {
+  .project-timeline__frontend-duration {
     padding: 11px 0;
     font-size: 11px;
     line-height: 14px;
   }
 
-  .project__timeline__backend_text {
+  .project-timeline__backend-text {
     margin: 0;
     padding: 10px 0;
     font-size: 11px;
@@ -186,7 +186,7 @@
     text-align: center;
   }
 
-  .project__timeline__frontend_text {
+  .project-timeline__frontend-text {
     margin: 0;
     padding: 10px 0;
     font-size: 11px;

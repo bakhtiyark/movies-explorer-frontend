@@ -21,7 +21,7 @@ function Header({ loggedIn }) {
   const translation = useContext(TranslationContext);
   const headerClassName = `header ${
     pathname === "/"
-      ? "header__main"
+      ? "header_main"
       : ""
   }`;
 

@@ -8,8 +8,16 @@
   display: none;
 }
 
+.navigation__button {
+  display: none;
+}
+.navigation__icon {
+  background-image: url("../../images/nav-icon.svg");
+}
+
 .navigation__container {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   width: 100%;
   margin: 0;
@@ -35,6 +43,13 @@
   line-height: 18px;
   text-decoration: none;
 }
+.navigation__item:last-of-type {
+  margin-left: 16px;
+}
+
+.navigation__item_account {
+  padding: 0;
+}
 
 .navigation__item_main {
   display: none;
@@ -47,9 +62,183 @@
   line-height: 18px;
   /* identical to box height, or 138% */
   text-align: right;
-  color: white;
+
+  color: #000000;
+}
+.navigation__link_account {
+  display: flex;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 12px;
+  background: #ffffff;
+  align-items: center;
+  box-shadow: 0px 3px 14px rgba(0, 0, 0, 0.08);
+  border-radius: 40px;
+  padding: 9.5px 7px 9.5px 11px;
+}
+.navigation__link-icon {
+  background: #f9f9f9;
+  margin-left: 4px;
+  padding:3px;
+  border-radius: 50px;
 }
 
 .navigation__link:hover {
   opacity: 0.7;
+}
+
+.navigation-auth {
+  align-items: center;
+  color: #686868;
+  display: flex;
+  font-weight: 500;
+  justify-content: space-between;
+  margin: auto 0;
+  min-width: 183px;
+}
+
+@media screen and (max-width: 1025px) {
+  .navigation__button {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 27px;
+    height: 22px;
+    cursor: pointer;
+    z-index: 2;
+  }
+
+  .navigation__toggle:checked ~ .navigation__button > .navigation__icon {
+    width: 22px;
+    transform: rotate(45deg);
+  }
+  .navigation__toggle:checked
+    ~ .navigation__button
+    > .navigation__icon::before {
+    top: 0;
+    width: 22px;
+    transform: rotate(0);
+    background-color: #000000;
+  }
+  .navigation__toggle:checked ~ .navigation__button > .navigation__icon::after {
+    top: 0;
+    width: 22px;
+    transform: rotate(90deg);
+    background-color: #000000;
+  }
+  .navigation__icon,
+  .navigation__icon::before,
+  .navigation__icon::after {
+    display: inline-block;
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    background-color: #000000;
+    transition-duration: 0.25s;
+  }
+  .navigation__icon::before {
+    content: "";
+    top: -9px;
+  }
+  .navigation__icon::after {
+    content: "";
+    top: 9px;
+  }
+
+  #toggle:checked ~ .navigation__item_main {
+    display: flex;
+  }
+  .navigation__container {
+    position: absolute;
+    width: 66%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    background-color: #ffffff;
+    box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.5);
+    right: -66%;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 1;
+    transition: right 0.5s ease-in-out;
+  }
+  .navigation__item_main {
+    display: block;
+  }
+
+  .navigation__link {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 22px;
+    /* identical to box height */
+
+    text-align: center;
+  }
+  .navigation__link_active {
+    border-bottom: 2px solid #000000;
+  }
+
+  .navigation__item {
+    margin-bottom: 28px;
+  }
+  .navigation__items {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    height: 100%;
+    width: 100%;
+    flex-basis: 55%;
+  }
+  .exit {
+    cursor: pointer;
+    font-weight: 800;
+    color: white;
+    float: right;
+    padding: 1.1rem;
+  }
+
+  .content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: background-color 0.5s ease-in-out;
+  }
+
+  .button {
+    position: absolute;
+    cursor: pointer;
+    font-weight: 800;
+    color: black;
+    font-size: 40px;
+    padding: 20px 50px;
+  }
+
+  .content p {
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 20%;
+    font-size: 50px;
+  }
+
+  #toggle:checked ~ .navigation__container {
+    right: 0;
+  }
+
+  #toggle:checked ~ .content {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .navigation__container {
+    width: 100%;
+    right: -100%;
+  }
+  .navigation-auth {
+    justify-content: flex-end;
+  }
 }

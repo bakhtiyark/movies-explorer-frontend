@@ -10,16 +10,16 @@ class Auth {
       return Promise.reject(new Error("Ошибка " + res.status))
     }
     */
-  register(password, email) {
+  register(password, email, name) {
     return fetch(`${this._baseUrl}/signup`, {
       method: "POST",
       headers: {
-        Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         password,
         email,
+        name
       }),
     })
       .then((res) => {
@@ -30,16 +30,15 @@ class Auth {
       .catch((err) => console.log(err));
   }
 
-  login(password, email) {
+  login(email, password) {
     return fetch(`${this._baseUrl}/signin`, {
       method: "POST",
       headers: {
-        Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        password,
         email,
+        password
       }),
     })
       .then((res) => {
@@ -65,14 +64,14 @@ class Auth {
       .then((res) => {
         if (res.ok) {
           return res.json();
-        }
+        } 
       })
       .catch((err) => console.log(err));
   }
 }
 
 const auth = new Auth({
-  baseUrl: "https://api.moviesexplorerbk.nomoredomains.icu/",
+  baseUrl: "https://api.moviesexplorerbk.nomoredomains.icu",
   headers: {
     Authorization: `Bearer ${localStorage.getItem("token")}`,
     "Content-Type": "application/json",

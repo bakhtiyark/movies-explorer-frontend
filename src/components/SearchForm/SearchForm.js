@@ -33,7 +33,7 @@ function SearchForm({
 
   return (
     <section className="search">
-      <form className="search__form" onSubmit={handleSubmit} noValidate>
+      <form className="search__form" onSubmit={handleSubmit}>
         <input
           className="search__input"
           value={searchText || ""}
@@ -48,7 +48,7 @@ function SearchForm({
         </button>
       </form>
       <div className="search__toggler">
-        <label class="switch">
+        <label className="switch">
           <input
             type="checkbox"
             onChange={handleCheckboxChange}
@@ -56,9 +56,9 @@ function SearchForm({
             checked={!checkbox}
             required
           />
-          <span class="slider round"></span>
+          <span className="slider round"></span>
         </label>
-        <p className="search__toggler_text">Короткометражки</p>
+        <p className="search__toggler-text">Короткометражки</p>
       </div>
       
     </section>

@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import api from "../../utils/Api";
+import { api } from "../../utils/Api";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import "./Profile.css";
 
@@ -7,28 +7,51 @@ function Profile({ onSignOut }) {
   const currentUser = useContext(CurrentUserContext);
   const [name, setName] = useState(currentUser.name);
   const [email, setEmail] = useState(currentUser.email);
+  const [newName, setNewName] = useState(currentUser.name);
+  const [newEmail, setNewEmail] = useState(currentUser.email);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    api
+      .setUserInfo(newName, newEmail)
+      .then(() => {
+        setName(newName);
+        setEmail(newEmail);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  function handleNameChange(e) {
+    const name = e.target.value;
+    setNewName(name);
+  }
+  function handleEmailChange(e) {
+    const email = e.target.value;
+    setNewEmail(email);
+  }
 
   return (
     <section className="profile">
-      <form className="profile-form" onSubmit={null}>
+      <form className="profile-form" onSubmit={handleSubmit}>
         <div className="profile-form__content">
           <h1 className="profile-form__title">{`Привет, ${name}!`}</h1>
           <div className="profile-form__item">
-            <p className="profile-form__item-value">
-              Имя
-            </p>
+            <p className="profile-form__item-value">Имя</p>
             <input
               className="profile-form__item-value form__input"
-              value={name}
+              onChange={handleNameChange}
+              value={newName}
             />
           </div>
           <div className="profile-form__item">
-            <p className="profile-form__item-value">
-              E-mail
-            </p>
+            <p className="profile-form__item-value">E-mail</p>
             <input
               className="profile-form__item-value form__input"
-              value={email}
+              onChange={handleEmailChange}
+              value={newEmail}
             />
           </div>
         </div>

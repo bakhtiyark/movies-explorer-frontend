@@ -1,21 +1,15 @@
 import { Link, Route } from "react-router-dom";
 
-import "./NavTab";
+import "./NavTab.css";
 
 function NavTab() {
   return (
-    <div className="header__auth">
+    <div className="navigation-auth">
       <Route path="/">
-        <Link
-          className="header__link header__link_location-header"
-          to="/signup"
-        >
+        <Link className="navigation-auth__link" to="/signup">
           Регистрация
         </Link>
-        <Link
-          className="header__button header__link_location-header"
-          to="/signin"
-        >
+        <Link className="navigation-auth__button" to="/signin">
           Войти
         </Link>
       </Route>

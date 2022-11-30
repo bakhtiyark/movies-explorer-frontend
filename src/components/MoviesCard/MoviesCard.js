@@ -18,12 +18,12 @@ function MoviesCard({ movie }) {
   }
 
   const movieSavedClassName = `movie-card__save-button ${
-    saved ? "movie-card__save-button-active" : ""
+    saved ? "movie-card__save-button_active" : ""
   }`;
 
   return (
     <article className="movie-card">
-      {pathname === "saved-movies" ? (
+      {pathname === "/saved-movies" ? (
         <button
           className="movie-card__button movie-card__button_delete"
           onClick={null}

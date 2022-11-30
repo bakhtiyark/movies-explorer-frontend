@@ -33,6 +33,8 @@ import auth from "../../utils/Auth.js";
 import { TranslationContext } from "../../contexts/TranslationContext.js";
 import NotFound from "../NotFound/NotFound";
 
+const deblocking = true;
+
 function App() {
   let history;
   history = useHistory();
@@ -80,7 +82,7 @@ function App() {
       .register(password, email, name)
       .then((res) => {
         if (res) {
-          if (res) {
+          if (res) {  
             handleLogin(res.email, password);
           }
         }
@@ -98,6 +100,7 @@ function App() {
           auth.updateToken();
           setLoggedIn(true);
           handleTokenValidation();
+          history.push('/movies')
         }
       })
       .catch((err) => {
@@ -137,27 +140,27 @@ function App() {
 
             <ProtectedRoute
               path="/movies"
-              loggedIn={!loggedIn}
+              loggedIn={deblocking}
               component={Movies}
             />
 
             <ProtectedRoute
               path="/saved-movies"
-              loggedIn={!loggedIn}
+              loggedIn={deblocking}
               component={SavedMovies}
             />
 
             <ProtectedRoute
               path="/profile"
-              loggedIn={!loggedIn}
+              loggedIn={deblocking}
               component={Profile}
               onSignOut={handleSignOut}
             />
 
             <Route path="/signup">
               {!loggedIn ? (
-                <Register onRegister={handleRegistration} textError={message} />
-              ) : (
+                <Register onRegistration={handleRegistration} />
+              ) : ( 
                 <Redirect to="/movies" />
               )}
             </Route>

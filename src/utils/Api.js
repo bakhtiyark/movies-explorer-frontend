@@ -69,7 +69,7 @@ export class Api {
   }
 
   //Обновление пользователя
-  setUserInfo({ name, email }) {
+  setUserInfo(name, email) {
     return fetch(`${this._url}/users/me`, {
       method: "PATCH",
       headers: this._getHeaders(),
@@ -126,7 +126,7 @@ export class Api {
 }
 
 export const api = new Api({
-  baseUrl: "https://api.moviesexplorerbk.nomoredomains.icu/",
+  baseUrl: "https://api.moviesexplorerbk.nomoredomains.icu",
   headers: {
     "Content-Type": "application/json",
   },

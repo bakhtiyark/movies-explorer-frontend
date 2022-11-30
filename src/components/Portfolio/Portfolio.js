@@ -8,7 +8,9 @@ function Portfolio() {
       <ul className="portfolio__list">
         <li className="portfolio__list-item">
           <a
-            className="portfolio__list-item_link"
+            className="portfolio__list-item-link"
+            target="_blank"
+            rel="noreferrer"
             href="https://github.com/bakhtiyark/how-to-learn"
           >
             <p>Статичный сайт</p>
@@ -17,7 +19,9 @@ function Portfolio() {
         </li>
         <li className="portfolio__list-item">
           <a
-            className="portfolio__list-item_link"
+            className="portfolio__list-item-link"
+            target="_blank"
+            rel="noreferrer"
             href="https://github.com/bakhtiyark/russian-travel"
           >
             <p>Адаптивный сайт</p>
@@ -26,7 +30,9 @@ function Portfolio() {
         </li>
         <li className="portfolio__list-item">
           <a
-            className="portfolio__list-item_link"
+            className="portfolio__list-item-link"
+            target="_blank"
+            rel="noreferrer"
             href="https://github.com/bakhtiyark/react-mesto-api-full"
           >
             <p>Одностраничное приложение</p>

@@ -42,6 +42,7 @@
   line-height: 18px;
   text-decoration: none;
 }
+
 .navigation__item_account {
   padding: 0;
 }
@@ -129,7 +130,7 @@
   .navigation__container {
     position: absolute;
     width: 66%;
-    height: 780px;
+    height: 100%;
     position: fixed;
     top: 0;
     background-color: #ffffff;

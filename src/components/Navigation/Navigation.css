@@ -17,6 +17,7 @@
 
 .navigation__container {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   width: 100%;
   margin: 0;
@@ -34,13 +35,16 @@
 }
 .navigation__item {
   margin: 0;
-  padding: 10px 16px 0;
+  padding: 0;
   display: block;
   text-align: center;
   font-weight: 500;
   font-size: 13px;
   line-height: 18px;
   text-decoration: none;
+}
+.navigation__item:last-of-type {
+  margin-left: 16px;
 }
 
 .navigation__item_account {
@@ -60,6 +64,24 @@
   text-align: right;
 
   color: #000000;
+}
+.navigation__link_account {
+  display: flex;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 12px;
+  background: #ffffff;
+  align-items: center;
+  box-shadow: 0px 3px 14px rgba(0, 0, 0, 0.08);
+  border-radius: 40px;
+  padding: 9.5px 7px 9.5px 11px;
+}
+.navigation__link-icon {
+  background: #f9f9f9;
+  margin-left: 4px;
+  padding:3px;
+  border-radius: 50px;
 }
 
 .navigation__link:hover {

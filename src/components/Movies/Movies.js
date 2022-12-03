@@ -14,17 +14,10 @@ export default function Movies() {
   const [searchFormInput, setSearchFormInput] = useState("");
   const [searchFormOption, setSearchFormOption] = useState(false);
 
-  useEffect(() => {
-    moviesApi.getInitialMovies().then((data) => {
-      localStorage.setItem("movies", JSON.stringify(data));
-      console.log(data);
-    });
-  }, []);
-
   return (
     <section className="movies">
       <SearchForm />
-      <MoviesCardList moviesArray={placeholderMovies} />
+      <MoviesCardList moviesArray={[]} />
     </section>
   );
 }

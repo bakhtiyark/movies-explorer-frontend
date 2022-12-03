@@ -16,7 +16,7 @@ function SearchForm({
     setCheckbox(moviesTumbler);
     setSearchText(moviesInputSearch);
   }, [moviesTumbler, moviesInputSearch]);
-
+  
   function handleSubmit(e) {
     e.preventDefault();
     handleGetMovies(searchText, checkbox);

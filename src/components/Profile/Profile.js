@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import mainApi from "../../utils/MainApi";
+import { mainApi } from "../../utils/MainApi";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import "./Profile.css";
 

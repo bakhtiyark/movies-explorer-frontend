@@ -28,7 +28,7 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext.js";
 
 //Api
 // import { api } from "../../utils/Api.js";
-import mainApi from "../../utils/MainApi.js";
+import { mainApi } from "../../utils/MainApi.js";
 
 import { TranslationContext } from "../../contexts/TranslationContext.js";
 import NotFound from "../NotFound/NotFound";
@@ -36,8 +36,7 @@ import NotFound from "../NotFound/NotFound";
 const deblocking = true;
 
 function App() {
-  let history;
-  history = useHistory();
+  const history = useHistory();
   //Данные о пользователе
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem("token"));
@@ -50,22 +49,17 @@ function App() {
     handleTokenValidation();
   }, []);
 
-  useEffect(() => {
-    if (loggedIn) {
-      history.push("/");
-    }
-  }, [loggedIn, history]);
-
   //Токен
   function handleTokenValidation() {
     const token = localStorage.getItem("token");
+
     if (token) {
       mainApi
         .tokenValid(token)
         .then((res) => {
           if (res) {
-            setLoggedIn(true);
             setCurrentUser(res);
+            setLoggedIn(true);
           }
         })
         .catch((err) => {
@@ -82,7 +76,7 @@ function App() {
       .register(password, email, name)
       .then((res) => {
         if (res) {
-          if (res) {  
+          if (res) {
             handleLogin(res.email, password);
           }
         }
@@ -100,7 +94,7 @@ function App() {
           mainApi.updateToken();
           setLoggedIn(true);
           handleTokenValidation();
-          history.push('/movies')
+          history.push("/movies");
         }
       })
       .catch((err) => {
@@ -113,7 +107,6 @@ function App() {
   function handleSignOut() {
     setLoggedIn(false);
     localStorage.removeItem("token");
-    history.push("/signin");
   }
 
   /*
@@ -160,7 +153,7 @@ function App() {
             <Route path="/signup">
               {!loggedIn ? (
                 <Register onRegistration={handleRegistration} />
-              ) : ( 
+              ) : (
                 <Redirect to="/movies" />
               )}
             </Route>

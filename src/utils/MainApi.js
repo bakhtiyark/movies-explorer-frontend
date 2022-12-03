@@ -163,12 +163,10 @@ class MainApi {
   }
 }
 
-const mainApi = new MainApi({
+export const mainApi = new MainApi({
   baseUrl: "https://api.moviesexplorerbk.nomoredomains.icu",
   headers: {
     Authorization: `Bearer ${localStorage.getItem("token")}`,
     "Content-Type": "application/json",
   },
 });
-
-export default mainApi;

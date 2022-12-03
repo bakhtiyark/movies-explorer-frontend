@@ -35,9 +35,7 @@ function Header({ loggedIn }) {
         />
       </Link>
       <Switch>
-        {pathname === "/movies" ||
-        pathname === "/saved-movies" ||
-        pathname === "/profile" ? (
+        {!loggedIn ? (
           <Navigation />
         ) : (
           <NavTab />

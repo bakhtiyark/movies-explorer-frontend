@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { api } from "../../utils/Api";
+import mainApi from "../../utils/MainApi";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import "./Profile.css";
 
@@ -13,7 +13,7 @@ function Profile({ onSignOut }) {
   function handleSubmit(e) {
     e.preventDefault();
 
-    api
+    mainApi
       .setUserInfo(newName, newEmail)
       .then(() => {
         setName(newName);

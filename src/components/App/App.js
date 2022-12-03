@@ -28,7 +28,7 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext.js";
 
 //Api
 // import { api } from "../../utils/Api.js";
-import auth from "../../utils/Auth.js";
+import mainApi from "../../utils/MainApi.js";
 
 import { TranslationContext } from "../../contexts/TranslationContext.js";
 import NotFound from "../NotFound/NotFound";
@@ -60,7 +60,7 @@ function App() {
   function handleTokenValidation() {
     const token = localStorage.getItem("token");
     if (token) {
-      auth
+      mainApi
         .tokenValid(token)
         .then((res) => {
           if (res) {
@@ -78,7 +78,7 @@ function App() {
 
   // Регистрация
   function handleRegistration(password, email, name) {
-    auth
+    mainApi
       .register(password, email, name)
       .then((res) => {
         if (res) {
@@ -92,12 +92,12 @@ function App() {
 
   //Вход по логину
   function handleLogin(password, email) {
-    auth
+    mainApi
       .login(password, email)
       .then((res) => {
         if (res.token) {
           localStorage.setItem("token", res.token);
-          auth.updateToken();
+          mainApi.updateToken();
           setLoggedIn(true);
           handleTokenValidation();
           history.push('/movies')
@@ -140,19 +140,19 @@ function App() {
 
             <ProtectedRoute
               path="/movies"
-              loggedIn={deblocking}
+              loggedIn={!loggedIn}
               component={Movies}
             />
 
             <ProtectedRoute
               path="/saved-movies"
-              loggedIn={deblocking}
+              loggedIn={!loggedIn}
               component={SavedMovies}
             />
 
             <ProtectedRoute
               path="/profile"
-              loggedIn={deblocking}
+              loggedIn={!loggedIn}
               component={Profile}
               onSignOut={handleSignOut}
             />

@@ -2,7 +2,8 @@ import MoviesCard from "../MoviesCard/MoviesCard";
 
 import "./MoviesCardList.css";
 
-function MoviesCardList({ moviesArray }) {
+function MoviesCardList({ moviesArray, showMore }) {
+
   return (
     <section className="movies-list">
       <div className="movies-list__items">
@@ -13,7 +14,7 @@ function MoviesCardList({ moviesArray }) {
           />
         ))}
       </div>
-      <button className="movies-list__button" type="button" id="more">
+      <button className="movies-list__button" type="button" id="more" onClick={showMore}>
         Ещё
       </button>
     </section>

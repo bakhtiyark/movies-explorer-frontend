@@ -33,7 +33,7 @@ function SearchForm({
 
   return (
     <section className="search">
-      <form className="search__form" onSubmit={handleSubmit}>
+      <form className="search__form" onSubmit={handleSubmit} noValidate>
         <input
           className="search__input"
           value={searchText || ""}

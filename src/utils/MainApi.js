@@ -13,7 +13,7 @@ class MainApi {
 
   // Login and Registration
 
-  register(password, email, name) {
+  register({password, email, name}) {
     return fetch(`${this._baseUrl}/signup`, {
       method: "POST",
       headers: {
@@ -33,7 +33,7 @@ class MainApi {
       .catch((err) => console.log(err));
   }
 
-  login(email, password) {
+  login({email, password}) {
     return fetch(`${this._baseUrl}/signin`, {
       method: "POST",
       headers: {

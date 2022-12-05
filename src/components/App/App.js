@@ -77,7 +77,7 @@ function App() {
       .then((res) => {
         if (res) {
           if (res) {
-            handleLogin(res.email, password);
+            handleLogin(password, res.email);
           }
         }
       })

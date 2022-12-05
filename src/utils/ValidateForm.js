@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import isEmail from "validator/lib/isEmail";
 import { EMAIL_INCORRECT } from "./constants";
 
@@ -24,9 +24,18 @@ export default function ValidateForm() {
         e.target.setCustomValidity("");
       }
     }
-    setError({ ...error, [name]: e.target.validationMessage() });
+    setError({ ...error, [name]: e.target.validationMessage });
     setIsValid(e.target.closest(".form").checkValidity());
   };
+  const resetForm = useCallback(
+    (newValues = {}, newErrors = {}, newIsValid = false) => {
+      setFormValues(newValues);
+      setError(newErrors);
+      setIsValid(newIsValid);
+    },
+    [setFormValues, setError, setIsValid]
+  );
+
   return {
     formValues,
     setFormValues,
@@ -35,5 +44,6 @@ export default function ValidateForm() {
     setError,
     isValid,
     setIsValid,
+    resetForm
   };
 }

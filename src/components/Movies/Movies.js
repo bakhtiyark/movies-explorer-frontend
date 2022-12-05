@@ -33,7 +33,7 @@ export default function Movies() {
       })
       .catch((err) => console.dir(err));
 
-    mainApi.getInitialMovies().then((data) => {
+    mainApi.getSavedMovies().then((data) => {
       setSavedMovies(data)
     }).catch(err => console.dir(err));
   }, []);

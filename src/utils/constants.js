@@ -1,3 +1,10 @@
+export const regexEmail = '^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g';
+
+// Error Messages
+export const SEARCH_MESSAGE = "Нужно ввести ключевое слово";
+export const EMAIL_INCORRECT = "Некорректный email";
+export const SOMETHING_WRONG = "Что-то пошло не так...";
+
 //for testing purpose only
 
 export const placeholderMovies = [

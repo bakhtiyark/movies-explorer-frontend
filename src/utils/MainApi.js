@@ -77,7 +77,7 @@ class MainApi {
   //Получение данных о пользователе
   getUserInfo() {
     return fetch(`${this._url}/users/me`, {
-      headers: this._getHeaders(),
+      headers: this._headers,
     })
       .then((res) => {
         if (res.ok) {
@@ -91,7 +91,7 @@ class MainApi {
   setUserInfo(name, email) {
     return fetch(`${this._url}/users/me`, {
       method: "PATCH",
-      headers: this._getHeaders(),
+      headers: this._headers,
       body: JSON.stringify({
         name: name,
         email: email,
@@ -122,12 +122,22 @@ class MainApi {
   } */
 
   //Movies
-
+  getSavedMovies() {
+    return fetch(`${this._url}/movies`, {
+      headers: this._headers,
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res
+        }
+      })
+      .catch((err) => console.log(err));
+  }
   //Добавление карт
   createMovie(movie) {
     return fetch(`${this._url}/movies`, {
       method: "POST",
-      headers: this._getHeaders(),
+      headers: this._headers,
       body: JSON.stringify(movie),
     })
       .then((res) => {
@@ -137,12 +147,12 @@ class MainApi {
       })
       .catch((err) => console.log(err));
   }
-  
+
   //Комбинированный метод для лайканья/снятия лайка
   changeLikeMovieStatus(id, state) {
     return fetch(`${this._url}/movies/${id}/likes`, {
       method: state ? "DELETE" : "PUT",
-      headers: this._getHeaders(),
+      headers: this._headers,
     })
       .then((res) => {
         if (res.ok) {
@@ -156,7 +166,7 @@ class MainApi {
   deleteMovie(id) {
     return fetch(`${this._url}/movies/${id}`, {
       method: "DELETE",
-      headers: this._getHeaders(),
+      headers: this._headers,
     })
       .then(this._errorCheck)
       .catch((err) => console.log(err));

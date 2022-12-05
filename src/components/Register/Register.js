@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Register.css";
+import isEmail from "validator/lib/isEmail";
+
+// Error messages
+import { EMAIL_INCORRECT, SOMETHING_WRONG } from "../../utils/constants";
 
 // Logo
 import logo from "../../images/logo.svg";
@@ -12,6 +16,7 @@ function Register({ onRegistration }) {
     password: "",
   });
   const [isValid, setIsValid] = useState(false);
+  const [error, setError] = useState(false);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -19,6 +24,14 @@ function Register({ onRegistration }) {
       ...x,
       [name]: value,
     }));
+    if (name === "email") {
+      if (!isEmail(value)) {
+        e.target.setCustomValidity(EMAIL_INCORRECT);
+      } else {
+        e.target.setCustomValidity("");
+      }
+    }
+    setError({ ...error, [name]: e.target.validationMessage() });
     setIsValid(e.target.closest(".register__form").checkValidity());
   }
 
@@ -30,7 +43,11 @@ function Register({ onRegistration }) {
   return (
     <div className="register">
       <div className="register__content">
-        <img src={logo} alt="Логотип Movies-Explorer" className="register__logo" />
+        <img
+          src={logo}
+          alt="Логотип Movies-Explorer"
+          className="register__logo"
+        />
         <h3 className="register__title">Добро пожаловать!</h3>
         <form onSubmit={handleSubmit} className="register__form" method="post">
           <label className="register__form__label">Имя</label>
@@ -54,6 +71,13 @@ function Register({ onRegistration }) {
             type="email"
             required
           />
+          <span
+            className={`register__form_error ${
+              error.email ? "" : "register__form_error_active"
+            }`}
+          >
+            {error.email}
+          </span>
           <label className="register__form__label">Пароль</label>
           <input
             onChange={handleChange}
@@ -68,7 +92,7 @@ function Register({ onRegistration }) {
               isValid ? "" : "register__form_error_active"
             }`}
           >
-            Что-то пошло не так...
+            {SOMETHING_WRONG}
           </span>
           <button type="submit" className="register__button">
             Зарегистрироваться

@@ -27,23 +27,36 @@ import Login from "../Login/Login.js";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext.js";
 
 //Api
-// import { api } from "../../utils/Api.js";
+import { moviesApi } from "../../utils/moviesApi.js";
 import { mainApi } from "../../utils/MainApi.js";
 
 import { TranslationContext } from "../../contexts/TranslationContext.js";
 import NotFound from "../NotFound/NotFound";
+import Preloader from "../Preloader/Preloader";
 
 const deblocking = true;
 
 function App() {
   const history = useHistory();
+  
   //Данные о пользователе
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem("token"));
   // const [lang, setLang] = useState({});
   const { pathname } = useLocation();
+  
+  // Movies
+  const [moviesArray, setMoviesArray] = useState([]);
+  const [moviesShown, setMoviesShown] = useState([]);
+
+  // текст поиска
+  const [searchText, setSearchText] = useState("");
+  // состояние чекбокса
+  const [checkbox, setCheckbox] = useState(false);
+
   // Сообщение статуса
   const [message, setMessage] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     handleTokenValidation();
@@ -54,6 +67,7 @@ function App() {
     const token = localStorage.getItem("token");
 
     if (token) {
+      setIsLoading(true);
       mainApi
         .tokenValid(token)
         .then((res) => {
@@ -66,12 +80,14 @@ function App() {
           console.log(err);
           localStorage.removeItem("token");
           setLoggedIn(false);
-        });
+        })
+        .finally(() => setIsLoading(false));
     }
   }
 
   // Регистрация
   function handleRegistration(password, email, name) {
+    setIsLoading(true);
     mainApi
       .register(password, email, name)
       .then((res) => {
@@ -81,7 +97,8 @@ function App() {
           }
         }
       })
-      .catch(setMessage(true));
+      .catch(setMessage(true))
+      .finally(() => setIsLoading(false));
   }
 
   //Вход по логину
@@ -106,13 +123,37 @@ function App() {
 
   function handleSignOut() {
     setLoggedIn(false);
-    localStorage.removeItem("token");
-    //localStorage.clear();
+    localStorage.clear();
+    history.push("/");
   }
 
   // Возрат на предыдущую страницу
-  function goBack(){
+  function goBack() {
     history.goBack();
+  }
+
+  // Поиск
+  function handleSearchMovie(searchText, state) {;
+    setMoviesShown([]);
+    setSearchText(searchText);
+    setCheckbox(state);
+
+    const localStorageMoviesArray = localStorage.getItem("moviesArray");
+    if (!localStorageMoviesArray) {
+      setIsLoading(true);
+      moviesApi
+        .getInitialMovies()
+        .then((data) => {
+          setMoviesArray(JSON.parse(localStorage.getItem("moviesArray")));
+          localStorage.setItem("moviesArray", JSON.stringify(data));
+        })
+        .catch((err) => console.dir(err))
+        .finally(() => {
+          setIsLoading(false);
+        });
+    } else {
+      setMoviesArray(localStorageMoviesArray);
+    }
   }
 
   /*
@@ -173,7 +214,7 @@ function App() {
             </Route>
 
             <Route path="/*">
-                <NotFound goBack={goBack}/>
+              <NotFound goBack={goBack} />
             </Route>
           </Switch>
           {pathname === "/" ||

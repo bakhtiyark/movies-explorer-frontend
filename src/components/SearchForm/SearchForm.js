@@ -1,39 +1,39 @@
 import { useState, useEffect } from "react";
 import "./SearchForm.css";
+import ValidateForm from "../../utils/ValidateForm";
+import Checkbox from "../Checkbox/Checkbox";
 
-function SearchForm({
-  handleGetMovies,
-  handleGetMoviesTumbler,
-  moviesTumbler,
-  moviesInputSearch,
-}) {
+function SearchForm({ onSearch }) {
+  const { handleChange } = ValidateForm();
   // текст поиска
   const [searchText, setSearchText] = useState("");
   // состояние чекбокса
   const [checkbox, setCheckbox] = useState(false);
 
   useEffect(() => {
-    setCheckbox(moviesTumbler);
-    setSearchText(moviesInputSearch);
-  }, [moviesTumbler, moviesInputSearch]);
-  
+    
+  }, []);
+
   function handleSubmit(e) {
     e.preventDefault();
-    handleGetMovies(searchText, checkbox);
+    if (!searchText) {
+    }
+    onSearch(searchText, checkbox);
   }
 
   function handleInputChange(e) {
+    handleChange(e)
     setSearchText(e.target.value);
   }
 
-  function handleCheckboxChange() {
-    setCheckbox(!checkbox);
-    handleGetMoviesTumbler(!checkbox);
+  function handleCheckboxChange(state) {
+    setCheckbox(state);
+    onSearch(searchText, checkbox);
   }
 
   return (
     <section className="search">
-      <form className="search__form" onSubmit={handleSubmit} noValidate>
+      <form className="search__form form" onSubmit={handleSubmit} noValidate>
         <input
           className="search__input"
           value={searchText || ""}
@@ -47,20 +47,7 @@ function SearchForm({
           Поиск
         </button>
       </form>
-      <div className="search__toggler">
-        <label className="switch">
-          <input
-            type="checkbox"
-            onChange={handleCheckboxChange}
-            value={checkbox}
-            checked={!checkbox}
-            required
-          />
-          <span className="slider round"></span>
-        </label>
-        <p className="search__toggler-text">Короткометражки</p>
-      </div>
-      
+      <Checkbox state={checkbox} onChange={handleCheckboxChange} />
     </section>
   );
 }

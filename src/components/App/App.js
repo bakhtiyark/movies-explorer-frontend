@@ -110,6 +110,11 @@ function App() {
     //localStorage.clear();
   }
 
+  // Возрат на предыдущую страницу
+  function goBack(){
+    history.goBack();
+  }
+
   /*
   let currentUserWithLang = currentUser.push(lang)
   console.log(currentUserWithLang)
@@ -168,7 +173,7 @@ function App() {
             </Route>
 
             <Route path="/*">
-              <NotFound />
+                <NotFound goBack={goBack}/>
             </Route>
           </Switch>
           {pathname === "/" ||

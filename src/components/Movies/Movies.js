@@ -8,7 +8,6 @@ import "./Movies.css";
 //API
 import { moviesApi } from "../../utils/MoviesApi";
 import { mainApi } from "../../utils/MainApi";
-import { render } from "react-dom";
 
 export default function Movies() {
   // Base values
@@ -26,8 +25,8 @@ export default function Movies() {
   const [moviesShown, setMoviesShown] = useState([]);
   const [moviesCount, setMoviesCount] = useState([]);
 
-  const [moviesOptionEnabled, setMoviesOptionEnabled] = useState([]);
-  const [moviesShownOptionEnabled, setShownOptionEnabled] = useState([]);
+  const [shortMovies, setShortMovies] = useState(false);
+  const [filteredArray, setFilteredArray] = useState([]);
 
   // Errors
   const [error, setError] = useState("");
@@ -61,34 +60,33 @@ export default function Movies() {
       setMovies(JSON.parse(localStorageMovies));
       setPreloader(false);
     }
-
-    const localStorageSearchFormToggle =
-      localStorage.getItem("searchFormToggle");
-    const localStorageSearchFormInput = localStorage.getItem("searchFormInput");
-
-    if (localStorageSearchFormToggle) {
-      setMoviesOptionEnabled(localStorageSearchFormToggle === "true");
-    }
-
-    if (localStorageSearchFormInput) {
-      setSearchFormToggle(localStorageSearchFormInput);
-    }
   }, []);
 
   function filterDuration(array) {
     return array.filter(({ duration }) => duration <= 40);
   }
+  function handleShortMovies() {
+    setShortMovies(!shortMovies);
+    if (!shortMovies) {
+      setFilteredArray(filterDuration(moviesArray));
+    }
+    localStorage.setItem("shortMovies", !shortMovies);
+  }
 
   const saveMovies = (movie) => {
-    mainApi.saveMovie(movie).then((x) => {
-      setSavedMovies(savedMovies.push(x))
-    }).catch(err => console.log(err));
+    mainApi
+      .saveMovie(movie)
+      .then((x) => {
+        setSavedMovies(savedMovies.push(x));
+      })
+      .catch((err) => console.log(err));
   };
 
   // Render more cards per screensize
   function renderCounter() {
     let cardsCount;
-    const clientWidth = document.documentElement.clientWidth;
+    const clientWidth = window.screen.width;
+
     // Screensize: [Movies shown at the time, extra movies to be shown upon click]
     const MoreButtonConfig = {
       1200: [12, 3],
@@ -113,15 +111,12 @@ export default function Movies() {
     setMoviesShown(newMoviesArray);
     setMovies(spliceMovies);
   }
+  console.log(moviesArray);
 
   return (
     <section className="movies">
       <SearchForm
-        handleGetMovies={null}
-        handleGetMoviesTumbler={null}
-        moviesTumbler={null}
-        moviesInputSearch={null}
-      />
+      onSearch={null} />
       {preloader && <Preloader />}
       <MoviesCardList
         shownArray={moviesShown}

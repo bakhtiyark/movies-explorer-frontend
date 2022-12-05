@@ -8,15 +8,10 @@ import Preloader from "../Preloader/Preloader";
 export default function SavedMovies() {
   const [savedMovies, setSavedMovies] = useState([]);
   const [preloader, setPreloader] = useState(false);
-  
+
   return (
     <section className="saved-movies">
-      <SearchForm
-        handleGetMovies = {null}
-        handleGetMoviesTumbler={null}
-        moviesTumbler ={null}
-        moviesInputSearch = {null}
-      />
+      <SearchForm onSearch={null} />
       {preloader && <Preloader />}
       <MoviesCardList
         shownArray={[]}

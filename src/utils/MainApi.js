@@ -128,38 +128,38 @@ class MainApi {
     })
       .then((res) => {
         if (res.ok) {
-          return res
+          return res;
         }
       })
       .catch((err) => console.log(err));
   }
   //Добавление карт
-  createMovie(movie) {
+  saveMovie(movie) {
     return fetch(`${this._url}/movies`, {
       method: "POST",
       headers: this._headers,
       body: JSON.stringify(movie),
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-      })
-      .catch((err) => console.log(err));
+    }).catch((err) => console.log(err));
   }
 
-  //Комбинированный метод для лайканья/снятия лайка
-  changeLikeMovieStatus(id, state) {
-    return fetch(`${this._url}/movies/${id}/likes`, {
-      method: state ? "DELETE" : "PUT",
-      headers: this._headers,
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-      })
-      .catch((err) => console.log(err));
+  //Комбинированный метод для сохранения/удаления
+  changeMovieStatus(movie, id) {
+    return !id
+      ? fetch(`${this._url}/movies`, {
+          method: "POST",
+          headers: this._headers,
+          body: JSON.stringify(movie),
+        })
+      : fetch(`${this._url}/movies`, {
+          method: "DELETE",
+          headers: this._headers,
+        })
+          .then((res) => {
+            if (res.ok) {
+              return res.json();
+            }
+          })
+          .catch((err) => console.log(err));
   }
 
   //Удаление карточки

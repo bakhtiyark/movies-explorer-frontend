@@ -3,45 +3,133 @@ import { useState, useEffect } from "react";
 import SearchForm from "../SearchForm/SearchForm";
 import Preloader from "../Preloader/Preloader";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
-import MoviesCard from "../MoviesCard/MoviesCard";
-import { placeholderMovies } from "../../utils/constants";
 import "./Movies.css";
 
 //API
 import { moviesApi } from "../../utils/MoviesApi";
 import { mainApi } from "../../utils/MainApi";
+import { render } from "react-dom";
 
 export default function Movies() {
   // Base values
   const [movies, setMovies] = useState([]);
+  const [moviesArray, setMoviesArray] = useState([]);
   const [savedMovies, setSavedMovies] = useState([]);
+
   const [searchFormInput, setSearchFormInput] = useState("");
-  const [searchFormOption, setSearchFormOption] = useState(false);
+  const [searchFormToggle, setSearchFormToggle] = useState(false);
+
+  // Preloader
+  const [preloader, setPreloader] = useState(false);
 
   // Shown on screen at a given time
   const [moviesShown, setMoviesShown] = useState([]);
-  const [moviesShownTumblerEnabled, setMoviesShownTumblerEnabled] = useState(
-    []
-  );
+  const [moviesCount, setMoviesCount] = useState([]);
 
+  const [moviesOptionEnabled, setMoviesOptionEnabled] = useState([]);
+  const [moviesShownOptionEnabled, setShownOptionEnabled] = useState([]);
+
+  // Errors
+  const [error, setError] = useState("");
+
+  //Rendering cards & saving states
   useEffect(() => {
     moviesApi
       .getInitialMovies()
       .then((data) => {
-        localStorage.setItem("movies", JSON.stringify(data));
-        setMovies(JSON.parse(localStorage.getItem("movies")));
+        localStorage.setItem("moviesArray", JSON.stringify(data));
+        setMoviesArray(JSON.parse(localStorage.getItem("moviesArray")));
       })
       .catch((err) => console.dir(err));
 
-    mainApi.getSavedMovies().then((data) => {
-      setSavedMovies(data)
-    }).catch(err => console.dir(err));
+    setMoviesCount(renderCounter());
+
+    // For Saved Movies
+    mainApi
+      .getSavedMovies()
+      .then((data) => {
+        setSavedMovies(data);
+      })
+      .catch((err) => console.dir(err));
+
+    const localStorageMovies = localStorage.getItem("moviesArray");
+
+    if (localStorageMovies) {
+      setMoviesShown(
+        JSON.parse(localStorageMovies).splice(0, renderCounter()[0])
+      );
+      setMovies(JSON.parse(localStorageMovies));
+      setPreloader(false);
+    }
+
+    const localStorageSearchFormToggle =
+      localStorage.getItem("searchFormToggle");
+    const localStorageSearchFormInput = localStorage.getItem("searchFormInput");
+
+    if (localStorageSearchFormToggle) {
+      setMoviesOptionEnabled(localStorageSearchFormToggle === "true");
+    }
+
+    if (localStorageSearchFormInput) {
+      setSearchFormToggle(localStorageSearchFormInput);
+    }
   }, []);
+
+  function filterDuration(array) {
+    return array.filter(({ duration }) => duration <= 40);
+  }
+
+  const saveMovies = (movie) => {
+    mainApi.saveMovie(movie).then((x) => {
+      setSavedMovies(savedMovies.push(x))
+    }).catch(err => console.log(err));
+  };
+
+  // Render more cards per screensize
+  function renderCounter() {
+    let cardsCount;
+    const clientWidth = document.documentElement.clientWidth;
+    // Screensize: [Movies shown at the time, extra movies to be shown upon click]
+    const MoreButtonConfig = {
+      1200: [12, 3],
+      768: [8, 2],
+      320: [5, 2],
+    };
+    Object.keys(MoreButtonConfig)
+      .sort((a, b) => a - b)
+      .forEach((key) => {
+        if (clientWidth > +key) {
+          cardsCount = MoreButtonConfig[key];
+        }
+      });
+
+    return cardsCount;
+  }
+  function handleMoreClick() {
+    const spliceMovies = moviesArray;
+    const newMoviesArray = moviesShown.concat(
+      spliceMovies.splice(0, moviesCount[1])
+    );
+    setMoviesShown(newMoviesArray);
+    setMovies(spliceMovies);
+  }
 
   return (
     <section className="movies">
-      <SearchForm />
-      <MoviesCardList moviesArray={[]} />
+      <SearchForm
+        handleGetMovies={null}
+        handleGetMoviesTumbler={null}
+        moviesTumbler={null}
+        moviesInputSearch={null}
+      />
+      {preloader && <Preloader />}
+      <MoviesCardList
+        shownArray={moviesShown}
+        savedMovies={savedMovies}
+        savedMoviesToggle={saveMovies}
+        moviesArray={moviesArray}
+        showMore={handleMoreClick}
+      />
     </section>
   );
 }

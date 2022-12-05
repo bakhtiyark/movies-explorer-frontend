@@ -13,7 +13,7 @@ function MoviesCard({ movie }) {
     return `${Math.floor(num / 60)}ч ${num % 60}м`;
   }
   // temp
-  function toggleClass() {
+  function handleSaveToggle() {
     !saved ? setSaved(true) : setSaved(false);
   }
 
@@ -29,7 +29,7 @@ function MoviesCard({ movie }) {
           onClick={null}
         />
       ) : (
-        <button className={movieSavedClassName} onClick={toggleClass}>
+        <button className={movieSavedClassName} onClick={handleSaveToggle}>
           Сохранить
         </button>
       )}
@@ -42,7 +42,7 @@ function MoviesCard({ movie }) {
         <img
           className="movie-card__image"
           alt="Кадр из трейлера"
-          src={movie.image}
+          src={pathname === '/saved-movies' ? `${movie.image}` : `https://api.nomoreparties.co${movie.image.url}`}
         />
       </a>
       <div className="movie-card__info">

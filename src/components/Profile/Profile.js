@@ -1,63 +1,71 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { mainApi } from "../../utils/MainApi";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import "./Profile.css";
 
-function Profile({ onSignOut }) {
+import ValidateForm from "../../utils/ValidateForm";
+
+function Profile({ onUpdate, onSignOut, profileMessage }) {
+  const {
+    formValues,
+    setFormValues,
+    handleChange,
+    error,
+    setError,
+    isValid,
+    setIsValid,
+    resetForm,
+  } = ValidateForm();
   const currentUser = useContext(CurrentUserContext);
-  const [name, setName] = useState(currentUser.name);
-  const [email, setEmail] = useState(currentUser.email);
-  const [newName, setNewName] = useState(currentUser.name);
-  const [newEmail, setNewEmail] = useState(currentUser.email);
+
+  useEffect(() => {
+    setFormValues({
+      name: currentUser.name,
+      email: currentUser.email,
+    });
+  }, [currentUser, setFormValues]);
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    mainApi
-      .setUserInfo(newName, newEmail)
-      .then(() => {
-        setName(newName);
-        setEmail(newEmail);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    onUpdate({
+      name: formValues.name,
+      email: formValues.email,
+    });
   }
-
-  function handleNameChange(e) {
-    const name = e.target.value;
-    setNewName(name);
-  }
-  function handleEmailChange(e) {
-    const email = e.target.value;
-    setNewEmail(email);
-  }
-
   return (
     <section className="profile">
-      <form className="profile-form" onSubmit={handleSubmit}>
+      <form className="profile-form form" onSubmit={handleSubmit}>
         <div className="profile-form__content">
-          <h1 className="profile-form__title">{`Привет, ${name}!`}</h1>
+          <h1 className="profile-form__title">{`Привет, ${currentUser.name}!`}</h1>
           <div className="profile-form__item">
             <p className="profile-form__item-value">Имя</p>
             <input
               className="profile-form__item-value form__input"
-              onChange={handleNameChange}
-              value={newName}
+              onChange={handleChange}
+              name="name"
+              type="text"
+              value={formValues.name || ""}
             />
           </div>
           <div className="profile-form__item">
             <p className="profile-form__item-value">E-mail</p>
             <input
               className="profile-form__item-value form__input"
-              onChange={handleEmailChange}
-              value={newEmail}
+              onChange={handleChange}
+              name="email"
+              type="email"
+              value={formValues.email || ""}
             />
           </div>
         </div>
         <div className="profile-form__links">
+          
+      <span className="profile__message">{profileMessage}</span>
           <button
             className="profile-form__link profile-form__link_submit"
+            disabled={!isValid}
+            style={!isValid ? { opacity: ".5", color: "grey" } : null}
             type="submit"
           >
             Редактировать

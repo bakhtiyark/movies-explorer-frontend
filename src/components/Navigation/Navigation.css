@@ -143,6 +143,11 @@
     background-color: #000000;
     transition-duration: 0.25s;
   }
+  .navigation__icon_main,
+  .navigation__icon_main::before,
+  .navigation__icon_main::after{
+    background-color: #ffffff;
+  }
   .navigation__icon::before {
     content: "";
     top: -9px;

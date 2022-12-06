@@ -12,12 +12,16 @@ function Navigation() {
   const navigationClassName = `navigation__link ${
     pathname === "/" ? "navigation__link_main" : ""
   }`;
+  const navigationIconClassName = `navigation__icon ${
+    pathname === "/" ? "navigation__icon_main" : ""
+  }`;
+  
 
   return (
     <nav className="navigation">
       <input className="navigation__toggle" id="toggle" type="checkbox" />
       <label className="navigation__button" htmlFor="toggle">
-        <span className="navigation__icon" />
+        <span className={navigationIconClassName} />
       </label>
       <div className="navigation__container">
         <ul className="navigation__items">

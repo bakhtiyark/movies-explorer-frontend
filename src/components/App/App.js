@@ -27,7 +27,7 @@ import Login from "../Login/Login.js";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext.js";
 
 //Api
-import { moviesApi } from "../../utils/moviesApi.js";
+import { moviesApi } from "../../utils/MoviesApi.js";
 import { mainApi } from "../../utils/MainApi.js";
 
 import { TranslationContext } from "../../contexts/TranslationContext.js";
@@ -57,6 +57,7 @@ function App() {
   // Сообщение статуса
   const [message, setMessage] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [profileMessage, setProfileMessage] = useState('')
 
   useEffect(() => {
     handleTokenValidation();
@@ -103,6 +104,7 @@ function App() {
 
   //Вход по логину
   function handleLogin(password, email) {
+    setIsLoading(true);
     mainApi
       .login(password, email)
       .then((res) => {
@@ -116,7 +118,21 @@ function App() {
       })
       .catch((err) => {
         setMessage(err);
-      });
+      }).finally(setIsLoading(false));
+  }
+
+  // Update User
+  function handleUpdateUser(data) {
+    setIsLoading(true)
+    mainApi
+      .setUserInfo(data)
+      .then((x) => {
+        setCurrentUser(x);
+        setProfileMessage("Данные успешно обновлены!")
+      })
+      .catch((err) => {
+        setProfileMessage(err)
+      }).finally(setIsLoading(false))
   }
 
   //Выход из аккаунта
@@ -132,29 +148,7 @@ function App() {
     history.goBack();
   }
 
-  // Поиск
-  function handleSearchMovie(searchText, state) {;
-    setMoviesShown([]);
-    setSearchText(searchText);
-    setCheckbox(state);
-
-    const localStorageMoviesArray = localStorage.getItem("moviesArray");
-    if (!localStorageMoviesArray) {
-      setIsLoading(true);
-      moviesApi
-        .getInitialMovies()
-        .then((data) => {
-          setMoviesArray(JSON.parse(localStorage.getItem("moviesArray")));
-          localStorage.setItem("moviesArray", JSON.stringify(data));
-        })
-        .catch((err) => console.dir(err))
-        .finally(() => {
-          setIsLoading(false);
-        });
-    } else {
-      setMoviesArray(localStorageMoviesArray);
-    }
-  }
+  
 
   /*
   let currentUserWithLang = currentUser.push(lang)
@@ -195,6 +189,8 @@ function App() {
               loggedIn={!loggedIn}
               component={Profile}
               onSignOut={handleSignOut}
+              onUpdate={handleUpdateUser}
+              profileMessage={profileMessage}
             />
 
             <Route path="/signup">

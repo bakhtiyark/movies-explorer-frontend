@@ -95,7 +95,12 @@
 .profile__form_error_active {
   visibility: visible;
 }
-
+.profile__message{
+  display: flex;
+  position: fixed;
+  font-weight: 700;
+  top:50%;
+}
 .profile-form__item {
   display: flex;
 
@@ -136,6 +141,7 @@
   margin-top: 379px;
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 @media screen and (max-width: 640px) {

@@ -15,18 +15,22 @@ export default function Movies() {
   const [moviesArray, setMoviesArray] = useState([]);
   const [savedMovies, setSavedMovies] = useState([]);
 
-  const [searchFormInput, setSearchFormInput] = useState("");
-  const [searchFormToggle, setSearchFormToggle] = useState(false);
-
   // Preloader
   const [preloader, setPreloader] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
+  
   // Shown on screen at a given time
   const [moviesShown, setMoviesShown] = useState([]);
   const [moviesCount, setMoviesCount] = useState([]);
 
   const [shortMovies, setShortMovies] = useState(false);
   const [filteredArray, setFilteredArray] = useState([]);
+
+  
+  // текст поиска
+  const [searchText, setSearchText] = useState("");
+  // состояние чекбокса
+  const [checkbox, setCheckbox] = useState(false);
 
   // Errors
   const [error, setError] = useState("");
@@ -111,12 +115,35 @@ export default function Movies() {
     setMoviesShown(newMoviesArray);
     setMovies(spliceMovies);
   }
-  console.log(moviesArray);
+  
+  // Поиск
+  function handleSearchMovie(searchText, state) {;
+    setMoviesShown([]);
+    setSearchText(searchText);
+    setCheckbox(state);
 
+    const localStorageMoviesArray = localStorage.getItem("moviesArray");
+    if (!localStorageMoviesArray) {
+      setIsLoading(true);
+      moviesApi
+        .getInitialMovies()
+        .then((data) => {
+          setMoviesArray(JSON.parse(localStorage.getItem("moviesArray")));
+          localStorage.setItem("moviesArray", JSON.stringify(data));
+        })
+        .catch((err) => console.dir(err))
+        .finally(() => {
+          setIsLoading(false);
+        });
+    } else {
+      setMoviesArray(localStorageMoviesArray);
+    }
+  }
+  
   return (
     <section className="movies">
       <SearchForm
-      onSearch={null} />
+      onSearch={handleSearchMovie} />
       {preloader && <Preloader />}
       <MoviesCardList
         shownArray={moviesShown}

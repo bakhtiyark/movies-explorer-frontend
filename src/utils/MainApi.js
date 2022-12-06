@@ -76,7 +76,7 @@ class MainApi {
 
   //Получение данных о пользователе
   getUserInfo() {
-    return fetch(`${this._url}/users/me`, {
+    return fetch(`${this._baseUrl}/users/me`, {
       headers: this._headers,
     })
       .then((res) => {
@@ -88,8 +88,8 @@ class MainApi {
   }
 
   //Обновление пользователя
-  setUserInfo(name, email) {
-    return fetch(`${this._url}/users/me`, {
+  setUserInfo({name, email}) {
+    return fetch(`${this._baseUrl}/users/me`, {
       method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({
@@ -99,7 +99,7 @@ class MainApi {
     })
       .then((res) => {
         if (res.ok) {
-          return res.json();
+          return res;
         }
       })
       .catch((err) => console.log(err));
@@ -123,7 +123,7 @@ class MainApi {
 
   //Movies
   getSavedMovies() {
-    return fetch(`${this._url}/movies`, {
+    return fetch(`${this._baseUrl}/movies`, {
       headers: this._headers,
     })
       .then((res) => {
@@ -135,7 +135,7 @@ class MainApi {
   }
   //Добавление карт
   saveMovie(movie) {
-    return fetch(`${this._url}/movies`, {
+    return fetch(`${this._baseUrl}/movies`, {
       method: "POST",
       headers: this._headers,
       body: JSON.stringify(movie),
@@ -145,12 +145,12 @@ class MainApi {
   //Комбинированный метод для сохранения/удаления
   changeMovieStatus(movie, id) {
     return !id
-      ? fetch(`${this._url}/movies`, {
+      ? fetch(`${this._baseUrl}/movies`, {
           method: "POST",
           headers: this._headers,
           body: JSON.stringify(movie),
         })
-      : fetch(`${this._url}/movies`, {
+      : fetch(`${this._baseUrl}/movies`, {
           method: "DELETE",
           headers: this._headers,
         })
@@ -164,7 +164,7 @@ class MainApi {
 
   //Удаление карточки
   deleteMovie(id) {
-    return fetch(`${this._url}/movies/${id}`, {
+    return fetch(`${this._baseUrl}/movies/${id}`, {
       method: "DELETE",
       headers: this._headers,
     })

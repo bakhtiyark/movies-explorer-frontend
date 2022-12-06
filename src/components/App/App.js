@@ -38,16 +38,17 @@ const deblocking = true;
 
 function App() {
   const history = useHistory();
-  
+
   //Данные о пользователе
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem("token"));
   // const [lang, setLang] = useState({});
   const { pathname } = useLocation();
-  
+
   // Movies
   const [moviesArray, setMoviesArray] = useState([]);
   const [moviesShown, setMoviesShown] = useState([]);
+  const [savedMovies, setSavedMovies] = useState([]);
 
   // текст поиска
   const [searchText, setSearchText] = useState("");
@@ -57,7 +58,7 @@ function App() {
   // Сообщение статуса
   const [message, setMessage] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [profileMessage, setProfileMessage] = useState('')
+  const [profileMessage, setProfileMessage] = useState("");
 
   useEffect(() => {
     handleTokenValidation();
@@ -118,21 +119,23 @@ function App() {
       })
       .catch((err) => {
         setMessage(err);
-      }).finally(setIsLoading(false));
+      })
+      .finally(setIsLoading(false));
   }
 
   // Update User
   function handleUpdateUser(data) {
-    setIsLoading(true)
+    setIsLoading(true);
     mainApi
       .setUserInfo(data)
       .then((x) => {
         setCurrentUser(x);
-        setProfileMessage("Данные успешно обновлены!")
+        setProfileMessage("Данные успешно обновлены!");
       })
       .catch((err) => {
-        setProfileMessage(err)
-      }).finally(setIsLoading(false))
+        setProfileMessage(err);
+      })
+      .finally(setIsLoading(false));
   }
 
   //Выход из аккаунта
@@ -148,13 +151,73 @@ function App() {
     history.goBack();
   }
 
-  
+  useEffect(() => {
+    // For Saved Movies
+    if (loggedIn) {
+      mainApi
+        .getSavedMovies()
+        .then((res) => {
+          const filterSavedMovies = res.filter(
+            (movie) => movie.owner._id === currentUser._id
+          );
+          localStorage.setItem(
+            "savedMovies",
+            JSON.stringify(filterSavedMovies)
+          );
+          setSavedMovies(filterSavedMovies);
+        })
+        .catch((err) => console.dir(err));
+    }
+  }, []);
 
   /*
   let currentUserWithLang = currentUser.push(lang)
   console.log(currentUserWithLang)
-  */
+  */  
 
+// TO BE REFACTORED
+  /*
+const handleSaveMovies = (movie) => {
+  mainApi
+    .saveMovie(movie)
+    .then((x) => {
+      setSavedMovies(savedMovies.push(x));
+    })
+    .catch((err) => console.log(err));
+};
+function handleMoreClick() {
+  const spliceMovies = moviesArray;
+  const newMoviesArray = moviesShown.concat(
+    spliceMovies.splice(0, moviesCount[1])
+  );
+  setMoviesShown(newMoviesArray);
+  setMovies(spliceMovies);
+}
+
+// Поиск
+function handleSearchMovie(searchText, state) {
+  setMoviesShown([]);
+  setSearchText(searchText);
+  setCheckbox(state);
+
+  const localStorageMoviesArray = localStorage.getItem("moviesArray");
+  if (!localStorageMoviesArray) {
+    setIsLoading(true);
+    moviesApi
+      .getInitialMovies()
+      .then((data) => {
+        setMoviesArray(JSON.parse(localStorage.getItem("moviesArray")));
+        localStorage.setItem("moviesArray", JSON.stringify(data));
+      })
+      .catch((err) => console.dir(err))
+      .finally(() => {
+        setIsLoading(false);
+      });
+  } else {
+    setMoviesArray(localStorageMoviesArray);
+  }
+}
+*/
   return (
     <TranslationContext.Provider value={""}>
       <CurrentUserContext.Provider value={currentUser}>
@@ -176,6 +239,9 @@ function App() {
               path="/movies"
               loggedIn={!loggedIn}
               component={Movies}
+              currentUser={currentUser}
+              moviesShown={moviesShown}
+              savedMovies= {savedMovies}
             />
 
             <ProtectedRoute

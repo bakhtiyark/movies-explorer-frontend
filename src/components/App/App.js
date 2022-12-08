@@ -57,7 +57,7 @@ function App() {
   const [initialMovies, setInitialMovies] = useState(0);
   const [moreMovies, setMoreMovies] = useState(0);
 
-  // текст поиска
+  // Search process
   const [searchText, setSearchText] = useState("");
   const [checkbox, setCheckbox] = useState(false);
 
@@ -174,7 +174,7 @@ function App() {
         })
         .catch((err) => console.dir(err));
     }
-  }, []);
+  });
 
   /*
   let currentUserWithLang = currentUser.push(lang)

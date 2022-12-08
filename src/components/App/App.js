@@ -38,21 +38,27 @@ const deblocking = true;
 
 function App() {
   const history = useHistory();
+  const { pathname } = useLocation();
 
   //Данные о пользователе
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem("token"));
   // const [lang, setLang] = useState({});
-  const { pathname } = useLocation();
 
   // Movies
   const [moviesArray, setMoviesArray] = useState([]);
   const [moviesShown, setMoviesShown] = useState([]);
+  const [shortMovies, setShortMovies] = useState([]);
+
+  // Saved movies
   const [savedMovies, setSavedMovies] = useState([]);
+
+  // For "More" button manipulations
+  const [initialMovies, setInitialMovies] = useState(0);
+  const [moreMovies, setMoreMovies] = useState(0);
 
   // текст поиска
   const [searchText, setSearchText] = useState("");
-  // состояние чекбокса
   const [checkbox, setCheckbox] = useState(false);
 
   // Сообщение статуса

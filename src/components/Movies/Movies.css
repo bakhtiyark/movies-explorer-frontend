@@ -1,0 +1,13 @@
+.movies__container{
+    display: flex;
+    width:100%;
+    justify-content: center;
+    padding: 30px 0;   
+}
+.movies__text {
+    font-size: 21px;
+    font-weight: 600;
+    opacity: 0.9;
+    color: #a0a0a0;
+
+}

@@ -32,9 +32,7 @@ import { mainApi } from "../../utils/MainApi.js";
 
 import { TranslationContext } from "../../contexts/TranslationContext.js";
 import NotFound from "../NotFound/NotFound";
-import Preloader from "../Preloader/Preloader";
-
-const deblocking = true;
+import filterResult from "../../utils/filterResult";
 
 function App() {
   const history = useHistory();
@@ -48,7 +46,7 @@ function App() {
   // Movies
   const [moviesArray, setMoviesArray] = useState([]);
   const [moviesShown, setMoviesShown] = useState([]);
-  const [shortMovies, setShortMovies] = useState([]);
+  const [filteredMovies, setFilteredMovies] = useState([]);
 
   // Saved movies
   const [savedMovies, setSavedMovies] = useState([]);
@@ -60,6 +58,7 @@ function App() {
   // Search process
   const [searchText, setSearchText] = useState("");
   const [checkbox, setCheckbox] = useState(false);
+  const [isSearchComplete, setIsSearchComplete] = useState(false);
 
   // Сообщение статуса
   const [message, setMessage] = useState(false);
@@ -90,6 +89,57 @@ function App() {
           setLoggedIn(false);
         })
         .finally(() => setIsLoading(false));
+    }
+  }
+  useEffect(() => {
+    if (moviesArray.length > 0){
+      const filteredResult = filterResult(moviesArray, searchText, checkbox);
+      localStorage.setItem("moviesArray", JSON.stringify(filteredResult));
+      localStorage.setItem("searchText", searchText);
+      localStorage.setItem("checkbox", checkbox);
+      setFilteredMovies(filteredResult);
+      setIsSearchComplete(true);
+    }
+  },[moviesArray, searchText, checkbox]);
+
+  // For Loading
+  function loadPreloader(){
+    setIsLoading(true);
+    setTimeout(()=> setIsLoading(false), 400)
+      }
+
+  useEffect(() => {
+    if (localStorage.getItem("moviesArray")) {
+      const searchBasis = JSON.parse(localStorage.getItem("moviesArray"));
+      const searchResult = filterResult(searchBasis, searchText, checkbox);
+      setFilteredMovies(searchResult)
+      setIsSearchComplete(true)
+    }
+  }, [currentUser]);
+
+  // Поиск
+  function handleSearchMovie(searchText, state) {
+    loadPreloader();
+    setMoviesShown([]);
+    setSearchText(searchText);
+    setCheckbox(state);
+
+    const localStorageMoviesArray = JSON.parse(localStorage.getItem('moviesArray'));
+
+    if (!localStorageMoviesArray) {
+      setIsLoading(true);
+      moviesApi
+        .getInitialMovies()
+        .then((data) => {
+          setMoviesArray(data);
+          localStorage.setItem("moviesArray", JSON.stringify(data));
+        })
+        .catch((err) => console.dir(err))
+        .finally(() => {
+          setIsLoading(false);
+        });
+    } else {
+      setMoviesArray(localStorageMoviesArray);
     }
   }
 
@@ -162,26 +212,21 @@ function App() {
     if (loggedIn) {
       mainApi
         .getSavedMovies()
-        .then((res) => {
-          const filterSavedMovies = res.filter(
-            (movie) => movie.owner._id === currentUser._id
-          );
-          localStorage.setItem(
-            "savedMovies",
-            JSON.stringify(filterSavedMovies)
-          );
+        .then((res) => {          
+          const filterSavedMovies = res.filter((movie) => movie.owner._id === currentUser._id);
+          localStorage.setItem("savedMovies", JSON.stringify(filterSavedMovies));
           setSavedMovies(filterSavedMovies);
         })
         .catch((err) => console.dir(err));
     }
-  });
+  }, [loggedIn]);
 
   /*
   let currentUserWithLang = currentUser.push(lang)
   console.log(currentUserWithLang)
-  */  
+  */
 
-// TO BE REFACTORED
+  // TO BE REFACTORED
   /*
 const handleSaveMovies = (movie) => {
   mainApi
@@ -200,29 +245,7 @@ function handleMoreClick() {
   setMovies(spliceMovies);
 }
 
-// Поиск
-function handleSearchMovie(searchText, state) {
-  setMoviesShown([]);
-  setSearchText(searchText);
-  setCheckbox(state);
 
-  const localStorageMoviesArray = localStorage.getItem("moviesArray");
-  if (!localStorageMoviesArray) {
-    setIsLoading(true);
-    moviesApi
-      .getInitialMovies()
-      .then((data) => {
-        setMoviesArray(JSON.parse(localStorage.getItem("moviesArray")));
-        localStorage.setItem("moviesArray", JSON.stringify(data));
-      })
-      .catch((err) => console.dir(err))
-      .finally(() => {
-        setIsLoading(false);
-      });
-  } else {
-    setMoviesArray(localStorageMoviesArray);
-  }
-}
 */
   return (
     <TranslationContext.Provider value={""}>
@@ -245,9 +268,12 @@ function handleSearchMovie(searchText, state) {
               path="/movies"
               loggedIn={!loggedIn}
               component={Movies}
+              isLoading={isLoading}
+              isSearchComplete={isSearchComplete}
               currentUser={currentUser}
               moviesShown={moviesShown}
-              savedMovies= {savedMovies}
+              onSearch={handleSearchMovie}
+              savedMovies={savedMovies}
             />
 
             <ProtectedRoute

@@ -124,11 +124,12 @@ class MainApi {
   //Movies
   getSavedMovies() {
     return fetch(`${this._baseUrl}/movies`, {
+      method: "GET",
       headers: this._headers,
     })
       .then((res) => {
         if (res.ok) {
-          return res;
+          return res.json();
         }
       })
       .catch((err) => console.log(err));

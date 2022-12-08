@@ -8,7 +8,7 @@ export const SOMETHING_WRONG = "Что-то пошло не так...";
 
 //for testing purpose only
 export const MORE_BUTTON_CONFIG = {
-  1200: [12, 3],
+  1280: [12, 3],
   768: [8, 2],
   320: [5, 2],
 };

@@ -49,13 +49,14 @@ function SearchForm({ onSearch }) {
           Поиск
         </button>
       </form>
-      <span
-        className={`search__form_error ${
-          !err ? "" : "search__form_error_active"
-        }`}
-      >
-        {SEARCH_MESSAGE}
-      </span>
+      {err ? (
+        <span className="search__form_error search__form_error_active">
+          {SEARCH_MESSAGE}
+        </span>
+      ) : (
+        ""
+      )}
+
       <Checkbox state={checkbox} onChange={toggleState} />
     </section>
   );

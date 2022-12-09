@@ -33,6 +33,8 @@ import { mainApi } from "../../utils/MainApi.js";
 import { TranslationContext } from "../../contexts/TranslationContext.js";
 import NotFound from "../NotFound/NotFound";
 import filterResult from "../../utils/filterResult";
+import Preloader from "../Preloader/Preloader";
+import { MORE_BUTTON_CONFIG } from "../../utils/constants";
 
 function App() {
   const history = useHistory();
@@ -52,11 +54,10 @@ function App() {
   const [savedMovies, setSavedMovies] = useState([]);
 
   // For "More" button manipulations
-  const [initialMovies, setInitialMovies] = useState(0);
-  const [moreMovies, setMoreMovies] = useState(0);
+  const [moreMoviesButton, setMoreMoviesButton] = useState(false);
 
   // Search process
-  const [searchText, setSearchText] = useState("");
+  const [searchInput, setSearchInput] = useState("");
   const [checkbox, setCheckbox] = useState(false);
   const [isSearchComplete, setIsSearchComplete] = useState(false);
 
@@ -64,10 +65,6 @@ function App() {
   const [message, setMessage] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [profileMessage, setProfileMessage] = useState("");
-
-  useEffect(() => {
-    handleTokenValidation();
-  }, []);
 
   //Токен
   function handleTokenValidation() {
@@ -91,48 +88,29 @@ function App() {
         .finally(() => setIsLoading(false));
     }
   }
-  useEffect(() => {
-    if (moviesArray.length > 0){
-      const filteredResult = filterResult(moviesArray, searchText, checkbox);
-      localStorage.setItem("moviesArray", JSON.stringify(filteredResult));
-      localStorage.setItem("searchText", searchText);
-      localStorage.setItem("checkbox", checkbox);
-      setFilteredMovies(filteredResult);
-      setIsSearchComplete(true);
-    }
-  },[moviesArray, searchText, checkbox]);
 
   // For Loading
-  function loadPreloader(){
+  function loadPreloader() {
     setIsLoading(true);
-    setTimeout(()=> setIsLoading(false), 400)
-      }
-
-  useEffect(() => {
-    if (localStorage.getItem("moviesArray")) {
-      const searchBasis = JSON.parse(localStorage.getItem("moviesArray"));
-      const searchResult = filterResult(searchBasis, searchText, checkbox);
-      setFilteredMovies(searchResult)
-      setIsSearchComplete(true)
-    }
-  }, [currentUser]);
+    setTimeout(() => setIsLoading(false), 400);
+  }
 
   // Поиск
-  function handleSearchMovie(searchText, state) {
+  function handleSearchMovie(searchInput, state) {
     loadPreloader();
     setMoviesShown([]);
-    setSearchText(searchText);
+    setSearchInput(searchInput);
     setCheckbox(state);
-
-    const localStorageMoviesArray = JSON.parse(localStorage.getItem('moviesArray'));
+    const localStorageMoviesArray = JSON.parse(localStorage.getItem("movies"));
 
     if (!localStorageMoviesArray) {
       setIsLoading(true);
       moviesApi
         .getInitialMovies()
         .then((data) => {
+          //console.dir(data);
           setMoviesArray(data);
-          localStorage.setItem("moviesArray", JSON.stringify(data));
+          localStorage.setItem("movies", JSON.stringify(data));
         })
         .catch((err) => console.dir(err))
         .finally(() => {
@@ -143,6 +121,21 @@ function App() {
     }
   }
 
+  function getCardCount(renderConfig) {
+    let count;
+    const clientWidth = window.innerWidth;
+    Object.keys(renderConfig)
+      .sort((a, b) => a - b)
+      .forEach((key) => {
+        if (clientWidth >= +key) {
+          count = renderConfig[key];
+        }
+      });
+
+    return count;
+  }
+
+  const config = getCardCount(MORE_BUTTON_CONFIG);
   // Регистрация
   function handleRegistration(password, email, name) {
     setIsLoading(true);
@@ -158,7 +151,6 @@ function App() {
       .catch(setMessage(true))
       .finally(() => setIsLoading(false));
   }
-
   //Вход по логину
   function handleLogin(password, email) {
     setIsLoading(true);
@@ -178,7 +170,6 @@ function App() {
       })
       .finally(setIsLoading(false));
   }
-
   // Update User
   function handleUpdateUser(data) {
     setIsLoading(true);
@@ -193,60 +184,86 @@ function App() {
       })
       .finally(setIsLoading(false));
   }
-
   //Выход из аккаунта
-
   function handleSignOut() {
     setLoggedIn(false);
     localStorage.clear();
     history.push("/");
   }
-
   // Возрат на предыдущую страницу
   function goBack() {
     history.goBack();
   }
+  const handleSaveMovies = (movie) => {
+    mainApi
+      .saveMovie(movie)
+      .then((x) => {
+        const updatedArray = [...savedMovies, { ...x, id: x.movieId }];
+        setSavedMovies(updatedArray);
+        localStorage.setItem("savedMovies", JSON.stringify(updatedArray));
+      })
+      .catch((err) => console.log(err));
+  };
+  useEffect(() => {
+    handleTokenValidation();
+  }, []);
 
   useEffect(() => {
-    // For Saved Movies
-    if (loggedIn) {
-      mainApi
-        .getSavedMovies()
-        .then((res) => {          
-          const filterSavedMovies = res.filter((movie) => movie.owner._id === currentUser._id);
-          localStorage.setItem("savedMovies", JSON.stringify(filterSavedMovies));
-          setSavedMovies(filterSavedMovies);
-        })
-        .catch((err) => console.dir(err));
+    if (localStorage.getItem("movies")) {
+      const searchBasis = JSON.parse(localStorage.getItem("movies"));
+      const searchResult = filterResult(searchBasis, searchInput, checkbox);
+      setFilteredMovies(searchResult);
+      setIsSearchComplete(true);
     }
-  }, [loggedIn]);
+  }, [searchInput, checkbox]);
 
-  /*
-  let currentUserWithLang = currentUser.push(lang)
-  console.log(currentUserWithLang)
-  */
+  useEffect(() => {
+    if (loggedIn) {
+      mainApi.getSavedMovies().then((res) => {
+        const searchSavedMovies = res.filter(
+          (x) => x.owner._id === currentUser._id
+        );
+        localStorage.setItem("savedMovies", JSON.stringify(searchSavedMovies));
+        setSavedMovies(searchSavedMovies);
+        setIsSearchComplete(true);
+      });
+    }
+  }, [loggedIn, currentUser]);
 
-  // TO BE REFACTORED
-  /*
-const handleSaveMovies = (movie) => {
-  mainApi
-    .saveMovie(movie)
-    .then((x) => {
-      setSavedMovies(savedMovies.push(x));
-    })
-    .catch((err) => console.log(err));
-};
-function handleMoreClick() {
-  const spliceMovies = moviesArray;
-  const newMoviesArray = moviesShown.concat(
-    spliceMovies.splice(0, moviesCount[1])
-  );
-  setMoviesShown(newMoviesArray);
-  setMovies(spliceMovies);
-}
+  useEffect(() => {
+    if (moviesArray.length > 0) {
+      
+      const filteredResult = filterResult(moviesArray, searchInput, checkbox);
+      localStorage.setItem("movies", JSON.stringify(filteredResult));
+      localStorage.setItem("searchInput", searchInput);
+      localStorage.setItem("checkbox", checkbox);
+      setFilteredMovies(filteredResult);
+      setIsSearchComplete(true);
+    }
+  }, [moviesArray, searchInput, checkbox]);
 
+  useEffect(() => {
+    if (moviesShown.length === filteredMovies.length) {
+      setMoreMoviesButton(false);
+    }
+  }, [moviesShown, filteredMovies]);
 
-*/
+  useEffect(() => {
+    if (filteredMovies.length > 0) {
+      //console.log(config[0])
+      if (filteredMovies.length > config[0]) {
+        setMoviesShown(filteredMovies.slice(0, config[0]));
+        setMoreMoviesButton(true);
+      } else {
+        setMoviesShown(filteredMovies);
+      }
+    }
+  }, [filteredMovies, config]);
+
+  const showMore = () => {
+    setMoviesShown((x) => filteredMovies.slice(0, x.length + config[1]));
+  };
+
   return (
     <TranslationContext.Provider value={""}>
       <CurrentUserContext.Provider value={currentUser}>
@@ -266,14 +283,17 @@ function handleMoreClick() {
 
             <ProtectedRoute
               path="/movies"
-              loggedIn={!loggedIn}
+              moviesArray={moviesArray}
+              moviesShown={moviesShown}
+              savedMovies={savedMovies}
               component={Movies}
               isLoading={isLoading}
               isSearchComplete={isSearchComplete}
-              currentUser={currentUser}
-              moviesShown={moviesShown}
+              searchInput={searchInput}
               onSearch={handleSearchMovie}
-              savedMovies={savedMovies}
+              onSaveMovie={handleSaveMovies}
+              showMore={showMore}
+              moreMoviesButton={moreMoviesButton}
             />
 
             <ProtectedRoute

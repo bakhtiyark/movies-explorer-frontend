@@ -2,33 +2,35 @@ import { useState, useEffect } from "react";
 import "./SearchForm.css";
 import ValidateForm from "../../utils/ValidateForm";
 import Checkbox from "../Checkbox/Checkbox";
+import { SEARCH_MESSAGE } from "../../utils/constants";
 
 function SearchForm({ onSearch }) {
-  const { handleChange } = ValidateForm();
-  // текст поиска
-  const [searchText, setSearchText] = useState("");
+  const { formValues, handleChange } = ValidateForm();
+
   // состояние чекбокса
   const [checkbox, setCheckbox] = useState(false);
 
-  useEffect(() => {
-    
-  }, []);
+  const [err, setErr] = useState(false);
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (!searchText) {
+    if (!formValues.search) {
+      setErr(true);
+    } else {
+      onSearch(formValues.search, checkbox);
     }
-    onSearch(searchText, checkbox);
   }
 
   function handleInputChange(e) {
-    handleChange(e)
-    setSearchText(e.target.value);
+    handleChange(e);
   }
 
   function handleCheckboxChange(state) {
     setCheckbox(state);
-    onSearch(searchText, checkbox);
+    onSearch(formValues.search, checkbox);
+  }
+  function toggleState(e) {
+    handleCheckboxChange(e.target.checked);
   }
 
   return (
@@ -36,7 +38,7 @@ function SearchForm({ onSearch }) {
       <form className="search__form form" onSubmit={handleSubmit} noValidate>
         <input
           className="search__input"
-          value={searchText || ""}
+          value={formValues.search || ""}
           onChange={handleInputChange}
           type="text"
           name="search"
@@ -47,7 +49,14 @@ function SearchForm({ onSearch }) {
           Поиск
         </button>
       </form>
-      <Checkbox state={checkbox} onChange={handleCheckboxChange} />
+      <span
+        className={`search__form_error ${
+          !err ? "" : "search__form_error_active"
+        }`}
+      >
+        {SEARCH_MESSAGE}
+      </span>
+      <Checkbox state={checkbox} onChange={toggleState} />
     </section>
   );
 }

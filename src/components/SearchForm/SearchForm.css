@@ -21,9 +21,22 @@
   margin-left: 25px;
   min-height: 54px;
   border: none;
+  
+  width: inherit;
   opacity: 0.2;
 }
-
+.search__form_error {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 12px;
+  margin-top: 10px;
+  color: #ff3055;
+  visibility: hidden;
+}
+.search__form_error_active {
+  visibility: visible;
+}
 .search__button {
   margin: 10px;
   padding: 0;
@@ -196,7 +209,6 @@ input:checked + .slider:before {
     padding: 0;
     margin-left: 25px;
     min-height: 54px;
-    width: inherit;
     border: none;
     opacity: 0.2;
   }

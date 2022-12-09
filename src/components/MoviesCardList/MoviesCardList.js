@@ -4,26 +4,28 @@ import MoviesCard from "../MoviesCard/MoviesCard";
 import "./MoviesCardList.css";
 
 function MoviesCardList({
-  shownArray,
-  saveMovies,
-  savedMoviesToggle,
   moviesArray,
+  savedMovies,
+  onSaveMovies,
+  onDeleteMovies,
   showMore,
+  moreMoviesButton
 }) {
   const { pathname } = useLocation();
   return (
     <section className="movies-list">
       <div className="movies-list__items">
-        {shownArray.map((movie) => (
+        {moviesArray.map((movie) => (
           <MoviesCard
             key={movie.id || movie.movieId}
             movie={movie}
-            saveMovies={saveMovies}
-            savedMoviesToggle={savedMoviesToggle}
+            savedMovies={savedMovies}
+            onSaveMovies={onSaveMovies}
+            onDeleteMovies={onDeleteMovies}
           />
         ))}
       </div>
-      {moviesArray.length > 0 && pathname !== "/saved-movies" ? (
+      {moviesArray.length > 0 && pathname !== "/saved-movies" && moreMoviesButton ? (
         <button
           className="movies-list__button"
           type="button"

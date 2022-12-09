@@ -9,12 +9,13 @@ export default function Movies({
   onSearch,
   isSearchComplete,
   isLoading,
-  searchStatus,
+  searchInput,
   onSaveMovie,
   onDeleteMovie,
   showMore,
-  onRenderMovies,
+  moreMoviesButton
 }) {
+  console.log(`# ${moviesShown.length} in Movies.js`)
   return (
     <section className="movies">
       <SearchForm onSearch={onSearch} />
@@ -23,14 +24,12 @@ export default function Movies({
       ) : isSearchComplete ? (
         moviesShown.length > 0 ? (
           <MoviesCardList
-            movies={moviesShown}
+            moviesArray={moviesShown}
             savedMovies={savedMovies}
             onSaveMovie={onSaveMovie}
             onDeleteMovie={onDeleteMovie}
-            isLoading={isLoading}
-            isSearchComplete={isSearchComplete}
-            onRenderMovies={onRenderMovies}
             showMore={showMore}
+            moreMoviesButton={moreMoviesButton}
           />
         ) : !isLoading ? (
           <div className="movies__container">
@@ -38,7 +37,7 @@ export default function Movies({
           </div>
         ) : (
           <div className="movies__container">
-            <span className="movies__text">{searchStatus}</span>
+            <span className="movies__text">{searchInput}</span>
           </div>
         )
       ) : (

@@ -23,7 +23,7 @@ export default function SavedMovies({ moviesArray, onDeleteMovie }) {
 
       setFilteredMovies(filteredResult);
     }
-  }, [moviesArray]);
+  }, [moviesArray,filteredMovies,checkbox,searchInput]);
 
   return (
     <section className="saved-movies">
@@ -32,7 +32,7 @@ export default function SavedMovies({ moviesArray, onDeleteMovie }) {
         moviesArray={moviesArray}
         savedMoviesToggle={null}
         savedMovies={moviesArray}
-        showMore={null}
+        onDeleteMovie={onDeleteMovie}
       />
     </section>
   );

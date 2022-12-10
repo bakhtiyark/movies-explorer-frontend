@@ -92,7 +92,7 @@ function App() {
   // For Loading
   function loadPreloader() {
     setIsLoading(true);
-    setTimeout(() => setIsLoading(false), 400);
+    setTimeout(() => setIsLoading(false), 500);
   }
 
   // Поиск
@@ -208,9 +208,9 @@ function App() {
   }, []);
   const handleDeleteMovie = (movie) => {
     mainApi
-      .deleteMovie(movie)
+      .deleteMovie(movie._id)
       .then(() => {
-        const updatedSavedMovies = savedMovies.filter(x => x.id !== movie.movieId)
+        const updatedSavedMovies = savedMovies.filter(x => x._id !== movie._id)
         setSavedMovies(updatedSavedMovies);
         localStorage.setItem("savedMovies", JSON.stringify(updatedSavedMovies));
       })
@@ -219,7 +219,7 @@ function App() {
   useEffect(() => {
     if (localStorage.getItem("moviesSearch")) {
       const searchBasis = JSON.parse(localStorage.getItem("moviesSearch"));
-      //console.log(searchBasis)
+      console.log(searchBasis)
       const searchResult = filterResult(searchBasis, searchInput, checkbox);
       setFilteredMovies(searchResult);
       setIsSearchComplete(true);

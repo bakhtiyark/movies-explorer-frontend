@@ -5,8 +5,7 @@ import "./MoviesCard.css";
 
 function MoviesCard({ movie, savedMovies, onSaveMovie, onDeleteMovie }) {
   const { pathname } = useLocation();
-  const [saved, setSaved] = useState(false);
-  const savedMovie = savedMovies.filter((x) => x.movieId === movie.id);
+  const savedMovie = savedMovies.find((x) => x.movieId === movie.id);
   const currentUser = useContext(CurrentUserContext);
   const isSaved = movie.id ? savedMovie : pathname === "/saved-movies";
 
@@ -15,7 +14,7 @@ function MoviesCard({ movie, savedMovies, onSaveMovie, onDeleteMovie }) {
   }
   // temp
   function handleSaveToggle() {
-    if (savedMovie) {
+    if (!savedMovie) {
       onSaveMovie({
         country: movie.country,
         director: movie.director,
@@ -23,6 +22,7 @@ function MoviesCard({ movie, savedMovies, onSaveMovie, onDeleteMovie }) {
         year: movie.year,
         description: movie.description,
         image: `https://api.nomoreparties.co${movie.image.url}`,
+        thumbnail:`https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`,
         trailerLink: movie.trailerLink,
         movieId: movie.id,
         nameRU: movie.nameRU,
@@ -32,13 +32,12 @@ function MoviesCard({ movie, savedMovies, onSaveMovie, onDeleteMovie }) {
       onDeleteMovie(savedMovies.filter((m) => m.movieId === movie.id)[0]);
     }
   }
-console.log(savedMovies)
   // temp
   function handleDelete() {
     onDeleteMovie(movie);
   }
   const movieSavedClassName = `movie-card__save-button ${
-    saved ? "movie-card__save-button_active" : ""
+    isSaved ? "movie-card__save-button_active" : ""
   }`;
 
   return (
@@ -46,7 +45,7 @@ console.log(savedMovies)
       {pathname === "/saved-movies" ? (
         <button
           className="movie-card__button movie-card__button_delete"
-          onClick={null}
+          onClick={handleDelete}
         />
       ) : (
         <button className={movieSavedClassName} onClick={handleSaveToggle}>

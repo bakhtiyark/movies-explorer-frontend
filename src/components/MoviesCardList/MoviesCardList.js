@@ -16,8 +16,8 @@ function MoviesCardList({
     <section className="movies-list">
       <div className="movies-list__items">
         {moviesArray.map((movie) => (
-          <MoviesCard
-            key={movie.id || movie.movieId}
+          <MoviesCard 
+            key={movie._id || movie.id}
             movie={movie}
             savedMovies={savedMovies}
             onSaveMovie={onSaveMovie}

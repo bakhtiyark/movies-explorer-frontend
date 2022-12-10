@@ -101,16 +101,15 @@ function App() {
     setMoviesShown([]);
     setSearchInput(searchInput);
     setCheckbox(state);
-    const localStorageMoviesArray = JSON.parse(localStorage.getItem("movies"));
+    const localStorageMoviesArray = JSON.parse(localStorage.getItem("moviesArray"));
 
     if (!localStorageMoviesArray) {
       setIsLoading(true);
       moviesApi
         .getInitialMovies()
         .then((data) => {
-          //console.dir(data);
           setMoviesArray(data);
-          localStorage.setItem("movies", JSON.stringify(data));
+          localStorage.setItem("moviesArray", JSON.stringify(data));
         })
         .catch((err) => console.dir(err))
         .finally(() => {
@@ -207,10 +206,20 @@ function App() {
   useEffect(() => {
     handleTokenValidation();
   }, []);
-
+  const handleDeleteMovie = (movie) => {
+    mainApi
+      .deleteMovie(movie)
+      .then(() => {
+        const updatedSavedMovies = savedMovies.filter(x => x.id !== movie.movieId)
+        setSavedMovies(updatedSavedMovies);
+        localStorage.setItem("savedMovies", JSON.stringify(updatedSavedMovies));
+      })
+      .catch(err => console.log(err))
+  };
   useEffect(() => {
-    if (localStorage.getItem("movies")) {
-      const searchBasis = JSON.parse(localStorage.getItem("movies"));
+    if (localStorage.getItem("moviesSearch")) {
+      const searchBasis = JSON.parse(localStorage.getItem("moviesSearch"));
+      //console.log(searchBasis)
       const searchResult = filterResult(searchBasis, searchInput, checkbox);
       setFilteredMovies(searchResult);
       setIsSearchComplete(true);
@@ -234,7 +243,7 @@ function App() {
     if (moviesArray.length > 0) {
       
       const filteredResult = filterResult(moviesArray, searchInput, checkbox);
-      localStorage.setItem("movies", JSON.stringify(filteredResult));
+      localStorage.setItem("moviesSearch", JSON.stringify(filteredResult));
       localStorage.setItem("searchInput", searchInput);
       localStorage.setItem("checkbox", checkbox);
       setFilteredMovies(filteredResult);
@@ -292,6 +301,7 @@ function App() {
               searchInput={searchInput}
               onSearch={handleSearchMovie}
               onSaveMovie={handleSaveMovies}
+              onDeleteMovie={handleDeleteMovie}
               showMore={showMore}
               moreMoviesButton={moreMoviesButton}
             />
@@ -300,6 +310,9 @@ function App() {
               path="/saved-movies"
               loggedIn={!loggedIn}
               component={SavedMovies}
+              savedMovies={savedMovies}
+              moviesArray={savedMovies}
+              onDeleteMovie={handleDeleteMovie}
             />
 
             <ProtectedRoute

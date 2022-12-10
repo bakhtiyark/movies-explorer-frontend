@@ -13,7 +13,7 @@ class MainApi {
 
   // Login and Registration
 
-  register({password, email, name}) {
+  register({ password, email, name }) {
     return fetch(`${this._baseUrl}/signup`, {
       method: "POST",
       headers: {
@@ -33,7 +33,7 @@ class MainApi {
       .catch((err) => console.log(err));
   }
 
-  login({email, password}) {
+  login({ email, password }) {
     return fetch(`${this._baseUrl}/signin`, {
       method: "POST",
       headers: {
@@ -88,7 +88,7 @@ class MainApi {
   }
 
   //Обновление пользователя
-  setUserInfo({name, email}) {
+  setUserInfo({ name, email }) {
     return fetch(`${this._baseUrl}/users/me`, {
       method: "PATCH",
       headers: this._headers,
@@ -140,7 +140,13 @@ class MainApi {
       method: "POST",
       headers: this._headers,
       body: JSON.stringify(movie),
-    }).catch((err) => console.log(err));
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+      })
+      .catch((err) => console.log(err));
   }
 
   //Комбинированный метод для сохранения/удаления
@@ -169,7 +175,11 @@ class MainApi {
       method: "DELETE",
       headers: this._headers,
     })
-      .then(this._errorCheck)
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+      })
       .catch((err) => console.log(err));
   }
 }

@@ -9,13 +9,12 @@ export default function Movies({
   onSearch,
   isSearchComplete,
   isLoading,
-  searchInput,
   onSaveMovie,
   onDeleteMovie,
   showMore,
   moreMoviesButton
 }) {
-  console.log(`# ${moviesShown.length} in Movies.js`)
+  //console.log(`# ${moviesShown.length} in Movies.js`)
   return (
     <section className="movies">
       <SearchForm onSearch={onSearch} />
@@ -35,11 +34,7 @@ export default function Movies({
           <div className="movies__container">
             <span className="movies__text">Ничего не найдено</span>
           </div>
-        ) : (
-          <div className="movies__container">
-            <span className="movies__text">{searchInput}</span>
-          </div>
-        )
+        ) : ``
       ) : (
         ""
       )}

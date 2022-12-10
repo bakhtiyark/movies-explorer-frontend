@@ -6,8 +6,8 @@ import "./MoviesCardList.css";
 function MoviesCardList({
   moviesArray,
   savedMovies,
-  onSaveMovies,
-  onDeleteMovies,
+  onSaveMovie,
+  onDeleteMovie,
   showMore,
   moreMoviesButton
 }) {
@@ -20,8 +20,8 @@ function MoviesCardList({
             key={movie.id || movie.movieId}
             movie={movie}
             savedMovies={savedMovies}
-            onSaveMovies={onSaveMovies}
-            onDeleteMovies={onDeleteMovies}
+            onSaveMovie={onSaveMovie}
+            onDeleteMovie={onDeleteMovie}
           />
         ))}
       </div>

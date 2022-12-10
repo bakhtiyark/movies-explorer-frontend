@@ -3,20 +3,40 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext.js";
 import { useLocation } from "react-router-dom";
 import "./MoviesCard.css";
 
-function MoviesCard({ movie }) {
+function MoviesCard({ movie, savedMovies, onSaveMovie, onDeleteMovie }) {
   const { pathname } = useLocation();
   const [saved, setSaved] = useState(false);
-
+  const savedMovie = savedMovies.filter((x) => x.movieId === movie.id);
   const currentUser = useContext(CurrentUserContext);
+  const isSaved = movie.id ? savedMovie : pathname === "/saved-movies";
 
   function getMovieDuration(num) {
     return `${Math.floor(num / 60)}ч ${num % 60}м`;
   }
   // temp
   function handleSaveToggle() {
-    !saved ? setSaved(true) : setSaved(false);
+    if (savedMovie) {
+      onSaveMovie({
+        country: movie.country,
+        director: movie.director,
+        duration: movie.duration,
+        year: movie.year,
+        description: movie.description,
+        image: `https://api.nomoreparties.co${movie.image.url}`,
+        trailerLink: movie.trailerLink,
+        movieId: movie.id,
+        nameRU: movie.nameRU,
+        nameEN: movie.nameEN,
+      });
+    } else {
+      onDeleteMovie(savedMovies.filter((m) => m.movieId === movie.id)[0]);
+    }
   }
-
+console.log(savedMovies)
+  // temp
+  function handleDelete() {
+    onDeleteMovie(movie);
+  }
   const movieSavedClassName = `movie-card__save-button ${
     saved ? "movie-card__save-button_active" : ""
   }`;
@@ -42,7 +62,11 @@ function MoviesCard({ movie }) {
         <img
           className="movie-card__image"
           alt="Кадр из трейлера"
-          src={pathname === '/saved-movies' ? `${movie.image}` : `https://api.nomoreparties.co${movie.image.url}`}
+          src={
+            pathname === "/saved-movies"
+              ? `${movie.image}`
+              : `https://api.nomoreparties.co${movie.image.url}`
+          }
         />
       </a>
       <div className="movie-card__info">

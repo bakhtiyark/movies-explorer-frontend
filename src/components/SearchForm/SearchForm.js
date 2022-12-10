@@ -17,7 +17,7 @@ function SearchForm({ onSearch }) {
     if (!formValues.search) {
       setErr(true);
     } else {
-      onSearch(formValues.search, checkbox);
+      onSearch(formValues.search, !checkbox);
     }
   }
 

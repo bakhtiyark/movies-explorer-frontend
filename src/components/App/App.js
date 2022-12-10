@@ -224,7 +224,7 @@ function App() {
       setFilteredMovies(searchResult);
       setIsSearchComplete(true);
     }
-  }, [searchInput, checkbox]);
+  }, [checkbox]);
 
   useEffect(() => {
     if (loggedIn) {
@@ -267,7 +267,7 @@ function App() {
         setMoviesShown(filteredMovies);
       }
     }
-  }, [filteredMovies, config]);
+  }, [loggedIn, filteredMovies, config]);
 
   const showMore = () => {
     setMoviesShown((x) => filteredMovies.slice(0, x.length + config[1]));

@@ -18,14 +18,20 @@ function Login({ onLogin }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.dir(formValues)
+    console.dir(formValues);
     onLogin(formValues);
   }
 
   return (
     <div className="login">
       <div className="login__content">
-        <img src={logo} alt="Логотип Movies-Explorer" className="login__logo" />
+        <Link to="/">
+          <img
+            src={logo}
+            alt="Логотип Movies-Explorer"
+            className="login__logo"
+          />
+        </Link>
         <h3 className="login__title">Рады видеть!</h3>
         <form
           onSubmit={handleSubmit}

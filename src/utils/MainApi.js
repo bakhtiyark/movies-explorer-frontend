@@ -99,6 +99,7 @@ class MainApi {
     })
       .then((res) => {
         if (res.ok) {
+          console.log(res)
           return res;
         }
       })

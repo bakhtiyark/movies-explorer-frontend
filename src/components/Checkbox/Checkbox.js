@@ -6,9 +6,9 @@ export default function Checkbox({state, onChange}) {
       <label className="switch">
         <input
           type="checkbox"
+          name="checkbox"
           onChange={onChange}
           value={state}
-          required
         />
         <span className="slider round"></span>
       </label>

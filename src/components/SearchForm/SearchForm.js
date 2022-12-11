@@ -3,42 +3,60 @@ import "./SearchForm.css";
 import ValidateForm from "../../utils/ValidateForm";
 import Checkbox from "../Checkbox/Checkbox";
 import { SEARCH_MESSAGE } from "../../utils/constants";
+import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 
 function SearchForm({ onSearch }) {
-  const { formValues, handleChange } = ValidateForm();
+  const { handleChange } = ValidateForm();
+  const { pathname } = useLocation();
 
-  // состояние чекбокса
+  // состояние
+  const [searchInput, setSearchInput] = useState("");
   const [checkbox, setCheckbox] = useState(false);
 
   const [err, setErr] = useState(false);
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    if (!formValues.search) {
-      setErr(true);
-    } else {
-      onSearch(formValues.search, !checkbox);
+  useEffect(() => {
+    if (pathname === "/movies") {
+      const searchInput = localStorage.getItem("searchInput");
+      const checkbox = localStorage.getItem("checkbox");
+      if (searchInput) {
+        setSearchInput(searchInput);
+      }
+      if (JSON.parse(checkbox) === true) {
+        setCheckbox(true);
+      } else {
+        setCheckbox(false);
+      }
     }
-  }
+  }, [pathname]);
 
   function handleInputChange(e) {
     handleChange(e);
+    setSearchInput(e.target.value);
   }
 
   function handleCheckboxChange(state) {
     setCheckbox(state);
-    onSearch(formValues.search, checkbox);
+    onSearch(searchInput, checkbox);
   }
   function toggleState(e) {
     handleCheckboxChange(e.target.checked);
   }
 
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (!searchInput) {
+      setErr(true);
+    } else {
+      onSearch(searchInput, checkbox);
+    }
+  }
   return (
     <section className="search">
       <form className="search__form form" onSubmit={handleSubmit} noValidate>
         <input
           className="search__input"
-          value={formValues.search || ""}
+          value={searchInput || ""}
           onChange={handleInputChange}
           type="text"
           name="search"

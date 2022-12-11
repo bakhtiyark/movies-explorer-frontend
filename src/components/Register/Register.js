@@ -9,7 +9,7 @@ import { SOMETHING_WRONG } from "../../utils/constants";
 import logo from "../../images/logo.svg";
 import ValidateForm from "../../utils/ValidateForm";
 
-function Register({ onRegistration }) {
+function Register({ onRegistration, message }) {
   const { formValues, handleChange, error, isValid, resetForm } =
     ValidateForm();
 
@@ -25,11 +25,11 @@ function Register({ onRegistration }) {
   return (
     <div className="register">
       <div className="register__content">
-        <img
+        <Link to="/"><img
           src={logo}
           alt="Логотип Movies-Explorer"
           className="register__logo"
-        />
+        /></Link>
         <h3 className="register__title">Добро пожаловать!</h3>
         <form
           onSubmit={handleSubmit}
@@ -84,7 +84,7 @@ function Register({ onRegistration }) {
               isValid ? "" : "register__form_error_active"
             }`}
           >
-            {SOMETHING_WRONG}
+            {message}
           </span>
           <button
             type="submit"

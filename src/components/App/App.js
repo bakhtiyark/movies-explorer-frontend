@@ -34,7 +34,12 @@ import { TranslationContext } from "../../contexts/TranslationContext.js";
 import NotFound from "../NotFound/NotFound";
 import filterResult from "../../utils/filterResult";
 import Preloader from "../Preloader/Preloader";
-import { MORE_BUTTON_CONFIG } from "../../utils/constants";
+import {
+  EMAIL_CONFLICT,
+  INTERNAL_SERVER,
+  MORE_BUTTON_CONFIG,
+  UPDATE_SUCCESSFUL_MSG,
+} from "../../utils/constants";
 
 function App() {
   const history = useHistory();
@@ -65,6 +70,8 @@ function App() {
   const [message, setMessage] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [profileMessage, setProfileMessage] = useState("");
+  const [loginMessage, setLoginMessage] = useState("");
+  const [registrationMessage, setRegistrationMessage] = useState("");
 
   //Токен
   function handleTokenValidation() {
@@ -101,7 +108,9 @@ function App() {
     setMoviesShown([]);
     setSearchInput(searchInput);
     setCheckbox(state);
-    const localStorageMoviesArray = JSON.parse(localStorage.getItem("moviesArray"));
+    const localStorageMoviesArray = JSON.parse(
+      localStorage.getItem("moviesArray")
+    );
 
     if (!localStorageMoviesArray) {
       setIsLoading(true);
@@ -147,7 +156,17 @@ function App() {
           }
         }
       })
-      .catch(setMessage(true))
+      .catch((err) => {
+        console.log(err)
+        if (err.code === 11000){
+          setRegistrationMessage(EMAIL_CONFLICT)
+        }
+        if (err.code === 500){
+          setRegistrationMessage(INTERNAL_SERVER)
+        } else {
+          setRegistrationMessage(err)
+        } 
+      })
       .finally(() => setIsLoading(false));
   }
   //Вход по логину
@@ -174,12 +193,18 @@ function App() {
     setIsLoading(true);
     mainApi
       .setUserInfo(data)
-      .then((x) => {
-        setCurrentUser(x);
-        setProfileMessage("Данные успешно обновлены!");
+      .then((data) => {
+        setCurrentUser(data);
+        setProfileMessage(UPDATE_SUCCESSFUL_MSG);
       })
       .catch((err) => {
-        setProfileMessage(err);
+        console.log(err)
+        if (err.status === 409) {
+          console.log("sadasd")
+          setProfileMessage(err);
+        } else {
+          setProfileMessage(err);
+        }
       })
       .finally(setIsLoading(false));
   }
@@ -205,26 +230,27 @@ function App() {
   };
   useEffect(() => {
     handleTokenValidation();
-  }, []);
+  }, [loggedIn]);
   const handleDeleteMovie = (movie) => {
     mainApi
       .deleteMovie(movie._id)
       .then(() => {
-        const updatedSavedMovies = savedMovies.filter(x => x._id !== movie._id)
+        const updatedSavedMovies = savedMovies.filter(
+          (x) => x._id !== movie._id
+        );
         setSavedMovies(updatedSavedMovies);
         localStorage.setItem("savedMovies", JSON.stringify(updatedSavedMovies));
       })
-      .catch(err => console.log(err))
+      .catch((err) => console.log(err));
   };
   useEffect(() => {
     if (localStorage.getItem("moviesSearch")) {
       const searchBasis = JSON.parse(localStorage.getItem("moviesSearch"));
-      console.log(searchBasis)
       const searchResult = filterResult(searchBasis, searchInput, checkbox);
       setFilteredMovies(searchResult);
       setIsSearchComplete(true);
     }
-  }, [checkbox]);
+  }, [currentUser]);
 
   useEffect(() => {
     if (loggedIn) {
@@ -241,7 +267,6 @@ function App() {
 
   useEffect(() => {
     if (moviesArray.length > 0) {
-      
       const filteredResult = filterResult(moviesArray, searchInput, checkbox);
       localStorage.setItem("moviesSearch", JSON.stringify(filteredResult));
       localStorage.setItem("searchInput", searchInput);
@@ -326,7 +351,7 @@ function App() {
 
             <Route path="/signup">
               {!loggedIn ? (
-                <Register onRegistration={handleRegistration} />
+                <Register onRegistration={handleRegistration} message={registrationMessage}/>
               ) : (
                 <Redirect to="/movies" />
               )}

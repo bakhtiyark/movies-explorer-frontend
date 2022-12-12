@@ -3,13 +3,15 @@ class MainApi {
     this._baseUrl = baseUrl;
     this._headers = headers;
   }
-  /* _errorCheck = res => {
-      if (res.ok) {
-        return res.json()
-      }
-      return Promise.reject(new Error("Ошибка " + res.status))
+  _errorCheck(res) {
+    if (res.ok) {
+      return res.json();
     }
-    */
+    return res.json().then((err) => {
+      err.statusCode = res.status;
+      return Promise.reject(err);
+    });
+  }
 
   // Login and Registration
 
@@ -24,13 +26,7 @@ class MainApi {
         email,
         name,
       }),
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-      })
-      .catch((err) => console.log(err));
+    }).then(this._errorCheck);
   }
 
   login({ email, password }) {
@@ -43,13 +39,7 @@ class MainApi {
         email,
         password,
       }),
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-      })
-      .catch((err) => console.log(err));
+    }).then(this._errorCheck);
   }
   updateToken() {
     this._headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
@@ -63,13 +53,7 @@ class MainApi {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-      })
-      .catch((err) => console.log(err));
+    }).then(this._errorCheck);
   }
 
   // User-related manipulations
@@ -78,13 +62,7 @@ class MainApi {
   getUserInfo() {
     return fetch(`${this._baseUrl}/users/me`, {
       headers: this._headers,
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-      })
-      .catch((err) => console.log(err));
+    }).then(this._errorCheck);
   }
 
   //Обновление пользователя
@@ -92,18 +70,8 @@ class MainApi {
     return fetch(`${this._baseUrl}/users/me`, {
       method: "PATCH",
       headers: this._headers,
-      body: JSON.stringify({
-        name: name,
-        email: email,
-      }),
-    })
-      .then((res) => {
-        if (res.ok) {
-          console.log(res)
-          return res;
-        }
-      })
-      .catch((err) => console.log(err));
+      body: JSON.stringify({ name, email }),
+    }).then(this._errorCheck);
   }
 
   /*
@@ -127,13 +95,7 @@ class MainApi {
     return fetch(`${this._baseUrl}/movies`, {
       method: "GET",
       headers: this._headers,
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-      })
-      .catch((err) => console.log(err));
+    }).then(this._errorCheck);
   }
   //Добавление карт
   saveMovie(movie) {
@@ -141,13 +103,7 @@ class MainApi {
       method: "POST",
       headers: this._headers,
       body: JSON.stringify(movie),
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-      })
-      .catch((err) => console.log(err));
+    }).then(this._errorCheck);
   }
 
   //Комбинированный метод для сохранения/удаления
@@ -161,13 +117,7 @@ class MainApi {
       : fetch(`${this._baseUrl}/movies`, {
           method: "DELETE",
           headers: this._headers,
-        })
-          .then((res) => {
-            if (res.ok) {
-              return res.json();
-            }
-          })
-          .catch((err) => console.log(err));
+        }).then(this._errorCheck);
   }
 
   //Удаление карточки
@@ -175,13 +125,7 @@ class MainApi {
     return fetch(`${this._baseUrl}/movies/${id}`, {
       method: "DELETE",
       headers: this._headers,
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-      })
-      .catch((err) => console.log(err));
+    }).then(this._errorCheck);
   }
 }
 

@@ -198,12 +198,10 @@ function App() {
         setProfileMessage(UPDATE_SUCCESSFUL_MSG);
       })
       .catch((err) => {
-        console.log(err)
-        if (err.status === 409) {
-          console.log("sadasd")
-          setProfileMessage(err);
+        if (err.statusCode === 409) {
+          setProfileMessage(EMAIL_CONFLICT);
         } else {
-          setProfileMessage(err);
+          setProfileMessage(err.message);
         }
       })
       .finally(setIsLoading(false));

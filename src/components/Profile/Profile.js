@@ -18,10 +18,7 @@ function Profile({ onUpdate, onSignOut, profileMessage }) {
   } = ValidateForm();
 
   const currentUser = useContext(CurrentUserContext);
-  const [name,setName] = useState("")
-  useEffect(() => {
-    setFormValues(currentUser);
-  }, [currentUser, setFormValues]);
+  //const [name,setName] = useState("")
 
   function handleNameChange(e) {
     if (e.target.value === currentUser.name){
@@ -51,12 +48,15 @@ function Profile({ onUpdate, onSignOut, profileMessage }) {
     onUpdate(formValues);
   }
 
-
+  useEffect(() => {
+    setFormValues(currentUser);
+  }, [currentUser, setFormValues]);
+  
   return (
     <section className="profile">
       <form className="profile-form form" onSubmit={handleSubmit}>
         <div className="profile-form__content">
-          <h1 className="profile-form__title">Привет, {name}!</h1>
+          <h1 className="profile-form__title">Привет, {currentUser?.name}!</h1>
           <div className="profile-form__item">
             <p className="profile-form__item-value">Имя</p>
             <input
@@ -64,7 +64,7 @@ function Profile({ onUpdate, onSignOut, profileMessage }) {
               onChange={handleNameChange}
               name="name"
               type="text"
-              value={formValues.name || ""}
+              value={formValues?.name || ""}
             />
           </div>
           <span
@@ -81,7 +81,7 @@ function Profile({ onUpdate, onSignOut, profileMessage }) {
               onChange={handleEmailChange}
               name="email"
               type="email"
-              value={formValues.email || ""}
+              value={formValues?.email || ""}
             />
           </div>
           <span

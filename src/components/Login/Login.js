@@ -8,7 +8,7 @@ import "./Login.css";
 // Logo
 import logo from "../../images/logo.svg";
 
-function Login({ onLogin }) {
+function Login({ onLogin, loginMessage }) {
   const { formValues, handleChange, error, isValid, resetForm } =
     ValidateForm();
 
@@ -18,7 +18,6 @@ function Login({ onLogin }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.dir(formValues);
     onLogin(formValues);
   }
 
@@ -65,6 +64,13 @@ function Login({ onLogin }) {
             value={formValues.password || ""}
             required
           />
+          <span
+            className={`register__form_error ${
+              !loginMessage ? "" : "register__form_error_active"
+            }`}
+          >
+            {loginMessage}
+          </span>
           <button
             type="submit"
             className="login__button"

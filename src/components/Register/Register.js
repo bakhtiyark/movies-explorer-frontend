@@ -1,15 +1,11 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Register.css";
-
-// Error messages
-import { SOMETHING_WRONG } from "../../utils/constants";
-
 // Logo
 import logo from "../../images/logo.svg";
 import ValidateForm from "../../utils/ValidateForm";
 
-function Register({ onRegistration, message }) {
+function Register({ onRegistration, registratioMessage }) {
   const { formValues, handleChange, error, isValid, resetForm } =
     ValidateForm();
 
@@ -81,10 +77,10 @@ function Register({ onRegistration, message }) {
           />
           <span
             className={`register__form_error ${
-              isValid ? "" : "register__form_error_active"
+              !registratioMessage ? "" : "register__form_error_active"
             }`}
           >
-            {message}
+            {registratioMessage}
           </span>
           <button
             type="submit"

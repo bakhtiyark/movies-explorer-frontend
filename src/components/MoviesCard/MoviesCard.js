@@ -27,7 +27,8 @@ function MoviesCard({ movie, savedMovies, onSaveMovie, onDeleteMovie }) {
         movieId: movie.id,
         nameRU: movie.nameRU,
         nameEN: movie.nameEN,
-      });
+      })
+      console.log(movie);
     } else {
       onDeleteMovie(savedMovies.filter((m) => m.movieId === movie.id)[0]);
     }

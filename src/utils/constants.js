@@ -14,6 +14,7 @@ export const EMAIL_CONFLICT = "Email уже используется други�
 export const INTERNAL_SERVER = "Внутренняя ошибка сервера";
 export const SOMETHING_WRONG = "Что-то пошло не так...";
 export const SAME_VALUE = "Данные должны отличаться от предыдущих";
+export const UNAUTHORIZED_MESSAGE = "Неправильные логин или пароль";
 
 //Screen rendering config
 export const MORE_BUTTON_CONFIG = {

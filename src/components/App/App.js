@@ -38,6 +38,7 @@ import {
   EMAIL_CONFLICT,
   INTERNAL_SERVER,
   MORE_BUTTON_CONFIG,
+  UNAUTHORIZED_MESSAGE,
   UPDATE_SUCCESSFUL_MSG,
 } from "../../utils/constants";
 
@@ -47,7 +48,7 @@ function App() {
 
   //Данные о пользователе
   const [currentUser, setCurrentUser] = useState({});
-  const [loggedIn, setLoggedIn] = useState(localStorage.getItem("token"));
+  const [loggedIn, setLoggedIn] = useState(false);
   // const [lang, setLang] = useState({});
 
   // Movies
@@ -158,33 +159,24 @@ function App() {
       })
       .catch((err) => {
         console.log(err)
-        if (err.code === 11000){
+        if (err.statusCode === 409){
           setRegistrationMessage(EMAIL_CONFLICT)
         }
-        if (err.code === 500){
+        if (err.statusCode === 500){
           setRegistrationMessage(INTERNAL_SERVER)
         } else {
-          setRegistrationMessage(err)
+          setRegistrationMessage(err.message)
         } 
       })
       .finally(() => setIsLoading(false));
   }
   //Вход по логину
-  function handleLogin(password, email) {
+  function handleLogin({password, email}) {
     setIsLoading(true);
     mainApi
-      .login(password, email)
-      .then((res) => {
-        if (res.token) {
-          localStorage.setItem("token", res.token);
-          mainApi.updateToken();
-          setLoggedIn(true);
-          handleTokenValidation();
-          history.push("/movies");
-        }
-      })
+      .login({password,email})
       .catch((err) => {
-        setMessage(err);
+          setLoginMessage(err.message)
       })
       .finally(setIsLoading(false));
   }
@@ -226,6 +218,7 @@ function App() {
       })
       .catch((err) => console.log(err));
   };
+
   useEffect(() => {
     handleTokenValidation();
   }, [loggedIn]);
@@ -253,15 +246,13 @@ function App() {
   useEffect(() => {
     if (loggedIn) {
       mainApi.getSavedMovies().then((res) => {
-        const searchSavedMovies = res.filter(
-          (x) => x.owner._id === currentUser._id
-        );
+        const searchSavedMovies = res.filter((x) => x.owner === currentUser._id);
         localStorage.setItem("savedMovies", JSON.stringify(searchSavedMovies));
         setSavedMovies(searchSavedMovies);
         setIsSearchComplete(true);
       });
     }
-  }, [loggedIn, currentUser]);
+  }, [loggedIn]);
 
   useEffect(() => {
     if (moviesArray.length > 0) {
@@ -315,6 +306,7 @@ function App() {
 
             <ProtectedRoute
               path="/movies"
+              loggedIn={loggedIn}
               moviesArray={moviesArray}
               moviesShown={moviesShown}
               savedMovies={savedMovies}
@@ -331,7 +323,7 @@ function App() {
 
             <ProtectedRoute
               path="/saved-movies"
-              loggedIn={!loggedIn}
+              loggedIn={loggedIn}
               component={SavedMovies}
               savedMovies={savedMovies}
               moviesArray={savedMovies}
@@ -340,7 +332,7 @@ function App() {
 
             <ProtectedRoute
               path="/profile"
-              loggedIn={!loggedIn}
+              loggedIn={loggedIn}
               component={Profile}
               onSignOut={handleSignOut}
               onUpdate={handleUpdateUser}
@@ -349,7 +341,7 @@ function App() {
 
             <Route path="/signup">
               {!loggedIn ? (
-                <Register onRegistration={handleRegistration} message={registrationMessage}/>
+                <Register onRegistration={handleRegistration} registratioMessage={registrationMessage}/>
               ) : (
                 <Redirect to="/movies" />
               )}
@@ -357,7 +349,7 @@ function App() {
 
             <Route path="/signin">
               {!loggedIn ? (
-                <Login onLogin={handleLogin} />
+                <Login onLogin={handleLogin} loginMessage={loginMessage} />
               ) : (
                 <Redirect to="/movies" />
               )}

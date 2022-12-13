@@ -56,7 +56,7 @@ function Profile({ onUpdate, onSignOut, profileMessage }) {
     <section className="profile">
       <form className="profile-form form" onSubmit={handleSubmit}>
         <div className="profile-form__content">
-          <h1 className="profile-form__title">Привет, {currentUser?.name}!</h1>
+          <h1 className="profile-form__title">Привет, {currentUser.name}!</h1>
           <div className="profile-form__item">
             <p className="profile-form__item-value">Имя</p>
             <input

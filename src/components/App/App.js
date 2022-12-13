@@ -48,7 +48,7 @@ function App() {
 
   //Данные о пользователе
   const [currentUser, setCurrentUser] = useState({});
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(localStorage.getItem("token"));
   // const [lang, setLang] = useState({});
 
   // Movies

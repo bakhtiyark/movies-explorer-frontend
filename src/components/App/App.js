@@ -158,25 +158,34 @@ function App() {
         }
       })
       .catch((err) => {
-        console.log(err)
-        if (err.statusCode === 409){
-          setRegistrationMessage(EMAIL_CONFLICT)
+        console.log(err);
+        if (err.statusCode === 409) {
+          setRegistrationMessage(EMAIL_CONFLICT);
         }
-        if (err.statusCode === 500){
-          setRegistrationMessage(INTERNAL_SERVER)
+        if (err.statusCode === 500) {
+          setRegistrationMessage(INTERNAL_SERVER);
         } else {
-          setRegistrationMessage(err.message)
-        } 
+          setRegistrationMessage(err.message);
+        }
       })
       .finally(() => setIsLoading(false));
   }
   //Вход по логину
-  function handleLogin({password, email}) {
+  function handleLogin({ password, email }) {
     setIsLoading(true);
     mainApi
-      .login({password,email})
+      .login({ password, email })
+      .then((res) => {
+        if (res.token) {
+          localStorage.setItem("token", res.token);
+          mainApi.updateToken();
+          setLoggedIn(true);
+          handleTokenValidation();
+          history.push("/movies");
+        }
+      })
       .catch((err) => {
-          setLoginMessage(err.message)
+        setLoginMessage(err.message);
       })
       .finally(setIsLoading(false));
   }
@@ -246,7 +255,9 @@ function App() {
   useEffect(() => {
     if (loggedIn) {
       mainApi.getSavedMovies().then((res) => {
-        const searchSavedMovies = res.filter((x) => x.owner === currentUser._id);
+        const searchSavedMovies = res.filter(
+          (x) => x.owner === currentUser._id
+        );
         localStorage.setItem("savedMovies", JSON.stringify(searchSavedMovies));
         setSavedMovies(searchSavedMovies);
         setIsSearchComplete(true);
@@ -341,7 +352,10 @@ function App() {
 
             <Route path="/signup">
               {!loggedIn ? (
-                <Register onRegistration={handleRegistration} registratioMessage={registrationMessage}/>
+                <Register
+                  onRegistration={handleRegistration}
+                  registratioMessage={registrationMessage}
+                />
               ) : (
                 <Redirect to="/movies" />
               )}

@@ -190,10 +190,10 @@ function App() {
       .finally(setIsLoading(false));
   }
   // Update User
-  function handleUpdateUser(data) {
+  function handleUpdateUser(name, email ) {
     setIsLoading(true);
     mainApi
-      .setUserInfo(data)
+      .setUserInfo(name, email)
       .then((data) => {
         setCurrentUser(data);
         setProfileMessage(UPDATE_SUCCESSFUL_MSG);

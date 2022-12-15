@@ -33,7 +33,7 @@ import { mainApi } from "../../utils/MainApi.js";
 import { TranslationContext } from "../../contexts/TranslationContext.js";
 import NotFound from "../NotFound/NotFound";
 import filterResult from "../../utils/filterResult";
-import Preloader from "../Preloader/Preloader";
+
 import {
   EMAIL_CONFLICT,
   INTERNAL_SERVER,
@@ -68,7 +68,6 @@ function App() {
   const [isSearchComplete, setIsSearchComplete] = useState(false);
 
   // Сообщение статуса
-  const [message, setMessage] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [profileMessage, setProfileMessage] = useState("");
   const [loginMessage, setLoginMessage] = useState("");

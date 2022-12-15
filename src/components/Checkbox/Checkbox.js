@@ -1,6 +1,8 @@
+import { useState } from "react";
 import "./Checkbox.css"
 
 export default function Checkbox({state, onChange}) {
+  const [checked, setChecked] = useState(state); 
   return (
     <div className="search__toggler">
       <label className="switch">

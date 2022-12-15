@@ -1,5 +1,4 @@
-import { useState, useContext, useEffect } from "react";
-import { mainApi } from "../../utils/MainApi";
+import { useContext, useEffect } from "react";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import "./Profile.css";
 

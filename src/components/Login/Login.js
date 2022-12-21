@@ -18,6 +18,7 @@ function Login({ onLogin, loginMessage }) {
 
   function handleSubmit(e) {
     e.preventDefault();
+    onLogin(formValues)
   }
 
   return (

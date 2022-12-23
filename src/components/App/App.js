@@ -336,7 +336,6 @@ function App() {
               loggedIn={loggedIn}
               component={SavedMovies}
               savedMovies={savedMovies}
-              moviesArray={savedMovies}
               onDeleteMovie={handleDeleteMovie}
             />
 

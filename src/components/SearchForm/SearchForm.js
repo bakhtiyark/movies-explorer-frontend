@@ -19,7 +19,6 @@ function SearchForm({ onSearch }) {
     if (pathname === "/movies") {
       const searchInput = localStorage.getItem("searchInput");
       const checkbox = localStorage.getItem("checkbox");
-      console.dir(checkbox)
       if (searchInput) {
         setSearchInput(searchInput);
       }

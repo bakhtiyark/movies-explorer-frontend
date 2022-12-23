@@ -11,7 +11,7 @@ function SearchForm({ onSearch }) {
 
   // состояние
   const [searchInput, setSearchInput] = useState("");
-  const [checkbox, setCheckbox] = useState(false);
+  const [checkboxState, setCheckboxState] = useState(false);
 
   const [err, setErr] = useState(false);
 
@@ -19,13 +19,14 @@ function SearchForm({ onSearch }) {
     if (pathname === "/movies") {
       const searchInput = localStorage.getItem("searchInput");
       const checkbox = localStorage.getItem("checkbox");
+      console.dir(checkbox)
       if (searchInput) {
         setSearchInput(searchInput);
       }
       if (JSON.parse(checkbox) === true) {
-        setCheckbox(true);
+        setCheckboxState(true);
       } else {
-        setCheckbox(false);
+        setCheckboxState(false);
       }
     }
   }, [pathname]);
@@ -35,9 +36,9 @@ function SearchForm({ onSearch }) {
     setSearchInput(e.target.value);
   }
 
-  function handleCheckboxChange(state) {
-    setCheckbox(state);
-    onSearch(searchInput, checkbox);
+  function handleCheckboxChange() {
+    setCheckboxState(!checkboxState);
+    onSearch(searchInput, !checkboxState);
   }
   function toggleState(e) {
     handleCheckboxChange(e.target.checked);
@@ -48,7 +49,7 @@ function SearchForm({ onSearch }) {
     if (!searchInput) {
       setErr(true);
     } else {
-      onSearch(searchInput, checkbox);
+      onSearch(searchInput, checkboxState);
     }
   }
   return (
@@ -75,7 +76,7 @@ function SearchForm({ onSearch }) {
         ""
       )}
 
-      <Checkbox state={checkbox} onChange={toggleState} />
+      <Checkbox state={checkboxState} onChange={toggleState} />
     </section>
   );
 }

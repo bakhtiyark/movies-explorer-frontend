@@ -2,7 +2,6 @@ import { useState } from "react";
 import "./Checkbox.css"
 
 export default function Checkbox({state, onChange}) {
-  const [checked, setChecked] = useState(localStorage.getItem("checkbox"));
   return (
     <div className="search__toggler">
       <label className="switch">
@@ -11,6 +10,7 @@ export default function Checkbox({state, onChange}) {
           name="checkbox"
           onChange={onChange}
           value={state}
+          checked={state}
         />
         <span className="slider round"></span>
       </label>

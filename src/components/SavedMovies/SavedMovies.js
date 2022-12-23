@@ -23,14 +23,13 @@ export default function SavedMovies({ moviesArray, onDeleteMovie }) {
 
       setFilteredMovies(filteredResult);
     }
-  }, [moviesArray,filteredMovies,checkbox,searchInput]);
+  }, [moviesArray]);
 
   return (
     <section className="saved-movies">
       <SearchForm onSearch={handleSearch} />
       <MoviesCardList
         moviesArray={moviesArray}
-        savedMoviesToggle={null}
         savedMovies={moviesArray}
         onDeleteMovie={onDeleteMovie}
       />

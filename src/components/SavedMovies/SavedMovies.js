@@ -20,7 +20,7 @@ export default function SavedMovies({ savedMovies, onDeleteMovie }) {
     loadPreloader();
 
     const filteredResult = filterResult(savedMovies, searchInput, checkbox);
-    
+
     setSearchInput(searchInput);
     setCheckbox(checkbox);
     setFilteredMovies(filteredResult);
@@ -51,36 +51,21 @@ export default function SavedMovies({ savedMovies, onDeleteMovie }) {
         filteredMovies.length > 0 ? (
           <MoviesCardList
             moviesArray={filteredMovies}
-        savedMovies={savedMovies}
-        onDeleteMovie={onDeleteMovie}
+            savedMovies={savedMovies}
+            onDeleteMovie={onDeleteMovie}
           />
-        ) : !isLoading ? (
+        ) : (
           <div className="movies__container">
             <span className="movies__text">Ничего не найдено</span>
           </div>
-        ) : ``
+        )
       ) : (
-        ""
+        <MoviesCardList
+          moviesArray={savedMovies}
+          savedMovies={savedMovies}
+          onDeleteMovie={onDeleteMovie}
+        />
       )}
     </section>
   );
 }
-/*
-{isLoading ? (
-        <Preloader />
-      ) : isSearchComplete ? (
-        filteredMovies.length > 0 ? (
-          <MoviesCardList
-            moviesArray={filteredMovies}
-        savedMovies={savedMovies}
-        onDeleteMovie={onDeleteMovie}
-          />
-        ) : !isLoading ? (
-          <div className="movies__container">
-            <span className="movies__text">Ничего не найдено</span>
-          </div>
-        ) : ``
-      ) : (
-        ""
-      )}
-*/

@@ -12,15 +12,21 @@
   display: flex;
   justify-content: space-between;
 }
+.movie-card__button {
+  color: transparent;
+  width: 21px;
+  height: 21px;
+  position: absolute;
+  top: 14px;
+  left: 305px;
+}
+
 .movie-card__save-button {
   margin: 0;
   padding: 0;
   font-weight: 400;
   font-size: 10px;
   line-height: 99%;
-  align-items: center;
-  text-align: center;
-  background: #f9f9f9;
   color: #000000;
   width: 72px;
   height: 21px;
@@ -28,14 +34,15 @@
   border: none;
   position: absolute;
   top: 14px;
-  right: 14px;
+  left: 260px;
 }
 
-.movie-card__save-button-active {
+.movie-card__save-button_active {
   color: transparent;
   width: 21px;
   height: 21px;
-  background-image: url('../../images/saved-icon.svg');
+  left: 305px;
+  background-image: url("../../images/saved-icon.svg");
 }
 
 .movie-card__title {
@@ -46,16 +53,126 @@
   color: #000000;
 }
 
+.movie-card__button_delete {
+  background-image: url("../../images/delete-icon.svg");
+  border-radius: 10px;
+  border: none;
+}
 .movie-card__duration {
   font-style: normal;
   font-weight: 400;
   font-size: 11px;
   line-height: 10px;
   /* or 91% */
-
   display: flex;
   align-items: center;
   text-align: center;
 
   color: #a0a0a0;
+
+  /*Background*/
+  background: #F9F9F9;
+  padding: 3px 4px;
+  border-radius: 3px;
+}
+
+@media screen and (max-width: 1025px) {
+  .movie-card {
+    display: flex;
+    flex-direction: column;
+    max-width: 340px;
+    position: relative;
+  }
+  .movie-card__image {
+    max-width: 340px;
+    border-radius: 6px;
+  }
+  .movie-card__info {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .movie-card__save-button {
+    margin: 0;
+    padding: 0;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 99%;
+    align-items: center;
+    text-align: center;
+    border-radius: 10px;
+    border: none;
+  }
+
+  .movie-card__title {
+    font-size: 13px;
+    line-height: 16px;
+    /* identical to box height */
+
+    color: #000000;
+  }
+
+  .movie-card__duration {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 10px;
+    /* or 91% */
+
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    color: #a0a0a0;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .movie-card {
+    display: flex;
+    flex-direction: column;
+    max-width: 340px;
+    position: relative;
+  }
+  .movie-card__image {
+    max-width: 300px;
+    border-radius: 6px;
+  }
+  .movie-card__info {
+    display: flex;
+    justify-content: space-between;
+    max-width: 300px;
+  }
+  .movie-card__save-button {
+    left: 220px;
+  }
+  .movie-card__save-button_active {
+    left: 265px;
+  }
+
+  .movie-card__button_delete {
+    left: 265px;
+  }
+
+  .movie-card__title {
+    font-size: 13px;
+    line-height: 16px;
+    /* identical to box height */
+
+    color: #000000;
+  }
+
+  .movie-card__duration {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 10px;
+    /* or 91% */
+
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    color: #a0a0a0;
+  }
 }

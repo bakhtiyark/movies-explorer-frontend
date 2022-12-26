@@ -1,0 +1,21 @@
+.saved-movies {
+  margin: 70px auto 0;
+}
+.saved-movies__line {
+    padding: 45px 70px 10px;
+  border-bottom: 1px solid #aaaaaa;
+  opacity: 0.2;
+}
+
+@media screen and (max-width: 1025px) {
+  .saved-movies__line {
+    padding: 50px 30px 10px;
+    
+  }
+}
+@media screen and (max-width: 768px) {
+    .saved-movies__line {
+        padding: 64px 14px 10px;
+    }
+  }
+  

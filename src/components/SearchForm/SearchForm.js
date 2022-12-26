@@ -1,42 +1,62 @@
 import { useState, useEffect } from "react";
 import "./SearchForm.css";
+import ValidateForm from "../../utils/ValidateForm";
+import Checkbox from "../Checkbox/Checkbox";
+import { SEARCH_MESSAGE } from "../../utils/constants";
+import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 
-function SearchForm({
-  handleGetMovies,
-  handleGetMoviesTumbler,
-  moviesTumbler,
-  moviesInputSearch,
-}) {
-  // текст поиска
-  const [searchText, setSearchText] = useState("");
-  // состояние чекбокса
-  const [checkbox, setCheckbox] = useState(false);
+function SearchForm({ onSearch }) {
+  const { handleChange } = ValidateForm();
+  const { pathname } = useLocation();
+
+  // состояние
+  const [searchInput, setSearchInput] = useState("");
+  const [checkboxState, setCheckboxState] = useState(false);
+
+  const [err, setErr] = useState(false);
 
   useEffect(() => {
-    setCheckbox(moviesTumbler);
-    setSearchText(moviesInputSearch);
-  }, [moviesTumbler, moviesInputSearch]);
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    handleGetMovies(searchText, checkbox);
-  }
+    if (pathname === "/movies") {
+      const searchInput = localStorage.getItem("searchInput");
+      const checkbox = localStorage.getItem("checkbox");
+      if (searchInput) {
+        setSearchInput(searchInput);
+      }
+      if (JSON.parse(checkbox) === true) {
+        setCheckboxState(true);
+      } else {
+        setCheckboxState(false);
+      }
+    }
+  }, [pathname]);
 
   function handleInputChange(e) {
-    setSearchText(e.target.value);
+    handleChange(e);
+    setSearchInput(e.target.value);
   }
 
   function handleCheckboxChange() {
-    setCheckbox(!checkbox);
-    handleGetMoviesTumbler(!checkbox);
+    setCheckboxState(!checkboxState);
+    onSearch(searchInput, !checkboxState);
+  }
+  function toggleState(e) {
+    handleCheckboxChange(e.target.checked);
   }
 
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (!searchInput) {
+      setErr(true);
+    } else {
+      onSearch(searchInput, checkboxState);
+    }
+  }
   return (
     <section className="search">
-      <form className="search__form" onSubmit={handleSubmit} noValidate>
+      <form className="search__form form" onSubmit={handleSubmit} noValidate>
         <input
           className="search__input"
-          value={searchText || ""}
+          value={searchInput || ""}
           onChange={handleInputChange}
           type="text"
           name="search"
@@ -47,20 +67,15 @@ function SearchForm({
           Поиск
         </button>
       </form>
-      <div className="search__toggler">
-        <label class="switch">
-          <input
-            type="checkbox"
-            onChange={handleCheckboxChange}
-            value={checkbox}
-            checked={!checkbox}
-            required
-          />
-          <span class="slider round"></span>
-        </label>
-        <p className="search__toggler_text">Короткометражки</p>
-      </div>
-      
+      {err ? (
+        <span className="search__form_error search__form_error_active">
+          {SEARCH_MESSAGE}
+        </span>
+      ) : (
+        ""
+      )}
+
+      <Checkbox state={checkboxState} onChange={toggleState} />
     </section>
   );
 }

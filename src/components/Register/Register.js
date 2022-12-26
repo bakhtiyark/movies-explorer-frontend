@@ -1,78 +1,103 @@
-import React, { useState } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Register.css";
-
 // Logo
 import logo from "../../images/logo.svg";
+import ValidateForm from "../../utils/ValidateForm";
 
-function Register({ onRegistration }) {
-  const [formValues, setFormValues] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-  const [isValid, setIsValid] = useState();
+function Register({ onRegistration, registratioMessage }) {
+  const { formValues, handleChange, error, isValid, resetForm } =
+    ValidateForm();
 
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setFormValues((x) => ({
-      ...x,
-      [name]: value,
-    }));
-    setIsValid(e.target.closest(".auth__form").checkValidity());
-  }
+  useEffect(() => {
+    resetForm({}, {}, false);
+  }, [resetForm]);
 
   function handleSubmit(e) {
     e.preventDefault();
-    onRegistration(formValues.password, formValues.email, formValues.name);
+    onRegistration(formValues);
   }
 
   return (
-    <div className="auth">
-      <img src={logo} alt="Логотип Movies-Explorer" className="auth__logo" />
-      <h3 className="auth__title">Добро пожаловать!</h3>
-      <form onSubmit={handleSubmit} className="auth__form">
-        <label className="auth__form__label">Имя</label>
-        <input
-          onChange={handleChange}
-          value={formValues.name || ""}
-          className="auth__input"
-          name="name"
-          required
-        />
-
-        <label className="auth__form__label">E-mail</label>
-        <input
-          onChange={handleChange}
-          value={formValues.email || ""}
-          className="auth__input"
-          name="email"
-          type="email"
-          required
-        />
-        <label className="auth__form__label">Пароль</label>
-        <input
-          onChange={handleChange}
-          value={formValues.password || ""}
-          className="auth__input"
-          name="password"
-          type="password"
-          required
-        />
-        <span
-          className={`auth__form_error ${
-            isValid ? "" : "auth__form_error_active"
-          }`}
+    <div className="register">
+      <div className="register__content">
+        <Link to="/"><img
+          src={logo}
+          alt="Логотип Movies-Explorer"
+          className="register__logo"
+        /></Link>
+        <h3 className="register__title">Добро пожаловать!</h3>
+        <form
+          onSubmit={handleSubmit}
+          className="register__form form"
+          method="post"
         >
-          Что-то пошло не так...
-        </span>
-        <button type="submit" className="auth__button">
-          Зарегистрироваться
-        </button>
-      </form>
-      <Link to="./signin" className="auth__link">
-        Уже зарегистрированы? Войти
-      </Link>
+          <label className="register__form__label">Имя</label>
+          <input
+            onChange={handleChange}
+            minLength="2"
+            maxLength="30"
+            value={formValues.name || ""}
+            className="register__input"
+            name="name"
+            type="text"
+            required
+          />
+          <span
+            className={`register__form_error ${
+              !error.name ? "" : "register__form_error_active"
+            }`}
+          >
+            {error.name}
+          </span>
+          <label className="register__form__label">E-mail</label>
+          <input
+            onChange={handleChange}
+            value={formValues.email || ""}
+            className="register__input"
+            name="email"
+            type="email"
+            required
+          />
+          <span
+            className={`register__form_error ${
+              !error.email ? "" : "register__form_error_active"
+            }`}
+          >
+            {error.email}
+          </span>
+          <label className="register__form__label">Пароль</label>
+          <input
+            onChange={handleChange}
+            value={formValues.password || ""}
+            className="register__input"
+            name="password"
+            type="password"
+            required
+          />
+          <span
+            className={`register__form_error ${
+              !registratioMessage ? "" : "register__form_error_active"
+            }`}
+          >
+            {registratioMessage}
+          </span>
+          <button
+            type="submit"
+            className="register__button"
+            disabled={!isValid}
+            style={!isValid ? { backgroundColor: "grey", opacity: ".8" } : null}
+          >
+            Зарегистрироваться
+          </button>
+        </form>
+        <p className="register__text">
+          Уже зарегистрированы?
+          <Link to="./signin" className="register__link">
+            Войти
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }

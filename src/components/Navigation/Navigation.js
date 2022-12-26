@@ -1,27 +1,42 @@
-import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
+import {
+  NavLink,
+  useLocation,
+} from "react-router-dom/cjs/react-router-dom.min";
 
 import accountIcon from "../../images/account-icon.svg";
 
 import "./Navigation.css";
 
 function Navigation() {
+  const { pathname } = useLocation();
+  const navigationClassName = `navigation__link ${
+    pathname === "/" ? "navigation__link_main" : ""
+  }`;
+  const navigationIconClassName = `navigation__icon ${
+    pathname === "/" ? "navigation__icon_main" : ""
+  }`;
+  
+
   return (
     <nav className="navigation">
-      <input className="navigation__toggle" type="checkbox" />
+      <input className="navigation__toggle" id="toggle" type="checkbox" />
+      <label className="navigation__button" htmlFor="toggle">
+        <span className={navigationIconClassName} />
+      </label>
       <div className="navigation__container">
         <ul className="navigation__items">
           <li className="navigation__item navigation__item_main">
-            <NavLink className="navigation__link" to="/">
+            <NavLink className={navigationClassName} to="/">
               Главная
             </NavLink>
           </li>
           <li className="navigation__item">
-            <NavLink className="navigation__link" to="/movies">
+            <NavLink className={navigationClassName} to="/movies">
               Фильмы
             </NavLink>
           </li>
           <li className="navigation__item">
-            <NavLink className="navigation__link" to="/saved-movies">
+            <NavLink className={navigationClassName} to="/saved-movies">
               Сохранённые фильмы
             </NavLink>
           </li>
@@ -31,6 +46,7 @@ function Navigation() {
             className="navigation__link navigation__link_account"
             to="/profile"
           >
+            Аккаунт
             <img
               className="navigation__link-icon"
               src={accountIcon}

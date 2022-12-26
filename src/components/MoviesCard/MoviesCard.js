@@ -3,33 +3,53 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext.js";
 import { useLocation } from "react-router-dom";
 import "./MoviesCard.css";
 
-function MoviesCard({ movie }) {
+function MoviesCard({ movie, savedMovies, onSaveMovie, onDeleteMovie }) {
   const { pathname } = useLocation();
-  const [saved, setSaved] = useState(false);
-
+  const savedMovie = savedMovies.find((x) => x.movieId === movie.id);
   const currentUser = useContext(CurrentUserContext);
+  const isSaved = movie.id ? savedMovie : pathname === "/saved-movies";
 
   function getMovieDuration(num) {
     return `${Math.floor(num / 60)}ч ${num % 60}м`;
   }
   // temp
-  function toggleClass() {
-    !saved ? setSaved(true) : setSaved(false);
+  function handleSaveToggle() {
+    if (!savedMovie) {
+      onSaveMovie({
+        country: movie.country,
+        director: movie.director,
+        duration: movie.duration,
+        year: movie.year,
+        description: movie.description,
+        image: `https://api.nomoreparties.co${movie.image.url}`,
+        thumbnail:`https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`,
+        trailerLink: movie.trailerLink,
+        movieId: movie.id,
+        nameRU: movie.nameRU,
+        nameEN: movie.nameEN,
+      })
+      console.log(movie);
+    } else {
+      onDeleteMovie(savedMovies.filter((m) => m.movieId === movie.id)[0]);
+    }
   }
-
+  // temp
+  function handleDelete() {
+    onDeleteMovie(movie);
+  }
   const movieSavedClassName = `movie-card__save-button ${
-    saved ? "movie-card__save-button-active" : ""
+    isSaved ? "movie-card__save-button_active" : ""
   }`;
 
   return (
     <article className="movie-card">
-      {pathname === "saved-movies" ? (
+      {pathname === "/saved-movies" ? (
         <button
           className="movie-card__button movie-card__button_delete"
-          onClick={null}
+          onClick={handleDelete}
         />
       ) : (
-        <button className={movieSavedClassName} onClick={toggleClass}>
+        <button className={movieSavedClassName} onClick={handleSaveToggle}>
           Сохранить
         </button>
       )}
@@ -42,7 +62,11 @@ function MoviesCard({ movie }) {
         <img
           className="movie-card__image"
           alt="Кадр из трейлера"
-          src={movie.image}
+          src={
+            pathname === "/saved-movies"
+              ? `${movie.image}`
+              : `https://api.nomoreparties.co${movie.image.url}`
+          }
         />
       </a>
       <div className="movie-card__info">

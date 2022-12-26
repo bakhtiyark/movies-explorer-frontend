@@ -1,10 +1,10 @@
-.auth {
+.register__content {
   display: flex;
   flex-direction: column;
   max-width: 392px;
   margin: 70px auto;
 }
-.auth__title {
+.register__title {
   align-self: flex-start;
   font-weight: 500;
   font-size: 24px;
@@ -14,12 +14,11 @@
   color: #000000;
 }
 
-.auth__form {
+.register__form {
   display: flex;
   flex-direction: column;
-  width: 100%;
 }
-.auth__form__label {
+.register__form__label {
   font-weight: 400;
   font-size: 10px;
   line-height: 12px;
@@ -28,15 +27,18 @@
   color: #a0a0a0;
 }
 
-.auth__input {
+.register__input {
   background: #f9f9f9;
   border-radius: 8px;
   margin-bottom: 20px;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
   height: 46px;
   border: none;
 }
 
-.auth__button {
+.register__button {
   margin: 70px 0 16px;
   font-style: normal;
   font-weight: 500;
@@ -52,10 +54,11 @@
   background: #3456f3;
   border-radius: 3px;
 }
-.auth__logo {
+.register__logo {
   align-self: flex-start;
 }
-.auth__text {
+
+.register__text {
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -67,7 +70,7 @@
   color: #a0a0a0;
 }
 
-.auth__link {
+.register__link {
   margin-left: 6px;
   text-decoration: none;
   font-style: normal;
@@ -81,7 +84,7 @@
   color: #3456f3;
 }
 
-.auth__form_error {
+.register__form_error {
   font-style: normal;
   font-weight: 400;
   font-size: 10px;
@@ -89,6 +92,25 @@
   color: #ff3055;
   visibility: hidden;
 }
-.auth__form_error_active {
+.register__form_error_active {
   visibility: visible;
+  margin-bottom: 15px;
+}
+
+@media screen and (max-width: 640px) {
+  .register__content {
+    margin: 56px auto 0;
+  }
+  .register__logo {
+    align-self: center;
+  }
+  .register__title {
+    align-self: center;
+  }
+  .register__form {
+    margin: 56px 20px 0;
+  }
+  .register__button {
+    margin: 157px 0 16px;
+  }
 }

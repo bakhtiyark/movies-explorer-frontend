@@ -27,43 +27,63 @@ import Login from "../Login/Login.js";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext.js";
 
 //Api
-// import { api } from "../../utils/Api.js";
-import auth from "../../utils/Auth.js";
+import { moviesApi } from "../../utils/MoviesApi.js";
+import { mainApi } from "../../utils/MainApi.js";
 
 import { TranslationContext } from "../../contexts/TranslationContext.js";
 import NotFound from "../NotFound/NotFound";
+import filterResult from "../../utils/filterResult";
+
+import {
+  EMAIL_CONFLICT,
+  INTERNAL_SERVER,
+  MORE_BUTTON_CONFIG,
+  UNAUTHORIZED_MESSAGE,
+  UPDATE_SUCCESSFUL_MSG,
+} from "../../utils/constants";
 
 function App() {
-  let history;
-  history = useHistory();
+  const history = useHistory();
+  const { pathname } = useLocation();
+
   //Данные о пользователе
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem("token"));
   // const [lang, setLang] = useState({});
-  const { pathname } = useLocation();
+
+  // Movies
+  const [moviesArray, setMoviesArray] = useState([]);
+  const [moviesShown, setMoviesShown] = useState([]);
+  const [filteredMovies, setFilteredMovies] = useState([]);
+
+  // Saved movies
+  const [savedMovies, setSavedMovies] = useState([]);
+
+  // For "More" button manipulations
+  const [moreMoviesButton, setMoreMoviesButton] = useState(false);
+
+  // Search process
+  const [searchInput, setSearchInput] = useState("");
+  const [checkbox, setCheckbox] = useState(false);
+  const [isSearchComplete, setIsSearchComplete] = useState(false);
+
   // Сообщение статуса
-  const [message, setMessage] = useState(false);
-
-  useEffect(() => {
-    handleTokenValidation();
-  }, []);
-
-  useEffect(() => {
-    if (loggedIn) {
-      history.push("/");
-    }
-  }, [loggedIn, history]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [profileMessage, setProfileMessage] = useState("");
+  const [loginMessage, setLoginMessage] = useState("");
+  const [registrationMessage, setRegistrationMessage] = useState("");
 
   //Токен
   function handleTokenValidation() {
     const token = localStorage.getItem("token");
+
     if (token) {
-      auth
+      mainApi
         .tokenValid(token)
         .then((res) => {
           if (res) {
-            setLoggedIn(true);
             setCurrentUser(res);
+            setLoggedIn(true);
           }
         })
         .catch((err) => {
@@ -74,49 +94,214 @@ function App() {
     }
   }
 
+  // For Loading
+  function loadPreloader() {
+    setIsLoading(true);
+    setTimeout(() => setIsLoading(false), 500);
+  }
+
+  // Поиск
+  function handleSearchMovie(searchInput, state) {
+    loadPreloader();
+    setMoviesShown([]);
+    setSearchInput(searchInput);
+    setCheckbox(state);
+    const localStorageMoviesArray = JSON.parse(
+      localStorage.getItem("moviesArray")
+    );
+
+    if (!localStorageMoviesArray) {
+      setIsLoading(true);
+      moviesApi
+        .getInitialMovies()
+        .then((data) => {
+          setMoviesArray(data);
+          localStorage.setItem("moviesArray", JSON.stringify(data));
+        })
+        .catch((err) => console.dir(err))
+        .finally(() => {
+          setIsLoading(false);
+        });
+    } else {
+      setMoviesArray(localStorageMoviesArray);
+    }
+  }
+
+  function getCardCount(renderConfig) {
+    let count;
+    const clientWidth = window.innerWidth;
+    Object.keys(renderConfig)
+      .sort((a, b) => a - b)
+      .forEach((key) => {
+        if (clientWidth >= +key) {
+          count = renderConfig[key];
+        }
+      });
+
+    return count;
+  }
+
+  const config = getCardCount(MORE_BUTTON_CONFIG);
   // Регистрация
   function handleRegistration(password, email, name) {
-    auth
+    mainApi
       .register(password, email, name)
       .then((res) => {
         if (res) {
           if (res) {
-            handleLogin(res.email, password);
+            handleLogin(password, res.email);
           }
         }
       })
-      .catch(setMessage(true));
+      .catch((err) => {
+        console.log(err);
+        if (err.statusCode === 409) {
+          setRegistrationMessage(EMAIL_CONFLICT);
+        }
+        if (err.statusCode === 500) {
+          setRegistrationMessage(INTERNAL_SERVER);
+        } else {
+          setRegistrationMessage(err.message);
+        }
+      });
   }
-
   //Вход по логину
-  function handleLogin(password, email) {
-    auth
-      .login(password, email)
+  function handleLogin({ password, email }) {
+    mainApi
+      .login({ password, email })
       .then((res) => {
         if (res.token) {
           localStorage.setItem("token", res.token);
-          auth.updateToken();
+          mainApi.updateToken();
           setLoggedIn(true);
           handleTokenValidation();
+          history.push("/movies");
         }
       })
       .catch((err) => {
-        setMessage(err);
+        setLoginMessage(err.message);
       });
   }
-
+  // Update User
+  function handleUpdateUser(name, email) {
+    mainApi
+      .setUserInfo(name, email)
+      .then((data) => {
+        setCurrentUser(data);
+        setProfileMessage(UPDATE_SUCCESSFUL_MSG);
+      })
+      .catch((err) => {
+        if (err.statusCode === 409) {
+          setProfileMessage(EMAIL_CONFLICT);
+        } else {
+          setProfileMessage(err.message);
+        }
+      });
+  }
   //Выход из аккаунта
-
   function handleSignOut() {
     setLoggedIn(false);
-    localStorage.removeItem("token");
-    history.push("/signin");
+    localStorage.clear();
+    history.push("/");
+    clearState();
+    console.log(localStorage);
   }
+  const clearState = () => {
+    setFilteredMovies([]);
+    setMoviesArray([]);
+    setMoviesShown([]);
+    setSavedMovies([]);
+    setSearchInput("");
+    setCheckbox(false);
+    setIsSearchComplete(false);
+  };
 
-  /*
-  let currentUserWithLang = currentUser.push(lang)
-  console.log(currentUserWithLang)
-  */
+  // Возрат на предыдущую страницу
+  function goBack() {
+    history.goBack();
+  }
+  const handleSaveMovies = (movie) => {
+    mainApi
+      .saveMovie(movie)
+      .then((x) => {
+        const updatedArray = [...savedMovies, { ...x, id: x.movieId }];
+        setSavedMovies(updatedArray);
+        localStorage.setItem("savedMovies", JSON.stringify(updatedArray));
+      })
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    handleTokenValidation();
+  }, [loggedIn]);
+
+  const handleDeleteMovie = (movie) => {
+    mainApi
+      .deleteMovie(movie._id)
+      .then(() => {
+        const updatedSavedMovies = savedMovies.filter(
+          (x) => x._id !== movie._id
+        );
+        setSavedMovies(updatedSavedMovies);
+        localStorage.setItem("savedMovies", JSON.stringify(updatedSavedMovies));
+      })
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem("moviesSearch")) {
+      const searchBasis = JSON.parse(localStorage.getItem("moviesSearch"));
+      const searchResult = filterResult(searchBasis, searchInput, checkbox);
+      setFilteredMovies(searchResult);
+      setIsSearchComplete(true);
+    }
+  }, [currentUser]);
+
+  // Get Saved Movies
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      mainApi.getSavedMovies().then((res) => {
+        const searchSavedMovies = res.filter(
+          (x) => x.owner === currentUser._id
+        );
+        localStorage.setItem("savedMovies", JSON.stringify(searchSavedMovies));
+        setSavedMovies(searchSavedMovies);
+      });
+    }
+  }, [currentUser]);
+
+  useEffect(() => {
+    if (moviesArray.length > 0) {
+      const filteredResult = filterResult(moviesArray, searchInput, checkbox);
+      localStorage.setItem("moviesSearch", JSON.stringify(filteredResult));
+      localStorage.setItem("searchInput", searchInput);
+      localStorage.setItem("checkbox", checkbox);
+      setFilteredMovies(filteredResult);
+      setIsSearchComplete(true);
+    }
+  }, [moviesArray, searchInput, checkbox]);
+
+  useEffect(() => {
+    if (moviesShown.length === filteredMovies.length) {
+      setMoreMoviesButton(false);
+    }
+  }, [moviesShown, filteredMovies]);
+
+  useEffect(() => {
+    if (filteredMovies.length > 0) {
+      //console.log(config[0])
+      if (filteredMovies.length > config[0]) {
+        setMoviesShown(filteredMovies.slice(0, config[0]));
+        setMoreMoviesButton(true);
+      } else {
+        setMoviesShown(filteredMovies);
+      }
+    }
+  }, [loggedIn, filteredMovies, config]);
+
+  const showMore = () => {
+    setMoviesShown((x) => filteredMovies.slice(0, x.length + config[1]));
+  };
 
   return (
     <TranslationContext.Provider value={""}>
@@ -137,26 +322,44 @@ function App() {
 
             <ProtectedRoute
               path="/movies"
-              loggedIn={!loggedIn}
+              loggedIn={loggedIn}
+              moviesArray={moviesArray}
+              moviesShown={moviesShown}
+              savedMovies={savedMovies}
               component={Movies}
+              isLoading={isLoading}
+              isSearchComplete={isSearchComplete}
+              searchInput={searchInput}
+              onSearch={handleSearchMovie}
+              onSaveMovie={handleSaveMovies}
+              onDeleteMovie={handleDeleteMovie}
+              showMore={showMore}
+              moreMoviesButton={moreMoviesButton}
             />
 
             <ProtectedRoute
               path="/saved-movies"
-              loggedIn={!loggedIn}
+              loggedIn={loggedIn}
               component={SavedMovies}
+              savedMovies={savedMovies}
+              onDeleteMovie={handleDeleteMovie}
             />
 
             <ProtectedRoute
               path="/profile"
-              loggedIn={!loggedIn}
+              loggedIn={loggedIn}
               component={Profile}
               onSignOut={handleSignOut}
+              onUpdate={handleUpdateUser}
+              profileMessage={profileMessage}
             />
 
             <Route path="/signup">
               {!loggedIn ? (
-                <Register onRegister={handleRegistration} textError={message} />
+                <Register
+                  onRegistration={handleRegistration}
+                  registratioMessage={registrationMessage}
+                />
               ) : (
                 <Redirect to="/movies" />
               )}
@@ -164,14 +367,14 @@ function App() {
 
             <Route path="/signin">
               {!loggedIn ? (
-                <Login onLogin={handleLogin} />
+                <Login onLogin={handleLogin} loginMessage={loginMessage} />
               ) : (
                 <Redirect to="/movies" />
               )}
             </Route>
 
             <Route path="/*">
-              <NotFound />
+              <NotFound goBack={goBack} />
             </Route>
           </Switch>
           {pathname === "/" ||

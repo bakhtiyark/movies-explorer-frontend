@@ -24,14 +24,14 @@ function AboutProject() {
           </p>
         </li>
       </ul>
-      <div className="project__timeline">
-        <div className="project__timeline__backend">
-          <div className="project__timeline__backend_duration">1 неделя</div>
-          <div className="project__timeline__backend_text">Back-end</div>
+      <div className="project-timeline">
+        <div className="project-timeline__backend">
+          <div className="project-timeline__backend-duration">1 неделя</div>
+          <div className="project-timeline__backend-text">Back-end</div>
         </div>
-        <div className="project__timeline__frontend">
-          <div className="project__timeline__frontend_duration">4 недели</div>
-          <div className="project__timeline__frontend_text">Front-end</div>
+        <div className="project-timeline__frontend">
+          <div className="project-timeline__frontend-duration">4 недели</div>
+          <div className="project-timeline__frontend-text">Front-end</div>
         </div>
       </div>
     </section>

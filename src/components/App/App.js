@@ -48,7 +48,7 @@ function App() {
 
   //Данные о пользователе
   const [currentUser, setCurrentUser] = useState({});
-  const [loggedIn, setLoggedIn] = useState(localStorage.getItem("token"));
+  const [loggedIn, setLoggedIn] = useState(false);
   // const [lang, setLang] = useState({});
 
   // Movies
@@ -212,6 +212,7 @@ function App() {
     localStorage.clear();
     history.push("/");
   }
+
   // Возрат на предыдущую страницу
   function goBack() {
     history.goBack();
@@ -230,6 +231,7 @@ function App() {
   useEffect(() => {
     handleTokenValidation();
   }, [loggedIn]);
+  
   const handleDeleteMovie = (movie) => {
     mainApi
       .deleteMovie(movie._id)

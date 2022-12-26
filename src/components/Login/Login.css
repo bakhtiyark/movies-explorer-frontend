@@ -89,6 +89,7 @@
   }
   .login__logo {
     align-self: center;
+    margin-left: 20px;
   }
   .login__title {
     align-self: center;

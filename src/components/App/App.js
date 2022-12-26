@@ -48,7 +48,7 @@ function App() {
 
   //Данные о пользователе
   const [currentUser, setCurrentUser] = useState({});
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(localStorage.getItem("token"));
   // const [lang, setLang] = useState({});
 
   // Movies
@@ -78,7 +78,6 @@ function App() {
     const token = localStorage.getItem("token");
 
     if (token) {
-      setIsLoading(true);
       mainApi
         .tokenValid(token)
         .then((res) => {
@@ -91,8 +90,7 @@ function App() {
           console.log(err);
           localStorage.removeItem("token");
           setLoggedIn(false);
-        })
-        .finally(() => setIsLoading(false));
+        });
     }
   }
 
@@ -146,7 +144,6 @@ function App() {
   const config = getCardCount(MORE_BUTTON_CONFIG);
   // Регистрация
   function handleRegistration(password, email, name) {
-    setIsLoading(true);
     mainApi
       .register(password, email, name)
       .then((res) => {
@@ -166,12 +163,10 @@ function App() {
         } else {
           setRegistrationMessage(err.message);
         }
-      })
-      .finally(() => setIsLoading(false));
+      });
   }
   //Вход по логину
   function handleLogin({ password, email }) {
-    setIsLoading(true);
     mainApi
       .login({ password, email })
       .then((res) => {
@@ -185,12 +180,10 @@ function App() {
       })
       .catch((err) => {
         setLoginMessage(err.message);
-      })
-      .finally(setIsLoading(false));
+      });
   }
   // Update User
-  function handleUpdateUser(name, email ) {
-    setIsLoading(true);
+  function handleUpdateUser(name, email) {
     mainApi
       .setUserInfo(name, email)
       .then((data) => {
@@ -203,15 +196,25 @@ function App() {
         } else {
           setProfileMessage(err.message);
         }
-      })
-      .finally(setIsLoading(false));
+      });
   }
   //Выход из аккаунта
   function handleSignOut() {
     setLoggedIn(false);
     localStorage.clear();
     history.push("/");
+    clearState();
+    console.log(localStorage);
   }
+  const clearState = () => {
+    setFilteredMovies([]);
+    setMoviesArray([]);
+    setMoviesShown([]);
+    setSavedMovies([]);
+    setSearchInput("");
+    setCheckbox(false);
+    setIsSearchComplete(false);
+  };
 
   // Возрат на предыдущую страницу
   function goBack() {
@@ -231,7 +234,7 @@ function App() {
   useEffect(() => {
     handleTokenValidation();
   }, [loggedIn]);
-  
+
   const handleDeleteMovie = (movie) => {
     mainApi
       .deleteMovie(movie._id)
@@ -244,6 +247,7 @@ function App() {
       })
       .catch((err) => console.log(err));
   };
+
   useEffect(() => {
     if (localStorage.getItem("moviesSearch")) {
       const searchBasis = JSON.parse(localStorage.getItem("moviesSearch"));
@@ -253,18 +257,18 @@ function App() {
     }
   }, [currentUser]);
 
+  // Get Saved Movies
   useEffect(() => {
-    if (loggedIn) {
+    if (localStorage.getItem("token")) {
       mainApi.getSavedMovies().then((res) => {
         const searchSavedMovies = res.filter(
           (x) => x.owner === currentUser._id
         );
         localStorage.setItem("savedMovies", JSON.stringify(searchSavedMovies));
         setSavedMovies(searchSavedMovies);
-        setIsSearchComplete(true);
       });
     }
-  }, [loggedIn]);
+  }, [currentUser]);
 
   useEffect(() => {
     if (moviesArray.length > 0) {
